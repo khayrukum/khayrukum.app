@@ -87,10 +87,10 @@ export async function initPage(opts = {}) {
     notesEl = $('#notes'); notesKinds = opts.notes || []; renderNotes();
   }
   const persistent = await store.ready();
-  if (!persistent) { const w = document.createElement('div'); w.className = 'banner warn'; w.setAttribute('role', 'alert'); w.textContent = S.storageBlocked; ($('#main') || document.body).prepend(w); }
+  if (!persistent) { const w = document.createElement('div'); w.className = 'banner warn'; w.setAttribute('role', 'alert'); w.textContent = S.storageBlocked; place(w); }
   // OFF-24 offline banner
   const ob = document.createElement('div'); ob.className = 'banner offline'; ob.setAttribute('role', 'status'); ob.textContent = S.offline; ob.hidden = navigator.onLine !== false;
-  ($('#main') || document.body).prepend(ob);
+  place(ob);
   addEventListener('online', () => { ob.hidden = true; }); addEventListener('offline', () => { ob.hidden = false; });
   audio.on('toast', t => toast(t.text, { error: t.error }));
   swc.register({ toast });
@@ -99,6 +99,9 @@ export async function initPage(opts = {}) {
   loadAnalytics();
   return persistent;
 }
+
+/** Banners live before #main so page renders never wipe them. */
+function place(el) { const m = $('#main'); if (m) m.before(el); else document.body.prepend(el); }
 
 /** Throttled refresh on visibility and cross-tab changes (DATA-54). */
 export function onRefresh(fn) {
