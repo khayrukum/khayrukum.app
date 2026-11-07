@@ -98,8 +98,8 @@ p { margin: 0; }
 .toast .btn { min-block-size: 2.25rem; }
 .notes { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.9rem; color: var(--muted); }
 .notes a { color: var(--accent); }
-footer.foot { border-block-start: 1px solid var(--line-soft); padding-block-start: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.95rem; }
-footer.foot a { display: inline-block; padding-block: 0.4rem; min-block-size: 2.75rem; }
+.foot { border-block-start: 1px solid var(--line-soft); padding-block-start: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.95rem; }
+.foot a { display: inline-block; padding-block: 0.4rem; min-block-size: 2.75rem; }
 .review { font-family: var(--f-body); font-size: 0.8rem; color: var(--warn); background: var(--warn-soft); border-radius: 0.35rem; padding-inline: 0.35rem; margin-inline-start: 0.35rem; white-space: nowrap; }
 
 /* ---------- typography: Quran and abyat ---------- */
