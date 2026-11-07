@@ -1,0 +1,648 @@
+{
+  "schema": "exam",
+  "version": "1.0.0",
+  "id": "tuhfa",
+  "ported": {"from":"tuhfa-exam.html","tool":"tools/port/align.mjs","status":"complete"},
+  "summary": [
+    {
+      "kind": "chapters",
+      "title": "الأبواب العشرة",
+      "playable": true,
+      "items": [
+        {"chapter":1,"text":"المقدمة: الناظم «[[t:1:2:-3]]»، وشيخه «[[t:4:2:3-3]]»"},
+        {"chapter":2,"text":"النون الساكنة والتنوين: إظهار، إدغام، إقلاب، إخفاء"},
+        {"chapter":3,"text":"النون والميم المشددتان: «[[t:17:2:3-4]]»"},
+        {"chapter":4,"text":"الميم الساكنة: إخفاء شفوي، إدغام صغير، إظهار شفوي"},
+        {"chapter":5,"text":"لام أل (قمرية وشمسية) ولام الفعل"},
+        {"chapter":6,"text":"المثلان والمتقاربان والمتجانسان، والصغير والكبير"},
+        {"chapter":7,"text":"أقسام المد: أصلي وفرعي، وحروف المد واللين"},
+        {"chapter":8,"text":"أحكام المد: واجب، جائز، لازم"},
+        {"chapter":9,"text":"أقسام المد اللازم: كلمي وحرفي، مخفف ومثقل، وفواتح السور"},
+        {"chapter":10,"text":"الخاتمة"}
+      ]
+    },
+    {
+      "kind": "codes",
+      "title": "الرموز",
+      "items": [
+        {"label":"الإدغام","ref":"t:9:2:2-2"},
+        {"label":"الإدغام بغنة","ref":"t:10:2:2"},
+        {"label":"الإخفاء","ref":"t:16:1:1-5","dots":"after"},
+        {"label":"القمرية","ref":"t:25:2:-4"},
+        {"label":"الشمسية","ref":"t:27:1:1-4","dots":"after"},
+        {"label":"حروف المد","ref":"t:39:2:3-3"},
+        {"label":"اللازم الحرفي","ref":"t:54:1:-3"},
+        {"label":"الطبيعي في الفواتح","ref":"t:56:2:3-4"},
+        {"label":"كل الفواتح","ref":"t:57:2:1-4"}
+      ]
+    },
+    {
+      "kind": "lookalikes",
+      "items": [
+        {"refs":["t:7","t:20"],"text":"«[[t:7:1:1-2]]» في النون، و«[[t:20:1:1-2]]» في الميم"},
+        {"refs":["t:9","t:12","t:21"],"text":"«[[t:9:1:1-2]]»: بستة أتت، بغير غنه، بمثلها أتى"},
+        {"refs":["t:13","t:22"],"text":"«[[t:13:1:1-2]]» في النون، و«[[t:22:1:1-2]]» في الميم"},
+        {"refs":["t:13","t:20"],"text":"«[[t:13:1:-2]]» وردت مرتين: في الإقلاب، والإخفاء الشفوي"},
+        {"refs":["t:7","t:24"],"text":"«فلتعرف» في آخر البيتين"}
+      ]
+    }
+  ],
+  "rounds": ["summary","chapters","complete-hemistich","next-bayt","bayt-topic","codes","quran-to-tuhfa","chain","random-number"],
+  "roundText": {},
+  "plainQuotes": ["والثان / والثالث"],
+  "questions": [
+    {
+      "id": "tuhfa/chapters/01",
+      "type": "chapters",
+      "ask": "من المقدمة إلى …؟",
+      "prompt": [{"ref":"t:5:2","dots":"before"}],
+      "answer": [{"ref":"t:6"}],
+      "tip": "الباب الجديد: أحكام النون الساكنة والتنوين"
+    },
+    {
+      "id": "tuhfa/chapters/02",
+      "type": "chapters",
+      "ask": "من النون الساكنة والتنوين إلى …؟",
+      "prompt": [{"ref":"t:16:2","dots":"before"}],
+      "answer": [{"ref":"t:17"}],
+      "tip": "الباب الجديد: النون والميم المشددتان، وهو بيت واحد"
+    },
+    {
+      "id": "tuhfa/chapters/03",
+      "type": "chapters",
+      "ask": "من المشددتين إلى …؟",
+      "prompt": [{"ref":"t:17:2","dots":"before"}],
+      "answer": [{"ref":"t:18"}],
+      "tip": "الباب الجديد: أحكام الميم الساكنة"
+    },
+    {
+      "id": "tuhfa/chapters/04",
+      "type": "chapters",
+      "ask": "من الميم الساكنة إلى …؟",
+      "prompt": [{"ref":"t:23:2","dots":"before"}],
+      "answer": [{"ref":"t:24"}],
+      "tip": "الباب الجديد: لام أل ولام الفعل"
+    },
+    {
+      "id": "tuhfa/chapters/05",
+      "type": "chapters",
+      "ask": "من اللامات إلى …؟",
+      "prompt": [{"ref":"t:29:2","dots":"before"}],
+      "answer": [{"ref":"t:30"}],
+      "tip": "الباب الجديد: المثلان والمتقاربان والمتجانسان"
+    },
+    {
+      "id": "tuhfa/chapters/06",
+      "type": "chapters",
+      "ask": "من المثلين إلى …؟",
+      "prompt": [{"ref":"t:34:2","dots":"before"}],
+      "answer": [{"ref":"t:35"}],
+      "tip": "الباب الجديد: أقسام المد"
+    },
+    {
+      "id": "tuhfa/chapters/07",
+      "type": "chapters",
+      "ask": "من أقسام المد إلى …؟",
+      "prompt": [{"ref":"t:41:2","dots":"before"}],
+      "answer": [{"ref":"t:42"}],
+      "tip": "الباب الجديد: أحكام المد"
+    },
+    {
+      "id": "tuhfa/chapters/08",
+      "type": "chapters",
+      "ask": "من أحكام المد إلى …؟",
+      "prompt": [{"ref":"t:47:2","dots":"before"}],
+      "answer": [{"ref":"t:48"}],
+      "tip": "الباب الجديد: أقسام المد اللازم"
+    },
+    {
+      "id": "tuhfa/chapters/09",
+      "type": "chapters",
+      "ask": "من أقسام اللازم إلى …؟",
+      "prompt": [{"ref":"t:57:2","dots":"before"}],
+      "answer": [{"ref":"t:58"}],
+      "tip": "الباب الجديد: الخاتمة"
+    },
+    {
+      "id": "tuhfa/chapters/10",
+      "type": "chapters",
+      "ask": "بالعكس: هذا أول باب الميم الساكنة، فما البيت الذي قبله؟",
+      "prompt": [{"ref":"t:18:1","dots":"after"}],
+      "answer": [{"ref":"t:17"}]
+    },
+    {
+      "id": "tuhfa/chapters/11",
+      "type": "chapters",
+      "ask": "بالعكس: هذا أول باب أحكام المد، فما البيت الذي قبله؟",
+      "prompt": [{"ref":"t:42:1","dots":"after"}],
+      "answer": [{"ref":"t:41"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/01",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:3:1","dots":"after"}],
+      "answer": [{"ref":"t:3"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/02",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:9:1","dots":"after"}],
+      "answer": [{"ref":"t:9"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/03",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:11:1","dots":"after"}],
+      "answer": [{"ref":"t:11"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/04",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:14:1","dots":"after"}],
+      "answer": [{"ref":"t:14"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/05",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:19:1","dots":"after"}],
+      "answer": [{"ref":"t:19"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/06",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:23:1","dots":"after"}],
+      "answer": [{"ref":"t:23"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/07",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:25:1","dots":"after"}],
+      "answer": [{"ref":"t:25"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/08",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:29:1","dots":"after"}],
+      "answer": [{"ref":"t:29"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/09",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:33:1","dots":"after"}],
+      "answer": [{"ref":"t:33"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/10",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:36:1","dots":"after"}],
+      "answer": [{"ref":"t:36"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/11",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:38:1","dots":"after"}],
+      "answer": [{"ref":"t:38"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/12",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:40:1","dots":"after"}],
+      "answer": [{"ref":"t:40"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/13",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:43:1","dots":"after"}],
+      "answer": [{"ref":"t:43"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/14",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:47:1","dots":"after"}],
+      "answer": [{"ref":"t:47"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/15",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:50:1","dots":"after"}],
+      "answer": [{"ref":"t:50"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/16",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:52:1","dots":"after"}],
+      "answer": [{"ref":"t:52"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/17",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:55:1","dots":"after"}],
+      "answer": [{"ref":"t:55"}]
+    },
+    {
+      "id": "tuhfa/complete-hemistich/18",
+      "type": "complete-hemistich",
+      "prompt": [{"ref":"t:59:1","dots":"after"}],
+      "answer": [{"ref":"t:59"}]
+    },
+    {"id":"tuhfa/next-bayt/01","type":"next-bayt","prompt":[{"ref":"t:1"}],"answer":[{"ref":"t:2"}]},
+    {"id":"tuhfa/next-bayt/02","type":"next-bayt","prompt":[{"ref":"t:7"}],"answer":[{"ref":"t:8"}]},
+    {"id":"tuhfa/next-bayt/03","type":"next-bayt","prompt":[{"ref":"t:10"}],"answer":[{"ref":"t:11"}]},
+    {"id":"tuhfa/next-bayt/04","type":"next-bayt","prompt":[{"ref":"t:13"}],"answer":[{"ref":"t:14"}]},
+    {"id":"tuhfa/next-bayt/05","type":"next-bayt","prompt":[{"ref":"t:20"}],"answer":[{"ref":"t:21"}]},
+    {"id":"tuhfa/next-bayt/06","type":"next-bayt","prompt":[{"ref":"t:26"}],"answer":[{"ref":"t:27"}]},
+    {"id":"tuhfa/next-bayt/07","type":"next-bayt","prompt":[{"ref":"t:31"}],"answer":[{"ref":"t:32"}]},
+    {"id":"tuhfa/next-bayt/08","type":"next-bayt","prompt":[{"ref":"t:37"}],"answer":[{"ref":"t:38"}]},
+    {"id":"tuhfa/next-bayt/09","type":"next-bayt","prompt":[{"ref":"t:44"}],"answer":[{"ref":"t:45"}]},
+    {"id":"tuhfa/next-bayt/10","type":"next-bayt","prompt":[{"ref":"t:45"}],"answer":[{"ref":"t:46"}]},
+    {"id":"tuhfa/next-bayt/11","type":"next-bayt","prompt":[{"ref":"t:49"}],"answer":[{"ref":"t:50"}]},
+    {"id":"tuhfa/next-bayt/12","type":"next-bayt","prompt":[{"ref":"t:53"}],"answer":[{"ref":"t:54"}]},
+    {"id":"tuhfa/next-bayt/13","type":"next-bayt","prompt":[{"ref":"t:56"}],"answer":[{"ref":"t:57"}]},
+    {
+      "id": "tuhfa/bayt-topic/01",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:13:1","dots":"after"}],
+      "answer": [{"ref":"t:13"}],
+      "tip": "الإقلاب: تُقلب النون الساكنة أو التنوين قبل الباء ميمًا مع الغنة"
+    },
+    {
+      "id": "tuhfa/bayt-topic/02",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:23:2","dots":"before"}],
+      "answer": [{"ref":"t:23"}],
+      "tip": "الإظهار الشفوي، ويكون أشدّ عند الواو والفاء"
+    },
+    {
+      "id": "tuhfa/bayt-topic/03",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:11:1","dots":"after"}],
+      "answer": [{"ref":"t:11"}],
+      "tip": "إذا اجتمعت النون والواو أو الياء في كلمة واحدة فهو إظهار مطلق لا إدغام"
+    },
+    {
+      "id": "tuhfa/bayt-topic/04",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:21:1","dots":"after"}],
+      "answer": [{"ref":"t:21"}],
+      "tip": "الإدغام الشفوي، ويُسمّى إدغام مثلين صغيرًا"
+    },
+    {
+      "id": "tuhfa/bayt-topic/05",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:29:1","dots":"after"}],
+      "answer": [{"ref":"t:29"}],
+      "tip": "لام الفعل تُظهَر دائمًا"
+    },
+    {
+      "id": "tuhfa/bayt-topic/06",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:45:1","dots":"after"}],
+      "answer": [{"ref":"t:45"}],
+      "tip": "المد العارض للسكون، وهو من الجائز"
+    },
+    {
+      "id": "tuhfa/bayt-topic/07",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:46:1","dots":"after"}],
+      "answer": [{"ref":"t:46"}],
+      "tip": "مد البدل: الهمز قبل حرف المد"
+    },
+    {
+      "id": "tuhfa/bayt-topic/08",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:52:1","dots":"after"}],
+      "answer": [{"ref":"t:52"}],
+      "tip": "المثقّل إن كان فيه إدغام، والمخفّف إن لم يكن"
+    },
+    {
+      "id": "tuhfa/bayt-topic/09",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:55:1","dots":"after"}],
+      "answer": [{"ref":"t:55"}],
+      "tip": "الحروف المكوّنة من حرفين في فواتح السور تُمدّ مدًّا طبيعيًّا"
+    },
+    {
+      "id": "tuhfa/bayt-topic/10",
+      "type": "bayt-topic",
+      "prompt": [{"ref":"t:34:1","dots":"after"}],
+      "answer": [{"ref":"t:34"}],
+      "tip": "الكبير: أن يكون الحرفان متحركين"
+    },
+    {
+      "id": "tuhfa/codes/01",
+      "type": "codes",
+      "prompt": [{"text":"حروف الإظهار الحلقي"}],
+      "answer": [{"ref":"t:8"}],
+      "tip": "٦ حروف: الهمزة، الهاء، العين، الحاء، الغين، الخاء"
+    },
+    {
+      "id": "tuhfa/codes/02",
+      "type": "codes",
+      "prompt": [{"text":"حروف الإدغام (كلها)"}],
+      "answer": [{"ref":"t:9:2:2-2"}],
+      "tip": "٦ حروف: ي ر م ل و ن"
+    },
+    {
+      "id": "tuhfa/codes/03",
+      "type": "codes",
+      "prompt": [{"text":"حروف الإدغام بغنة"}],
+      "answer": [{"ref":"t:10:2:2"}],
+      "tip": "٤ حروف: ي ن م و"
+    },
+    {
+      "id": "tuhfa/codes/04",
+      "type": "codes",
+      "prompt": [{"text":"حروف الإدغام بغير غنة"}],
+      "answer": [{"ref":"t:12:2:2-3"}]
+    },
+    {
+      "id": "tuhfa/codes/05",
+      "type": "codes",
+      "prompt": [{"text":"حرف الإقلاب"}],
+      "answer": [{"ref":"t:13:1:-1"}]
+    },
+    {
+      "id": "tuhfa/codes/06",
+      "type": "codes",
+      "prompt": [{"text":"حروف الإخفاء الحقيقي (١٥ حرف)"}],
+      "answer": [{"ref":"t:16"}],
+      "tip": "أول حرف من كل كلمة: ص ذ ث ك ج ش ق س د ط ز ف ت ض ظ"
+    },
+    {
+      "id": "tuhfa/codes/07",
+      "type": "codes",
+      "prompt": [{"text":"حروف اللام القمرية (١٤ حرف)"}],
+      "answer": [{"ref":"t:25:2:-4"}]
+    },
+    {
+      "id": "tuhfa/codes/08",
+      "type": "codes",
+      "prompt": [{"text":"حروف اللام الشمسية (١٤ حرف)"}],
+      "answer": [{"ref":"t:27"}],
+      "tip": "أول حرف من كل كلمة"
+    },
+    {
+      "id": "tuhfa/codes/09",
+      "type": "codes",
+      "prompt": [{"text":"حروف المد"}],
+      "answer": [{"ref":"t:39:2:3-3"}],
+      "tip": "وكلها مجموعة في كلمة «[[t:39:2:-1]]»"
+    },
+    {
+      "id": "tuhfa/codes/10",
+      "type": "codes",
+      "prompt": [{"text":"حروف المد اللازم الحرفي (٨)"}],
+      "answer": [{"ref":"t:54:1:-3"}],
+      "tip": "وفي العين وجهان: الطول والتوسط، والطول أخصّ"
+    },
+    {
+      "id": "tuhfa/codes/11",
+      "type": "codes",
+      "prompt": [{"text":"الحروف التي تُمدّ مدًّا طبيعيًّا في فواتح السور"}],
+      "answer": [{"ref":"t:56:2:3-4"}]
+    },
+    {
+      "id": "tuhfa/codes/12",
+      "type": "codes",
+      "prompt": [{"text":"كل حروف فواتح السور (١٤)"}],
+      "answer": [{"ref":"t:57:2:1-4"}]
+    },
+    {
+      "id": "tuhfa/codes/13",
+      "type": "codes",
+      "prompt": [{"text":"حروف الحلق مرتّبة"}],
+      "answer": [{"ref":"t:7"},{"ref":"t:8"}],
+      "tip": "«[[t:7:2:3-3]]»: من أقصى الحلق لأدناه"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/01",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:5:4-5","note":"البقرة ٥"}],
+      "answer": [{"ref":"t:12"}],
+      "tip": "إدغام بغير غنة: نون ساكنة بعدها راء"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/02",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:8:3-4","note":"البقرة ٨"}],
+      "answer": [{"ref":"t:10"}],
+      "tip": "إدغام بغنة: نون ساكنة بعدها ياء في كلمتين"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/03",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:10:8-9","note":"البقرة ١٠"}],
+      "answer": [{"ref":"t:7"}],
+      "tip": "إظهار حلقي: تنوين بعده همزة"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/04",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:27:5-6","note":"البقرة ٢٧"}],
+      "answer": [{"ref":"t:13"}],
+      "tip": "إقلاب: نون ساكنة بعدها باء"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/05",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:6:6-6","note":"البقرة ٦"}],
+      "answer": [{"ref":"t:14"},{"ref":"t:16"}],
+      "tip": "إخفاء حقيقي: نون ساكنة بعدها ذال"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/06",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:8:-3","note":"البقرة ٨"}],
+      "answer": [{"ref":"t:20"}],
+      "tip": "إخفاء شفوي: ميم ساكنة بعدها باء"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/07",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:61:33-36","note":"البقرة ٦١"}],
+      "answer": [{"ref":"t:21"}],
+      "tip": "إدغام شفوي: ميم ساكنة بعدها ميم"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/08",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:39:-3","note":"البقرة ٣٩"}],
+      "answer": [{"ref":"t:23"}],
+      "tip": "إظهار شفوي، وانتبه لأنها قبل الفاء"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/09",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:20:20-21"},{"text":"/"},{"ref":"2:28:7-7"}],
+      "answer": [{"ref":"t:17"}],
+      "tip": "نون وميم مشددتان: غنة"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/10",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:2:2-2"},{"text":"/"},{"ref":"2:3:5-5","note":"البقرة ٢–٣"}],
+      "answer": [
+        {"text":"الكتاب","note":"قمرية · «[[t:25:2:-4]]»"},
+        {"text":"الصلاة","note":"شمسية · «[[t:27:1:1-4]]»"}
+      ]
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/11",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:35:1-1","note":"البقرة ٣٥"}],
+      "answer": [{"ref":"t:29"}],
+      "tip": "لام فعل: إظهار"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/12",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:16:7-8","note":"البقرة ١٦"}],
+      "answer": [{"ref":"t:30"},{"ref":"t:33"}],
+      "tip": "مثلين صغير: تاء ساكنة بعدها تاء"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/13",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:19:3-4","note":"البقرة ١٩"}],
+      "answer": [{"ref":"t:43"}],
+      "tip": "مد متصل واجب"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/14",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:4:3-5","note":"البقرة ٤"}],
+      "answer": [{"ref":"t:44"}],
+      "tip": "مد منفصل جائز"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/15",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:62:19-21","note":"البقرة ٣٨"}],
+      "answer": [{"ref":"t:41"}],
+      "tip": "«خوف»: لين، واو ساكنة قبلها فتح"
+    },
+    {
+      "id": "tuhfa/quran-to-tuhfa/16",
+      "type": "quran-to-tuhfa",
+      "prompt": [{"ref":"2:1","note":"البقرة ١"}],
+      "answer": [{"ref":"t:53"},{"ref":"t:54"},{"ref":"t:52"}],
+      "tip": "الألف لا مدّ فيها، واللام لازم حرفي مثقّل لإدغامها في الميم، والميم لازم حرفي مخفّف."
+    },
+    {
+      "id": "tuhfa/chain/01",
+      "type": "chain",
+      "ask": "المقدمة والنون الساكنة (١–١٦)",
+      "prompt": [{"ref":"t:1:1:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"t:1:1:1-1"},
+            {"ref":"t:2:1:1-1"},
+            {"ref":"t:3:1:1-1"},
+            {"ref":"t:4:1:1-1"},
+            {"ref":"t:5:1:1-1"},
+            {"ref":"t:6:1:1-1"},
+            {"ref":"t:7:1:1-1"},
+            {"ref":"t:8:1:1-1"},
+            {"ref":"t:9:1:1-1"},
+            {"ref":"t:10:1:1-1"},
+            {"ref":"t:11:1:1-2"},
+            {"ref":"t:12:1:1-1"},
+            {"ref":"t:13:1:1-1"},
+            {"ref":"t:14:1:1-1"},
+            {"ref":"t:15:1:1-2"},
+            {"ref":"t:16:1:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "tuhfa/chain/02",
+      "type": "chain",
+      "ask": "من المشددتين لآخر المثلين (١٧–٣٤)",
+      "prompt": [{"ref":"t:17:1:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"t:17:1:1-1"},
+            {"ref":"t:18:1:1-1"},
+            {"ref":"t:19:1:1-1"},
+            {"ref":"t:20:1:1-1"},
+            {"ref":"t:21:1:1-1"},
+            {"ref":"t:22:1:1-1"},
+            {"ref":"t:23:1:1-1"},
+            {"ref":"t:24:1:1-2"},
+            {"ref":"t:25:1:1-2"},
+            {"ref":"t:26:1:1-1"},
+            {"ref":"t:27:1:1-3"},
+            {"ref":"t:28:1:1-2"},
+            {"ref":"t:29:1:1-1"},
+            {"ref":"t:30:1:1-3"},
+            {"ref":"t:31:1:1-2"},
+            {"ref":"t:32:1:1-1"},
+            {"ref":"t:33:1:1-1"},
+            {"ref":"t:34:1:1-2"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "tuhfa/chain/03",
+      "type": "chain",
+      "ask": "المد والخاتمة (٣٥–٦١)",
+      "prompt": [{"ref":"t:35:1:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"t:35:1:1-1"},
+            {"ref":"t:36:1:1-3"},
+            {"ref":"t:37:1:1-3"},
+            {"ref":"t:38:1:1-1"},
+            {"ref":"t:39:1:1-1"},
+            {"ref":"t:40:1:1-1"},
+            {"ref":"t:41:1:1-1"},
+            {"ref":"t:42:1:1-2"},
+            {"ref":"t:43:1:1-1"},
+            {"ref":"t:44:1:1-1"},
+            {"ref":"t:45:1:1-2"},
+            {"ref":"t:46:1:1-2"},
+            {"ref":"t:47:1:1-1"},
+            {"ref":"t:48:1:1-2"},
+            {"ref":"t:49:1:1-2"},
+            {"ref":"t:50:1:1-2"},
+            {"ref":"t:51:1:1-3"},
+            {"ref":"t:52:1:1-2"},
+            {"ref":"t:53:1:1-2"},
+            {"ref":"t:54:1:1-1"},
+            {"ref":"t:55:1:1-2"},
+            {"ref":"t:56:1:1-2"},
+            {"ref":"t:57:1:1-1"},
+            {"ref":"t:58:1:1-1"},
+            {"ref":"t:59:1:1-1"},
+            {"ref":"t:60:1:1-2"},
+            {"ref":"t:61:1:1-1"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "tuhfa/chain/04",
+      "type": "chain",
+      "ask": "كل «والثان / والثالث» بالترتيب",
+      "prompt": [{"text":"والثان … والثالث …"}],
+      "answer": [{"ref":"t:9:1"},{"ref":"t:12:1"},{"ref":"t:13:1"},{"ref":"t:21:1"},{"ref":"t:22:1"}]
+    },
+    {
+      "id": "tuhfa/chain/05",
+      "type": "chain",
+      "ask": "سؤال المحترفين",
+      "prompt": [{"text":"«[[t:59:1:2-3]]» و«[[t:59:2:-3]]»"}],
+      "answer": [{"ref":"t:59"}],
+      "tip": "بحساب الجُمَّل: «[[t:59:1:2-3]]» = ٦١ وهو عدد الأبيات، و«[[t:59:2:-3]]» = ١١٩٨ وهي سنة النظم بالهجري."
+    }
+  ],
+  "retired": []
+}

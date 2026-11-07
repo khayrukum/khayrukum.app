@@ -1,0 +1,27 @@
+{
+  "name": "khayrukum.app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "خيركم من تعلّمه — Quran memorization and Tuhfat al-Atfal review tools (static PWA)",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "import:tanzil": "node tools/import-tanzil.mjs",
+    "import:tuhfa": "node tools/import-tuhfa.mjs",
+    "port": "node tools/port/align.mjs",
+    "validate": "node tools/validate-data.mjs",
+    "lint": "node tools/content-lint.mjs",
+    "check:audio": "node tools/check-audio.mjs",
+    "build": "node tools/build.mjs",
+    "release-check": "node tools/release-check.mjs",
+    "test:unit": "node --test tests/unit/",
+    "test:e2e": "node tests/e2e/run.mjs",
+    "test": "npm run validate && npm run lint && npm run test:unit && npm run build && npm run test:e2e",
+    "serve": "node tools/serve.mjs site 8080"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0",
+    "axe-core": "^4.10.0"
+  }
+}

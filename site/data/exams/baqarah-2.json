@@ -1,0 +1,567 @@
+{
+  "schema": "exam",
+  "version": "1.0.0",
+  "id": "baqarah-2",
+  "ported": {"from":"exam-2.html","tool":"tools/port/align.mjs","status":"complete"},
+  "summary": [
+    {
+      "kind": "outline",
+      "title": "الربع الثالث (٤٤–٥٩): تذكير بني إسرائيل",
+      "items": [
+        {"range":"2:44-46","text":"توبيخ علماء بني إسرائيل «[[q:2:44:1-3]]»، والاستعانة بالصبر والصلاة"},
+        {"range":"2:47-48","text":"النداء الثاني «[[q:2:47:-4]]»، والتحذير من يوم القيامة"},
+        {
+          "range": "2:49-57",
+          "text": "نعم الله عليهم: النجاة من فرعون، فرق البحر، العفو بعد العجل، الكتاب، التوبة، البعث بعد الصاعقة، الغمام والمن والسلوى"
+        },
+        {"range":"2:58-59","text":"دخول القرية «[[q:2:58:14-15]]»، وتبديل القول"}
+      ]
+    },
+    {
+      "kind": "outline",
+      "title": "الربع الرابع (٦٠–٧٤): من الاستسقاء إلى قصة البقرة",
+      "items": [
+        {"range":"2:60-61","text":"الاستسقاء «[[q:2:60:11-13]]»، وطلب «[[q:2:61:18-20]]»، وضرب الذلة عليهم"},
+        {"range":"2:62","text":"جزاء من آمن وعمل صالحا «[[q:2:62:-6]]»"},
+        {"range":"2:63-66","text":"الميثاق ورفع الطور، وأصحاب السبت «[[q:2:65:-3]]»"},
+        {
+          "range": "2:67-73",
+          "text": "قصة البقرة: ثلاثة أسئلة «ما هي» و«ما لونها» و«ما هي»، وبعدها إحياء القتيل"
+        },
+        {"range":"2:74","text":"«[[q:2:74:1-3]]» وأنواع الحجارة"}
+      ]
+    },
+    {
+      "kind": "pageStarts",
+      "items": [
+        {"page":8,"ref":"2:49:1-2"},
+        {"page":9,"ref":"2:58:1-3"},
+        {"page":10,"ref":"2:62:1-5"},
+        {"page":11,"ref":"2:70:1-4"}
+      ]
+    },
+    {
+      "kind": "lookalikes",
+      "items": [
+        {"refs":["2:40","2:47"],"text":"النداء الأول «[[q:2:40:8-9]]»، والثاني «[[q:2:47:8-9]]»"},
+        {"refs":["2:35","2:58"],"text":"«[[q:2:35:9-11]]» مع آدم، و«[[q:2:58:8-10]]» مع بني إسرائيل"},
+        {"refs":["2:55","2:61"],"text":"«[[q:2:55:1-5]]» و«[[q:2:61:4-5]]»"},
+        {"refs":["2:52","2:64","2:74"],"text":"«[[q:2:52:4-6]]»: عفونا، توليتم، قست"},
+        {"refs":["2:68","2:69","2:70"],"text":"«[[q:2:68:2-6]]»: ما هي، ما لونها، ما هي إن البقر تشابه"},
+        {"refs":["2:38","2:62"],"text":"«[[q:2:38:12-13]]» و«[[q:2:62:19-20]]»"}
+      ]
+    }
+  ],
+  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number"],
+  "roundText": {},
+  "plainQuotes": ["ما هي","ما لونها"],
+  "questions": [
+    {
+      "id": "baqarah-2/pages/01",
+      "type": "pages",
+      "ask": "ربطًا بالاختبار السابق: هذا آخر الربع الثاني، فما أول الربع الثالث؟",
+      "prompt": [{"ref":"2:43","dots":"before","outOfRange":"bridge"}],
+      "answer": [{"ref":"2:44"}]
+    },
+    {
+      "id": "baqarah-2/pages/02",
+      "type": "pages",
+      "page": {"from":7,"to":8,"dir":"forward"},
+      "prompt": [{"ref":"2:48:-7","dots":"before"}],
+      "answer": [{"ref":"2:49"}]
+    },
+    {
+      "id": "baqarah-2/pages/03",
+      "type": "pages",
+      "page": {"from":8,"to":9,"dir":"forward"},
+      "prompt": [{"ref":"2:57:-6","dots":"before"}],
+      "answer": [{"ref":"2:58"}]
+    },
+    {
+      "id": "baqarah-2/pages/04",
+      "type": "pages",
+      "page": {"from":9,"to":10,"dir":"forward"},
+      "prompt": [{"ref":"2:61:-5","dots":"before"}],
+      "answer": [{"ref":"2:62"}]
+    },
+    {
+      "id": "baqarah-2/pages/05",
+      "type": "pages",
+      "page": {"from":10,"to":11,"dir":"forward"},
+      "prompt": [{"ref":"2:69:-7","dots":"before"}],
+      "answer": [{"ref":"2:70"}]
+    },
+    {
+      "id": "baqarah-2/pages/06",
+      "type": "pages",
+      "page": {"from":8,"to":7,"dir":"back"},
+      "prompt": [{"ref":"2:49:1-5","dots":"after"}],
+      "answer": [{"ref":"2:48"}]
+    },
+    {
+      "id": "baqarah-2/pages/07",
+      "type": "pages",
+      "page": {"from":10,"to":9,"dir":"back"},
+      "prompt": [{"ref":"2:62:1-5","dots":"after"}],
+      "answer": [{"ref":"2:61:-23","dots":"before"}],
+      "tip": "الآية ٦١ أطول آيات الربعين، فحاول قراءتها كاملة."
+    },
+    {
+      "id": "baqarah-2/pages/08",
+      "type": "pages",
+      "page": {"from":11,"to":10,"dir":"back"},
+      "prompt": [{"ref":"2:70:1-12","dots":"after"}],
+      "answer": [{"ref":"2:69"}]
+    },
+    {
+      "id": "baqarah-2/next/01",
+      "type": "next",
+      "prompt": [{"ref":"2:44:-5","dots":"before"}],
+      "answer": [{"ref":"2:45"}]
+    },
+    {
+      "id": "baqarah-2/next/02",
+      "type": "next",
+      "prompt": [{"ref":"2:45:-5","dots":"before"}],
+      "answer": [{"ref":"2:46"}]
+    },
+    {
+      "id": "baqarah-2/next/03",
+      "type": "next",
+      "prompt": [{"ref":"2:46:-6","dots":"before"}],
+      "answer": [{"ref":"2:47"}]
+    },
+    {
+      "id": "baqarah-2/next/04",
+      "type": "next",
+      "prompt": [{"ref":"2:49:-6","dots":"before"}],
+      "answer": [{"ref":"2:50"}]
+    },
+    {
+      "id": "baqarah-2/next/05",
+      "type": "next",
+      "prompt": [{"ref":"2:53:-3","dots":"before"}],
+      "answer": [{"ref":"2:54"}]
+    },
+    {
+      "id": "baqarah-2/next/06",
+      "type": "next",
+      "prompt": [{"ref":"2:54:-6","dots":"before"}],
+      "answer": [{"ref":"2:55"}],
+      "tip": "في الآية ٣٧ «[[q:2:37:-6]]» وبعدها «[[q:2:38:1-2]]»، وهنا «[[q:2:54:21-22]]» وبعدها «[[q:2:55:1-3]]»."
+    },
+    {
+      "id": "baqarah-2/next/07",
+      "type": "next",
+      "prompt": [{"ref":"2:59:-6","dots":"before"}],
+      "answer": [{"ref":"2:60"}]
+    },
+    {
+      "id": "baqarah-2/next/08",
+      "type": "next",
+      "prompt": [{"ref":"2:64:-8","dots":"before"}],
+      "answer": [{"ref":"2:65"}]
+    },
+    {
+      "id": "baqarah-2/next/09",
+      "type": "next",
+      "prompt": [{"ref":"2:66:-7","dots":"before"}],
+      "answer": [{"ref":"2:67"}]
+    },
+    {
+      "id": "baqarah-2/next/10",
+      "type": "next",
+      "prompt": [{"ref":"2:71:-7","dots":"before"}],
+      "answer": [{"ref":"2:72"}]
+    },
+    {
+      "id": "baqarah-2/next/11",
+      "type": "next",
+      "prompt": [{"ref":"2:72:-5","dots":"before"}],
+      "answer": [{"ref":"2:73"}],
+      "tip": "في آية ٣٣ «[[q:2:33:-6]]»."
+    },
+    {
+      "id": "baqarah-2/next/12",
+      "type": "next",
+      "prompt": [{"ref":"2:73:-8","dots":"before"}],
+      "answer": [{"ref":"2:74"}]
+    },
+    {
+      "id": "baqarah-2/topic-end/01",
+      "type": "topic-end",
+      "ask": "من توبيخ علماء بني إسرائيل إلى …؟",
+      "prompt": [{"ref":"2:46","dots":"before"}],
+      "answer": [{"ref":"2:47"}],
+      "tip": "الموضوع الجديد: النداء الثاني لبني إسرائيل، والتحذير من يوم القيامة"
+    },
+    {
+      "id": "baqarah-2/topic-end/02",
+      "type": "topic-end",
+      "ask": "من التحذير من يوم القيامة إلى …؟",
+      "prompt": [{"ref":"2:48:-7","dots":"before"}],
+      "answer": [{"ref":"2:49"}],
+      "tip": "الموضوع الجديد: تعداد نعم الله على بني إسرائيل، وأولها النجاة من آل فرعون"
+    },
+    {
+      "id": "baqarah-2/topic-end/03",
+      "type": "topic-end",
+      "ask": "من نعمة المن والسلوى إلى …؟",
+      "prompt": [{"ref":"2:57:-6","dots":"before"}],
+      "answer": [{"ref":"2:58"}],
+      "tip": "الموضوع الجديد: دخول القرية وتبديل القول"
+    },
+    {
+      "id": "baqarah-2/topic-end/04",
+      "type": "topic-end",
+      "ask": "من تبديل القول إلى …؟",
+      "prompt": [{"ref":"2:59:-10","dots":"before"}],
+      "answer": [{"ref":"2:60"}],
+      "tip": "الموضوع الجديد: الاستسقاء، والحجر الذي انفجرت منه اثنتا عشرة عينًا"
+    },
+    {
+      "id": "baqarah-2/topic-end/05",
+      "type": "topic-end",
+      "ask": "من طلب البقل والعدس إلى …؟",
+      "prompt": [{"ref":"2:61:-5","dots":"before"}],
+      "answer": [{"ref":"2:62"}],
+      "tip": "الموضوع الجديد: جزاء من آمن وعمل صالحا"
+    },
+    {
+      "id": "baqarah-2/topic-end/06",
+      "type": "topic-end",
+      "ask": "من جزاء المؤمنين إلى …؟",
+      "prompt": [{"ref":"2:62:-10","dots":"before"}],
+      "answer": [{"ref":"2:63"}],
+      "tip": "الموضوع الجديد: أخذ الميثاق ورفع الطور"
+    },
+    {
+      "id": "baqarah-2/topic-end/07",
+      "type": "topic-end",
+      "ask": "من أصحاب السبت إلى …؟",
+      "prompt": [{"ref":"2:66","dots":"before"}],
+      "answer": [{"ref":"2:67"}],
+      "tip": "الموضوع الجديد: قصة البقرة التي سُمّيت بها السورة"
+    },
+    {
+      "id": "baqarah-2/topic-end/08",
+      "type": "topic-end",
+      "ask": "من قصة البقرة إلى …؟",
+      "prompt": [{"ref":"2:73:-8","dots":"before"}],
+      "answer": [{"ref":"2:74"}],
+      "tip": "الموضوع الجديد: قسوة قلوبهم"
+    },
+    {
+      "id": "baqarah-2/repeated-word/01",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:55:1-4","dots":"after"}],
+      "answer": [{"ref":"2:55:1-10"},{"ref":"2:61:1-8"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/02",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:54:1-4","dots":"after"}],
+      "answer": [{"ref":"2:54:1-8"},{"ref":"2:67:1-10"}],
+      "tip": "وفيها أيضًا «[[q:2:60:1-4]]» (٦٠)."
+    },
+    {
+      "id": "baqarah-2/repeated-word/03",
+      "type": "repeated-word",
+      "ask": "وردت ٣ مرات، فأكمل في كل مرة",
+      "prompt": [{"ref":"2:52:4-6","dots":"before"}],
+      "answer": [{"ref":"2:52"},{"ref":"2:64:1-9"},{"ref":"2:74:1-8"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/04",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:52:-2"}],
+      "answer": [{"ref":"2:52"},{"ref":"2:56"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/05",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:50:-2"}],
+      "answer": [{"ref":"2:50:-5"},{"ref":"2:55:-4"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/06",
+      "type": "repeated-word",
+      "ask": "أكمل في جميع المواضع",
+      "prompt": [{"ref":"2:68:2-4","dots":"after"}],
+      "answer": [{"ref":"2:61:9-16"},{"ref":"2:68:1-8"},{"ref":"2:69:1-8"},{"ref":"2:70:1-12"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/07",
+      "type": "repeated-word",
+      "ask": "وردت ٣ مرات، فأكمل في كل مرة",
+      "prompt": [{"ref":"2:68:10-13","dots":"after"}],
+      "answer": [{"ref":"2:68:14-20"},{"ref":"2:69:-5"},{"ref":"2:71:6-12"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/08",
+      "type": "repeated-word",
+      "ask": "وردت ٣ مرات، فأكمل في كل مرة",
+      "prompt": [{"ref":"2:57:8-8","dots":"after"}],
+      "answer": [{"ref":"2:57:8-12"},{"ref":"2:58:6-10"},{"ref":"2:60:19-23"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/09",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:44:-1","dots":"before"}],
+      "answer": [{"ref":"2:44:-5"},{"ref":"2:73:-4"}]
+    },
+    {
+      "id": "baqarah-2/repeated-word/10",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:60:6-6","dots":"after"}],
+      "answer": [{"ref":"2:60:5-8"},{"ref":"2:73:1-3"}]
+    },
+    {
+      "id": "baqarah-2/lookalikes/01",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:40:1-7","dots":"after","outOfRange":"lookalike"}],
+      "answer": [{"ref":"2:40:-6","dots":"before","outOfRange":"lookalike"},{"ref":"2:47:-4","dots":"before"}],
+      "tip": "النداء الأول (٤٠) فيه العهد، والثاني (٤٧) فيه التفضيل."
+    },
+    {
+      "id": "baqarah-2/lookalikes/02",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:58:8-9"},{"text":"/"},{"ref":"2:35:9-11","outOfRange":"lookalike"}],
+      "answer": [{"ref":"2:35:7-11","outOfRange":"lookalike"},{"ref":"2:58:6-10"}],
+      "tip": "مع آدم «رغدا» قبل «[[q:2:35:10-11]]». مع بني إسرائيل «[[q:2:58:8-9]]» قبل «رغدا»."
+    },
+    {
+      "id": "baqarah-2/lookalikes/03",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:37:6-7","outOfRange":"lookalike"},{"text":"/"},{"ref":"2:54:21-22"}],
+      "answer": [{"ref":"2:37:-6","outOfRange":"lookalike"},{"ref":"2:54:-6"}]
+    },
+    {
+      "id": "baqarah-2/lookalikes/04",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:62:-6"}],
+      "answer": [{"ref":"2:38:-9","outOfRange":"lookalike"},{"ref":"2:62:-10"}],
+      "tip": "في ٣٨ «[[q:2:38:12-13]]»، وفي ٦٢ «[[q:2:62:19-20]]»."
+    },
+    {
+      "id": "baqarah-2/lookalikes/05",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:36:9-9","dots":"after","outOfRange":"lookalike"}],
+      "answer": [
+        {"ref":"2:36:8-12","outOfRange":"lookalike"},
+        {"ref":"2:38:1-4","outOfRange":"lookalike"},
+        {"ref":"2:61:31-36"}
+      ]
+    },
+    {
+      "id": "baqarah-2/lookalikes/06",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:48:12-12"},{"text":"/"},{"ref":"2:48:16-16"}],
+      "answer": [{"ref":"2:48:9-16"}],
+      "tip": "وردت في الآية ١٢٣ بالعكس: «[[q:2:123:9-15]]»، وهنا قُدِّمت الشفاعة."
+    },
+    {
+      "id": "baqarah-2/lookalikes/07",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:59:2-3","note":"مرتين في آية واحدة"}],
+      "answer": [{"ref":"2:59:1-15"}]
+    },
+    {
+      "id": "baqarah-2/lookalikes/08",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:44:5-5"},{"text":"/"},{"ref":"2:57:17-17"}],
+      "answer": [{"ref":"2:44:4-5"},{"refs":["2:54:6-8","2:54:14-15"],"join":"dots"},{"ref":"2:57:-4"}]
+    },
+    {
+      "id": "baqarah-2/lookalikes/09",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:60:8-8"},{"text":"/"},{"ref":"2:74:14-14"}],
+      "answer": [{"ref":"2:60:6-13"},{"ref":"2:74:7-18"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/01",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:60:9-13","dots":"both"}],
+      "answer": [{"ref":"2:60"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/02",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:61:17-22","dots":"both"}],
+      "answer": [{"ref":"2:61"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/03",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:58:11-15","dots":"both"}],
+      "answer": [{"ref":"2:58"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/04",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:54:14-20","dots":"both"}],
+      "answer": [{"ref":"2:54"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/05",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:49:9-12","dots":"both"}],
+      "answer": [{"ref":"2:49"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/06",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:65:-5","dots":"before"}],
+      "answer": [{"ref":"2:65"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/07",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:71:13-16","dots":"both"}],
+      "answer": [{"ref":"2:71"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/08",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:74:19-25","dots":"both"}],
+      "answer": [{"ref":"2:74"}]
+    },
+    {
+      "id": "baqarah-2/mid-verse/09",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:63:7-10","dots":"both"}],
+      "answer": [{"ref":"2:63"}]
+    },
+    {
+      "id": "baqarah-2/chain/01",
+      "type": "chain",
+      "ask": "من ٤٤ إلى ٥٣",
+      "prompt": [{"ref":"2:44:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:44:1-2"},
+            {"ref":"2:45:1-1"},
+            {"ref":"2:46:1-2"},
+            {"ref":"2:47:1-2"},
+            {"ref":"2:48:1-2"},
+            {"ref":"2:49:1-2"},
+            {"ref":"2:50:1-2"},
+            {"ref":"2:51:1-2"},
+            {"ref":"2:52:1-2"},
+            {"ref":"2:53:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-2/chain/02",
+      "type": "chain",
+      "ask": "من ٥٤ إلى ٦٢",
+      "prompt": [{"ref":"2:54:1-4"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:54:1-4"},
+            {"ref":"2:55:1-5"},
+            {"ref":"2:56:1-2"},
+            {"ref":"2:57:1-1"},
+            {"ref":"2:58:1-3"},
+            {"ref":"2:59:1-1"},
+            {"ref":"2:60:1-2"},
+            {"ref":"2:61:1-5"},
+            {"ref":"2:62:1-5"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-2/chain/03",
+      "type": "chain",
+      "ask": "من ٦٣ إلى ٧٤",
+      "prompt": [{"ref":"2:63:1-3"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:63:1-3"},
+            {"ref":"2:64:1-2"},
+            {"ref":"2:65:1-2"},
+            {"ref":"2:66:1-1"},
+            {"ref":"2:67:1-4"},
+            {"ref":"2:68:1-2","note":"ما هي"},
+            {"ref":"2:69:1-2","note":"ما لونها"},
+            {"ref":"2:70:1-2","note":"البقر تشابه"},
+            {"ref":"2:71:1-3"},
+            {"ref":"2:72:1-2"},
+            {"ref":"2:73:1-2"},
+            {"ref":"2:74:1-2"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-2/chain/04",
+      "type": "chain",
+      "ask": "التحدي الأكبر: بالعكس من ٧٤ إلى ٦٣",
+      "prompt": [{"ref":"2:74:1-3"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:74:1-2"},
+            {"ref":"2:73:1-2"},
+            {"ref":"2:72:1-2"},
+            {"ref":"2:71:1-3"},
+            {"ref":"2:70:1-2","note":"البقر تشابه"},
+            {"ref":"2:69:1-2","note":"ما لونها"},
+            {"ref":"2:68:1-2","note":"ما هي"},
+            {"ref":"2:67:1-4"},
+            {"ref":"2:66:1-1"},
+            {"ref":"2:65:1-2"},
+            {"ref":"2:64:1-2"},
+            {"ref":"2:63:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-2/chain/05",
+      "type": "chain",
+      "ask": "كل «[[q:2:49:1-1]]» في الربعين بالترتيب",
+      "prompt": [
+        {"refs":["2:49:1-1","2:49:1-1","2:49:1-1"],"join":"dots","dots":"after"},
+        {"text":"←","dots":"after"}
+      ],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:49:2-2","showRef":true},
+            {"ref":"2:50:2-2","showRef":true},
+            {"ref":"2:51:2-2","showRef":true},
+            {"ref":"2:53:2-3","showRef":true},
+            {"ref":"2:54:2-4","showRef":true},
+            {"ref":"2:55:2-3","showRef":true},
+            {"ref":"2:58:2-3","showRef":true},
+            {"ref":"2:60:2-2","showRef":true},
+            {"ref":"2:61:2-3","showRef":true},
+            {"ref":"2:63:2-3","showRef":true},
+            {"ref":"2:67:2-4","showRef":true},
+            {"ref":"2:72:2-3","showRef":true}
+          ],
+          "sep": " · "
+        }
+      ],
+      "tip": "١٢ مرة، وهي عماد الربعين."
+    }
+  ],
+  "retired": []
+}

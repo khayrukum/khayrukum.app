@@ -1,0 +1,515 @@
+qid	field	baseline phrase	ref	normalized source phrase	status	reason
+baqarah-1/pages/01	prompt[0]	وأولئك هم المفلحون	2:5:-3	واوليك هم المفلحون	match	
+baqarah-1/pages/02	prompt[0]	فما ربحت تجارتهم وما كانوا مهتدين	2:16:-6	فما ربحت تجارتهم وما كانوا مهتدين	match	
+baqarah-1/pages/03	prompt[0]	التي وقودها الناس والحجارة أعدت للكافرين	2:24:-6	التي وقودها الناس والحجاره اعدت للكافرين	match	
+baqarah-1/pages/04	prompt[0]	ثم استوى إلى السماء فسواهن سبع سماوات وهو بكل شيء عليم	2:29:-11	ثم استوي الي السماء فسواهن سبع سماوات وهو بكل شيء عليم	match	
+baqarah-1/pages/05	prompt[0]	فتلقى آدم من ربه كلمات فتاب عليه إنه هو التواب الرحيم	2:37	فتلقي ادم من ربه كلمات فتاب عليه انه هو التواب الرحيم	match	
+baqarah-1/pages/06	prompt[0]	مثلهم كمثل الذي استوقد نارا	2:17:1-5	مثلهم كمثل الذي استوقد نارا	match	
+baqarah-1/pages/07	prompt[0]	وإذ قال ربك للملائكة	2:30:1-4	واذ قال ربك للملايكه	match	
+baqarah-1/pages/08	prompt[0]	قلنا اهبطوا منها جميعا	2:38:1-4	قلنا اهبطوا منها جميعا	match	
+baqarah-1/next/01	prompt[0]	ومما رزقناهم ينفقون	2:3:-3	ومما رزقناهم ينفقون	match	
+baqarah-1/next/02	prompt[0]	وباليوم الآخر وما هم بمؤمنين	2:8:-5	وباليوم الاخر وما هم بمومنين	match	
+baqarah-1/next/03	prompt[0]	ولهم عذاب أليم بما كانوا يكذبون	2:10:-6	ولهم عذاب اليم بما كانوا يكذبون	match	
+baqarah-1/next/04	prompt[0]	ويمدهم في طغيانهم يعمهون	2:15:-4	ويمدهم في طغيانهم يعمهون	match	
+baqarah-1/next/05	prompt[0]	صم بكم عمي فهم لا يرجعون	2:18	صم بكم عمي فهم لا يرجعون	match	
+baqarah-1/next/05	tip	صم بكم عمي فهم لا يعقلون	2:171:-6	صم بكم عمي فهم لا يعقلون	match	
+baqarah-1/next/05	tip	لا يرجعون	2:18:-2	لا يرجعون	match	
+baqarah-1/next/06	prompt[0]	والذين من قبلكم لعلكم تتقون	2:21:-5	والذين من قبلكم لعلكم تتقون	match	
+baqarah-1/next/07	prompt[0]	يضل به كثيرا ويهدي به كثيرا وما يضل به إلا الفاسقين	2:26:-11	يضل به كثيرا ويهدي به كثيرا وما يضل به الا الفاسقين	match	
+baqarah-1/next/08	prompt[0]	ثم يميتكم ثم يحييكم ثم إليه ترجعون	2:28:-7	ثم يميتكم ثم يحييكم ثم اليه ترجعون	match	
+baqarah-1/next/09	prompt[0]	أبى واستكبر وكان من الكافرين	2:34:-5	ابي واستكبر وكان من الكافرين	match	
+baqarah-1/next/10	prompt[0]	ولا تقربا هذه الشجرة فتكونا من الظالمين	2:35:-7	ولا تقربا هذه الشجره فتكونا من الظالمين	match	
+baqarah-1/next/11	prompt[0]	فلا خوف عليهم ولا هم يحزنون	2:38:-6	فلا خوف عليهم ولا هم يحزنون	match	
+baqarah-1/next/12	prompt[0]	وأوفوا بعهدي أوف بعهدكم وإياي فارهبون	2:40:-6	واوفوا بعهدي اوف بعهدكم واياي فارهبون	match	
+baqarah-1/next/13	prompt[0]	ولا تشتروا بآياتي ثمنا قليلا وإياي فاتقون	2:41:-7	ولا تشتروا باياتي ثمنا قليلا واياي فاتقون	match	
+baqarah-1/topic-end/01	prompt[0]	وأولئك هم المفلحون	2:5:-3	واوليك هم المفلحون	match	
+baqarah-1/topic-end/02	prompt[0]	وعلى أبصارهم غشاوة ولهم عذاب عظيم	2:7:-6	وعلي ابصارهم غشاوه ولهم عذاب عظيم	match	
+baqarah-1/topic-end/03	prompt[0]	فما ربحت تجارتهم وما كانوا مهتدين	2:16:-6	فما ربحت تجارتهم وما كانوا مهتدين	match	
+baqarah-1/topic-end/04	prompt[0]	ولو شاء الله لذهب بسمعهم وأبصارهم إن الله على كل شيء قدير	2:20:-12	ولو شاء الله لذهب بسمعهم وابصارهم ان الله علي كل شيء قدير	match	
+baqarah-1/topic-end/05	prompt[0]	ولهم فيها أزواج مطهرة وهم فيها خالدون	2:25:-7	ولهم فيها ازواج مطهره وهم فيها خالدون	match	
+baqarah-1/topic-end/06	prompt[0]	فسواهن سبع سماوات وهو بكل شيء عليم	2:29:-7	فسواهن سبع سماوات وهو بكل شيء عليم	match	
+baqarah-1/topic-end/07	prompt[0]	أولئك أصحاب النار هم فيها خالدون	2:39:-6	اوليك اصحاب النار هم فيها خالدون	match	
+baqarah-1/repeated-word/01	prompt[0]	أولئك	2:5:1-1	اوليك	match	
+baqarah-1/repeated-word/01	answer[1]	أولئك الذين اشتروا الضلالة بالهدى	2:16:1-5	اوليك الذين اشتروا الضلاله بالهدي	match	
+baqarah-1/repeated-word/01	answer[2]	ويفسدون في الأرض أولئك هم الخاسرون	2:27:-6	ويفسدون في الارض اوليك هم الخاسرون	match	
+baqarah-1/repeated-word/01	answer[3]	وكذبوا بآياتنا أولئك أصحاب النار	2:39:3-7	وكذبوا باياتنا اوليك اصحاب النار	match	
+baqarah-1/repeated-word/02	prompt[0]	في الأرض	2:11:6-7	في الارض	match	
+baqarah-1/repeated-word/02	answer[0]	لا تفسدوا في الأرض قالوا إنما نحن مصلحون	2:11:-8	لا تفسدوا في الارض قالوا انما نحن مصلحون	match	
+baqarah-1/repeated-word/02	answer[1]	ويفسدون في الأرض أولئك هم الخاسرون	2:27:-6	ويفسدون في الارض اوليك هم الخاسرون	match	
+baqarah-1/repeated-word/02	answer[2]	خلق لكم ما في الأرض جميعا	2:29:3-8	خلق لكم ما في الارض جميعا	match	
+baqarah-1/repeated-word/02	answer[3]	إني جاعل في الأرض خليفة	2:30:5-9	اني جاعل في الارض خليفه	match	
+baqarah-1/repeated-word/02	answer[4]	ولكم في الأرض مستقر ومتاع إلى حين	2:36:-7	ولكم في الارض مستقر ومتاع الي حين	match	
+baqarah-1/repeated-word/03	prompt[0]	كلما	2:20:5-5	كلما	match	
+baqarah-1/repeated-word/03	answer[0]	كلما أضاء لهم مشوا فيه	2:20:5-9	كلما اضاء لهم مشوا فيه	match	
+baqarah-1/repeated-word/03	answer[1]	كلما رزقوا منها من ثمرة رزقا	2:25:13-18	كلما رزقوا منها من ثمره رزقا	match	
+baqarah-1/repeated-word/04	prompt[0]	ظلمات	2:17:15-15	ظلمات	match	
+baqarah-1/repeated-word/04	answer[0]	وتركهم في ظلمات لا يبصرون	2:17:-5	وتركهم في ظلمات لا يبصرون	match	
+baqarah-1/repeated-word/04	answer[1]	فيه ظلمات ورعد وبرق	2:19:5-8	فيه ظلمات ورعد وبرق	match	
+baqarah-1/repeated-word/05	prompt[0]	الكافرين	2:34:-1	الكافرين	match	
+baqarah-1/repeated-word/05	answer[0]	والله محيط بالكافرين	2:19:-3	والله محيط بالكافرين	match	
+baqarah-1/repeated-word/05	answer[1]	أعدت للكافرين	2:24:-2	اعدت للكافرين	match	
+baqarah-1/repeated-word/05	answer[2]	أبى واستكبر وكان من الكافرين	2:34:-5	ابي واستكبر وكان من الكافرين	match	
+baqarah-1/repeated-word/06	prompt[0]	إن كنتم صادقين	2:23:-3	ان كنتم صادقين	match	
+baqarah-1/repeated-word/06	answer[0]	وادعوا شهداءكم من دون الله إن كنتم صادقين	2:23:-8	وادعوا شهداءكم من دون الله ان كنتم صادقين	match	
+baqarah-1/repeated-word/06	answer[1]	فقال أنبئوني بأسماء هؤلاء إن كنتم صادقين	2:31:-7	فقال انبيوني باسماء هولاء ان كنتم صادقين	match	
+baqarah-1/repeated-word/07	prompt[0]	تعلمون	2:22:-1	تعلمون	match	
+baqarah-1/repeated-word/07	answer[0]	فلا تجعلوا لله أندادا وأنتم تعلمون	2:22:-6	فلا تجعلوا لله اندادا وانتم تعلمون	match	
+baqarah-1/repeated-word/07	answer[1]	قال إني أعلم ما لا تعلمون	2:30:-6	قال اني اعلم ما لا تعلمون	match	
+baqarah-1/repeated-word/07	answer[2]	وتكتموا الحق وأنتم تعلمون	2:42:-4	وتكتموا الحق وانتم تعلمون	match	
+baqarah-1/repeated-word/08	prompt[0]	أبصارهم	2:7:8-8	ابصارهم	match	
+baqarah-1/repeated-word/08	answer[0]	وعلى أبصارهم غشاوة	2:7:7-9	وعلي ابصارهم غشاوه	match	
+baqarah-1/repeated-word/08	answer[1]	يكاد البرق يخطف أبصارهم	2:20:1-4	يكاد البرق يخطف ابصارهم	match	
+baqarah-1/repeated-word/08	answer[2]	لذهب بسمعهم وأبصارهم	2:20:17-19	لذهب بسمعهم وابصارهم	match	
+baqarah-1/repeated-word/09	prompt[0]	يا	2:21:1-1	يا	match	
+baqarah-1/repeated-word/09	answer[0]	يا أيها الناس اعبدوا ربكم	2:21:1-4	يا ايها الناس اعبدوا ربكم	match	
+baqarah-1/repeated-word/09	answer[1]	قال يا آدم أنبئهم بأسمائهم	2:33:1-4	قال يا ادم انبيهم باسمايهم	match	
+baqarah-1/repeated-word/09	answer[2]	وقلنا يا آدم اسكن أنت وزوجك الجنة	2:35:1-6	وقلنا يا ادم اسكن انت وزوجك الجنه	match	
+baqarah-1/repeated-word/09	answer[3]	يا بني إسرائيل اذكروا نعمتي	2:40:1-4	يا بني اسراييل اذكروا نعمتي	match	
+baqarah-1/lookalikes/01	prompt[0]	اهبطوا	2:36:9-9	اهبطوا	match	
+baqarah-1/lookalikes/01	answer[0]	وقلنا اهبطوا بعضكم لبعض عدو ولكم في الأرض مستقر ومتاع إلى حين	2:36:-12	وقلنا اهبطوا بعضكم لبعض عدو ولكم في الارض مستقر ومتاع الي حين	match	
+baqarah-1/lookalikes/01	answer[1]	قلنا اهبطوا منها جميعا فإما يأتينكم مني هدى	2:38:1-8	قلنا اهبطوا منها جميعا فاما ياتينكم مني هدي	match	
+baqarah-1/lookalikes/01	tip	وقلنا	2:36:8-8	وقلنا	match	single word
+baqarah-1/lookalikes/01	tip	قلنا	2:38:1-1	قلنا	match	single word
+baqarah-1/lookalikes/02	prompt[0]	فيها خالدون	2:25:-2	فيها خالدون	match	
+baqarah-1/lookalikes/02	answer[0]	ولهم فيها أزواج مطهرة وهم فيها خالدون	2:25:-7	ولهم فيها ازواج مطهره وهم فيها خالدون	match	
+baqarah-1/lookalikes/02	answer[1]	أولئك أصحاب النار هم فيها خالدون	2:39:-6	اوليك اصحاب النار هم فيها خالدون	match	
+baqarah-1/lookalikes/02	tip	وهم	2:25:32-32	وهم	match	single word
+baqarah-1/lookalikes/02	tip	هم	2:39:8-8	هم	match	single word
+baqarah-1/lookalikes/03	prompt[0]	ولهم عذاب	2:7:10-11	ولهم عذاب	match	
+baqarah-1/lookalikes/03	answer[0]	ولهم عذاب عظيم	2:7:-3	ولهم عذاب عظيم	match	
+baqarah-1/lookalikes/03	answer[1]	ولهم عذاب أليم بما كانوا يكذبون	2:10:-6	ولهم عذاب اليم بما كانوا يكذبون	match	
+baqarah-1/lookalikes/04	prompt[0]	ولكن لا	2:12:5-6	ولكن لا	match	
+baqarah-1/lookalikes/04	answer[1]	ألا إنهم هم السفهاء ولكن لا يعلمون	2:13:-7	الا انهم هم السفهاء ولكن لا يعلمون	match	
+baqarah-1/lookalikes/04	tip	يشعرون	2:12:-1	يشعرون	match	single word
+baqarah-1/lookalikes/04	tip	يعلمون	2:13:-1	يعلمون	match	single word
+baqarah-1/lookalikes/05	prompt[0]	وإذا قيل لهم	2:11:1-3	واذا قيل لهم	match	
+baqarah-1/lookalikes/05	answer[1]	وإذا قيل لهم آمنوا كما آمن الناس قالوا أنؤمن كما آمن السفهاء	2:13:1-12	واذا قيل لهم امنوا كما امن الناس قالوا انومن كما امن السفهاء	match	
+baqarah-1/lookalikes/06	prompt[0]	وإياي	2:40:12-12	واياي	match	
+baqarah-1/lookalikes/06	answer[0]	وإياي فارهبون	2:40:-2	واياي فارهبون	match	
+baqarah-1/lookalikes/06	answer[1]	وإياي فاتقون	2:41:-2	واياي فاتقون	match	
+baqarah-1/lookalikes/07	prompt[0]	وإذ	2:30:1-1	واذ	match	
+baqarah-1/lookalikes/07	prompt[0]	للملائكة	2:30:4-4	للملايكه	match	
+baqarah-1/lookalikes/07	answer[0]	وإذ قال ربك للملائكة إني جاعل في الأرض خليفة	2:30:1-9	واذ قال ربك للملايكه اني جاعل في الارض خليفه	match	
+baqarah-1/lookalikes/07	answer[1]	وإذ قلنا للملائكة اسجدوا لآدم	2:34:1-5	واذ قلنا للملايكه اسجدوا لادم	match	
+baqarah-1/lookalikes/08	prompt[0]	إنه	2:37:8-8	انه	match	
+baqarah-1/lookalikes/08	prompt[2]	إنك	2:32:9-9	انك	match	
+baqarah-1/lookalikes/08	answer[0]	إنك أنت العليم الحكيم	2:32:-4	انك انت العليم الحكيم	match	
+baqarah-1/lookalikes/08	answer[1]	إنه هو التواب الرحيم	2:37:-4	انه هو التواب الرحيم	match	
+baqarah-1/lookalikes/09	prompt[0]	آمنا	2:8:5-5	امنا	match	
+baqarah-1/lookalikes/09	answer[0]	ومن الناس من يقول آمنا بالله وباليوم الآخر	2:8:1-8	ومن الناس من يقول امنا بالله وباليوم الاخر	match	
+baqarah-1/lookalikes/09	answer[1]	وإذا لقوا الذين آمنوا قالوا آمنا	2:14:1-6	واذا لقوا الذين امنوا قالوا امنا	match	
+baqarah-1/mid-verse/01	prompt[0]	فأتوا بسورة من مثله	2:23:9-12	فاتوا بسوره من مثله	match	
+baqarah-1/mid-verse/02	prompt[0]	يجعلون أصابعهم في آذانهم	2:19:9-12	يجعلون اصابعهم في اذانهم	match	
+baqarah-1/mid-verse/03	prompt[0]	أن يضرب مثلا ما بعوضة فما فوقها	2:26:5-11	ان يضرب مثلا ما بعوضه فما فوقها	match	
+baqarah-1/mid-verse/04	prompt[0]	ونحن نسبح بحمدك ونقدس لك	2:30:18-22	ونحن نسبح بحمدك ونقدس لك	match	
+baqarah-1/mid-verse/05	prompt[0]	وأعلم ما تبدون وما كنتم تكتمون	2:33:-6	واعلم ما تبدون وما كنتم تكتمون	match	
+baqarah-1/mid-verse/06	prompt[0]	وأتوا به متشابها	2:25:25-27	واتوا به متشابها	match	
+baqarah-1/mid-verse/07	prompt[0]	وإذا خلوا إلى شياطينهم	2:14:7-10	واذا خلوا الي شياطينهم	match	
+baqarah-1/mid-verse/08	prompt[0]	ولا تكونوا أول كافر به	2:41:7-11	ولا تكونوا اول كافر به	match	
+baqarah-1/chain/01	prompt[0]	الم	2:1	الم	match	
+baqarah-1/chain/01	answer[0].chain[0]	الم	2:1	الم	match	
+baqarah-1/chain/01	answer[0].chain[1]	ذلك الكتاب	2:2:1-2	ذلك الكتاب	match	
+baqarah-1/chain/01	answer[0].chain[2]	الذين يؤمنون بالغيب	2:3:1-3	الذين يومنون بالغيب	match	
+baqarah-1/chain/01	answer[0].chain[3]	والذين يؤمنون بما أنزل	2:4:1-4	والذين يومنون بما انزل	match	
+baqarah-1/chain/01	answer[0].chain[4]	أولئك على هدى	2:5:1-3	اوليك علي هدي	match	
+baqarah-1/chain/01	answer[0].chain[5]	إن الذين كفروا	2:6:1-3	ان الذين كفروا	match	
+baqarah-1/chain/01	answer[0].chain[6]	ختم الله	2:7:1-2	ختم الله	match	
+baqarah-1/chain/01	answer[0].chain[7]	ومن الناس	2:8:1-2	ومن الناس	match	
+baqarah-1/chain/01	answer[0].chain[8]	يخادعون الله	2:9:1-2	يخادعون الله	match	
+baqarah-1/chain/01	answer[0].chain[9]	في قلوبهم مرض	2:10:1-3	في قلوبهم مرض	match	
+baqarah-1/chain/02	prompt[0]	وإذا قيل لهم	2:11:1-3	واذا قيل لهم	match	
+baqarah-1/chain/02	answer[0].chain[0]	وإذا قيل لهم لا تفسدوا	2:11:1-5	واذا قيل لهم لا تفسدوا	match	
+baqarah-1/chain/02	answer[0].chain[1]	ألا إنهم هم المفسدون	2:12:1-4	الا انهم هم المفسدون	match	
+baqarah-1/chain/02	answer[0].chain[2]	وإذا قيل لهم آمنوا	2:13:1-4	واذا قيل لهم امنوا	match	
+baqarah-1/chain/02	answer[0].chain[3]	وإذا لقوا	2:14:1-2	واذا لقوا	match	
+baqarah-1/chain/02	answer[0].chain[4]	الله يستهزئ	2:15:1-2	الله يستهزي	match	
+baqarah-1/chain/02	answer[0].chain[5]	أولئك الذين اشتروا	2:16:1-3	اوليك الذين اشتروا	match	
+baqarah-1/chain/02	answer[0].chain[6]	مثلهم	2:17:1-1	مثلهم	match	
+baqarah-1/chain/02	answer[0].chain[7]	صم بكم	2:18:1-2	صم بكم	match	
+baqarah-1/chain/02	answer[0].chain[8]	أو كصيب	2:19:1-2	او كصيب	match	
+baqarah-1/chain/02	answer[0].chain[9]	يكاد البرق	2:20:1-2	يكاد البرق	match	
+baqarah-1/chain/03	prompt[0]	يا أيها الناس	2:21:1-2	يا ايها الناس	match	
+baqarah-1/chain/03	answer[0].chain[0]	يا أيها الناس	2:21:1-2	يا ايها الناس	match	
+baqarah-1/chain/03	answer[0].chain[1]	الذي جعل لكم	2:22:1-3	الذي جعل لكم	match	
+baqarah-1/chain/03	answer[0].chain[2]	وإن كنتم في ريب	2:23:1-4	وان كنتم في ريب	match	
+baqarah-1/chain/03	answer[0].chain[3]	فإن لم تفعلوا	2:24:1-3	فان لم تفعلوا	match	
+baqarah-1/chain/03	answer[0].chain[4]	وبشر	2:25:1-1	وبشر	match	
+baqarah-1/chain/03	answer[0].chain[5]	إن الله لا يستحيي	2:26:1-4	ان الله لا يستحيي	match	
+baqarah-1/chain/03	answer[0].chain[6]	الذين ينقضون	2:27:1-2	الذين ينقضون	match	
+baqarah-1/chain/03	answer[0].chain[7]	كيف تكفرون	2:28:1-2	كيف تكفرون	match	
+baqarah-1/chain/03	answer[0].chain[8]	هو الذي خلق	2:29:1-3	هو الذي خلق	match	
+baqarah-1/chain/04	prompt[0]	وإذ قال ربك	2:30:1-3	واذ قال ربك	match	
+baqarah-1/chain/04	answer[0].chain[0]	وإذ قال ربك	2:30:1-3	واذ قال ربك	match	
+baqarah-1/chain/04	answer[0].chain[1]	وعلم آدم	2:31:1-2	وعلم ادم	match	
+baqarah-1/chain/04	answer[0].chain[2]	قالوا سبحانك	2:32:1-2	قالوا سبحانك	match	
+baqarah-1/chain/04	answer[0].chain[3]	قال يا آدم	2:33:1-2	قال يا ادم	match	
+baqarah-1/chain/04	answer[0].chain[4]	وإذ قلنا	2:34:1-2	واذ قلنا	match	
+baqarah-1/chain/04	answer[0].chain[5]	وقلنا يا آدم	2:35:1-2	وقلنا يا ادم	match	
+baqarah-1/chain/04	answer[0].chain[6]	فأزلهما	2:36:1-1	فازلهما	match	
+baqarah-1/chain/04	answer[0].chain[7]	فتلقى	2:37:1-1	فتلقي	match	
+baqarah-1/chain/04	answer[0].chain[8]	قلنا اهبطوا	2:38:1-2	قلنا اهبطوا	match	
+baqarah-1/chain/04	answer[0].chain[9]	والذين كفروا	2:39:1-2	والذين كفروا	match	
+baqarah-1/chain/04	answer[0].chain[10]	يا بني إسرائيل	2:40:1-2	يا بني اسراييل	match	
+baqarah-1/chain/04	answer[0].chain[11]	وآمنوا	2:41:1-1	وامنوا	match	
+baqarah-1/chain/04	answer[0].chain[12]	ولا تلبسوا	2:42:1-2	ولا تلبسوا	match	
+baqarah-1/chain/04	answer[0].chain[13]	وأقيموا الصلاة	2:43:1-2	واقيموا الصلاه	match	
+baqarah-1/chain/05	prompt[0]	وأقيموا الصلاة	2:43:1-2	واقيموا الصلاه	match	
+baqarah-1/chain/05	answer[0].chain[0]	وأقيموا الصلاة	2:43:1-2	واقيموا الصلاه	match	
+baqarah-1/chain/05	answer[0].chain[1]	ولا تلبسوا	2:42:1-2	ولا تلبسوا	match	
+baqarah-1/chain/05	answer[0].chain[2]	وآمنوا	2:41:1-1	وامنوا	match	
+baqarah-1/chain/05	answer[0].chain[3]	يا بني إسرائيل	2:40:1-2	يا بني اسراييل	match	
+baqarah-1/chain/05	answer[0].chain[4]	والذين كفروا	2:39:1-2	والذين كفروا	match	
+baqarah-1/chain/05	answer[0].chain[5]	قلنا اهبطوا	2:38:1-2	قلنا اهبطوا	match	
+baqarah-1/chain/05	answer[0].chain[6]	فتلقى	2:37:1-1	فتلقي	match	
+baqarah-1/chain/05	answer[0].chain[7]	فأزلهما	2:36:1-1	فازلهما	match	
+baqarah-1/chain/05	answer[0].chain[8]	وقلنا يا آدم	2:35:1-2	وقلنا يا ادم	match	
+baqarah-1/chain/05	answer[0].chain[9]	وإذ قلنا	2:34:1-2	واذ قلنا	match	
+baqarah-1/chain/05	answer[0].chain[10]	قال يا آدم	2:33:1-2	قال يا ادم	match	
+baqarah-1/chain/05	answer[0].chain[11]	قالوا سبحانك	2:32:1-2	قالوا سبحانك	match	
+baqarah-1/chain/05	answer[0].chain[12]	وعلم آدم	2:31:1-2	وعلم ادم	match	
+baqarah-1/chain/05	answer[0].chain[13]	وإذ قال ربك	2:30:1-3	واذ قال ربك	match	
+baqarah-1/summary/1.1	text	أولئك هم المفلحون	2:5:-3		override	The baseline quote dropped the conjunction; the verse ends «وأولئك هم المفلحون», so the token shows the last three Uthmani words.
+baqarah-1/summary/1.2	text	ولهم عذاب عظيم	2:7:-3	ولهم عذاب عظيم	match	
+baqarah-1/summary/1.3	text	ولهم عذاب أليم	2:10:7-9	ولهم عذاب اليم	match	
+baqarah-1/summary/1.4	text	استوقد نارا	2:17:4-5	استوقد نارا	match	
+baqarah-1/summary/1.4	text	أو كصيب	2:19:1-2	او كصيب	match	
+baqarah-1/summary/1.5	text	يا أيها الناس اعبدوا ربكم	2:21:1-4	يا ايها الناس اعبدوا ربكم	match	
+baqarah-1/summary/1.5	text	فأتوا بسورة من مثله	2:23:9-12	فاتوا بسوره من مثله	match	
+baqarah-1/summary/2.1	text	بعوضة فما فوقها	2:26:9-11	بعوضه فما فوقها	match	
+baqarah-1/summary/2.2	text	كيف تكفرون بالله	2:28:1-3	كيف تكفرون بالله	match	
+baqarah-1/summary/3.1	item	إن الذين كفروا	2:6:1-3	ان الذين كفروا	match	
+baqarah-1/summary/3.2	item	مثلهم كمثل	2:17:1-2	مثلهم كمثل	match	
+baqarah-1/summary/3.3	item	وبشر الذين آمنوا	2:25:1-3	وبشر الذين امنوا	match	
+baqarah-1/summary/3.4	item	وإذ قال ربك	2:30:1-3	واذ قال ربك	match	
+baqarah-1/summary/3.5	item	قلنا اهبطوا	2:38:1-2	قلنا اهبطوا	match	
+baqarah-1/summary/4.1	text	يعلمون	2:13:-1	يعلمون	match	single word
+baqarah-1/summary/4.2	text	وقلنا اهبطوا	2:36:8-9	وقلنا اهبطوا	match	
+baqarah-1/summary/4.2	text	قلنا اهبطوا	2:38:1-2	قلنا اهبطوا	match	
+baqarah-1/summary/4.3	text	وهم فيها خالدون	2:25:-3	وهم فيها خالدون	match	
+baqarah-1/summary/4.3	text	هم فيها خالدون	2:39:-3	هم فيها خالدون	match	
+baqarah-1/summary/4.4	text	وإياي فارهبون	2:40:-2	واياي فارهبون	match	
+baqarah-1/summary/4.4	text	وإياي فاتقون	2:41:-2	واياي فاتقون	match	
+baqarah-1/summary/4.5	text	إن كنتم صادقين	2:23:-3	ان كنتم صادقين	match	
+baqarah-1/summary/4.6	text	وإذ قال ربك للملائكة	2:30:1-4	واذ قال ربك للملايكه	match	
+baqarah-1/summary/4.6	text	وإذ قلنا للملائكة	2:34:1-3	واذ قلنا للملايكه	match	
+baqarah-2/pages/01	prompt[0]	وأقيموا الصلاة وآتوا الزكاة واركعوا مع الراكعين	2:43	واقيموا الصلاه واتوا الزكاه واركعوا مع الراكعين	match	
+baqarah-2/pages/02	prompt[0]	ولا يؤخذ منها عدل ولا هم ينصرون	2:48:-7	ولا يوخذ منها عدل ولا هم ينصرون	match	
+baqarah-2/pages/03	prompt[0]	وما ظلمونا ولكن كانوا أنفسهم يظلمون	2:57:-6	وما ظلمونا ولكن كانوا انفسهم يظلمون	match	
+baqarah-2/pages/04	prompt[0]	ذلك بما عصوا وكانوا يعتدون	2:61:-5	ذلك بما عصوا وكانوا يعتدون	match	
+baqarah-2/pages/05	prompt[0]	إنها بقرة صفراء فاقع لونها تسر الناظرين	2:69:-7	انها بقره صفراء فاقع لونها تسر الناظرين	match	
+baqarah-2/pages/06	prompt[0]	وإذ نجيناكم من آل فرعون	2:49:1-5	واذ نجيناكم من ال فرعون	match	
+baqarah-2/pages/07	prompt[0]	إن الذين آمنوا والذين هادوا	2:62:1-5	ان الذين امنوا والذين هادوا	match	
+baqarah-2/pages/07	answer[0]	وضربت عليهم الذلة والمسكنة وباءوا بغضب من الله ذلك بأنهم كانوا يكفرون بآيات الله ويقتلون النبيين بغير الحق ذلك بما عصوا وكانوا يعتدون	2:61:-23	وضربت عليهم الذله والمسكنه وباءوا بغضب من الله ذلك بانهم كانوا يكفرون بايات الله ويقتلون النبيين بغير الحق ذلك بما عصوا وكانوا يعتدون	match	
+baqarah-2/pages/08	prompt[0]	قالوا ادع لنا ربك يبين لنا ما هي إن البقر تشابه علينا	2:70:1-12	قالوا ادع لنا ربك يبين لنا ما هي ان البقر تشابه علينا	match	
+baqarah-2/next/01	prompt[0]	وأنتم تتلون الكتاب أفلا تعقلون	2:44:-5	وانتم تتلون الكتاب افلا تعقلون	match	
+baqarah-2/next/02	prompt[0]	وإنها لكبيرة إلا على الخاشعين	2:45:-5	وانها لكبيره الا علي الخاشعين	match	
+baqarah-2/next/03	prompt[0]	أنهم ملاقو ربهم وأنهم إليه راجعون	2:46:-6	انهم ملاقو ربهم وانهم اليه راجعون	match	
+baqarah-2/next/04	prompt[0]	وفي ذلكم بلاء من ربكم عظيم	2:49:-6	وفي ذلكم بلاء من ربكم عظيم	match	
+baqarah-2/next/05	prompt[0]	والفرقان لعلكم تهتدون	2:53:-3	والفرقان لعلكم تهتدون	match	
+baqarah-2/next/06	prompt[0]	فتاب عليكم إنه هو التواب الرحيم	2:54:-6	فتاب عليكم انه هو التواب الرحيم	match	
+baqarah-2/next/06	tip	فتاب عليه إنه هو التواب الرحيم	2:37:-6	فتاب عليه انه هو التواب الرحيم	match	
+baqarah-2/next/06	tip	قلنا اهبطوا	2:38:1-2	قلنا اهبطوا	match	
+baqarah-2/next/06	tip	فتاب عليكم	2:54:21-22	فتاب عليكم	match	
+baqarah-2/next/06	tip	وإذ قلتم يا موسى	2:55:1-3	واذ قلتم يا موسي	match	
+baqarah-2/next/07	prompt[0]	رجزا من السماء بما كانوا يفسقون	2:59:-6	رجزا من السماء بما كانوا يفسقون	match	
+baqarah-2/next/08	prompt[0]	فلولا فضل الله عليكم ورحمته لكنتم من الخاسرين	2:64:-8	فلولا فضل الله عليكم ورحمته لكنتم من الخاسرين	match	
+baqarah-2/next/09	prompt[0]	لما بين يديها وما خلفها وموعظة للمتقين	2:66:-7	لما بين يديها وما خلفها وموعظه للمتقين	match	
+baqarah-2/next/10	prompt[0]	الآن جئت بالحق فذبحوها وما كادوا يفعلون	2:71:-7	الان جيت بالحق فذبحوها وما كادوا يفعلون	match	
+baqarah-2/next/11	prompt[0]	والله مخرج ما كنتم تكتمون	2:72:-5	والله مخرج ما كنتم تكتمون	match	
+baqarah-2/next/11	tip	وأعلم ما تبدون وما كنتم تكتمون	2:33:-6	واعلم ما تبدون وما كنتم تكتمون	match	
+baqarah-2/next/12	prompt[0]	كذلك يحيي الله الموتى ويريكم آياته لعلكم تعقلون	2:73:-8	كذلك يحيي الله الموتي ويريكم اياته لعلكم تعقلون	match	
+baqarah-2/topic-end/01	prompt[0]	الذين يظنون أنهم ملاقو ربهم وأنهم إليه راجعون	2:46	الذين يظنون انهم ملاقو ربهم وانهم اليه راجعون	match	
+baqarah-2/topic-end/02	prompt[0]	ولا يؤخذ منها عدل ولا هم ينصرون	2:48:-7	ولا يوخذ منها عدل ولا هم ينصرون	match	
+baqarah-2/topic-end/03	prompt[0]	وما ظلمونا ولكن كانوا أنفسهم يظلمون	2:57:-6	وما ظلمونا ولكن كانوا انفسهم يظلمون	match	
+baqarah-2/topic-end/04	prompt[0]	فأنزلنا على الذين ظلموا رجزا من السماء بما كانوا يفسقون	2:59:-10	فانزلنا علي الذين ظلموا رجزا من السماء بما كانوا يفسقون	match	
+baqarah-2/topic-end/05	prompt[0]	ذلك بما عصوا وكانوا يعتدون	2:61:-5	ذلك بما عصوا وكانوا يعتدون	match	
+baqarah-2/topic-end/06	prompt[0]	فلهم أجرهم عند ربهم ولا خوف عليهم ولا هم يحزنون	2:62:-10	فلهم اجرهم عند ربهم ولا خوف عليهم ولا هم يحزنون	match	
+baqarah-2/topic-end/07	prompt[0]	فجعلناها نكالا لما بين يديها وما خلفها وموعظة للمتقين	2:66	فجعلناها نكالا لما بين يديها وما خلفها وموعظه للمتقين	match	
+baqarah-2/topic-end/08	prompt[0]	كذلك يحيي الله الموتى ويريكم آياته لعلكم تعقلون	2:73:-8	كذلك يحيي الله الموتي ويريكم اياته لعلكم تعقلون	match	
+baqarah-2/repeated-word/01	prompt[0]	وإذ قلتم يا موسى لن	2:55:1-4	واذ قلتم يا موسي لن	match	
+baqarah-2/repeated-word/01	answer[0]	وإذ قلتم يا موسى لن نؤمن لك حتى نرى الله جهرة	2:55:1-10	واذ قلتم يا موسي لن نومن لك حتي نري الله جهره	match	
+baqarah-2/repeated-word/01	answer[1]	وإذ قلتم يا موسى لن نصبر على طعام واحد	2:61:1-8	واذ قلتم يا موسي لن نصبر علي طعام واحد	match	
+baqarah-2/repeated-word/02	prompt[0]	وإذ قال موسى لقومه	2:54:1-4	واذ قال موسي لقومه	match	
+baqarah-2/repeated-word/02	answer[0]	وإذ قال موسى لقومه يا قوم إنكم ظلمتم أنفسكم	2:54:1-8	واذ قال موسي لقومه يا قوم انكم ظلمتم انفسكم	match	
+baqarah-2/repeated-word/02	answer[1]	وإذ قال موسى لقومه إن الله يأمركم أن تذبحوا بقرة	2:67:1-10	واذ قال موسي لقومه ان الله يامركم ان تذبحوا بقره	match	
+baqarah-2/repeated-word/02	tip	وإذ استسقى موسى لقومه	2:60:1-4	واذ استسقي موسي لقومه	match	
+baqarah-2/repeated-word/03	prompt[0]	من بعد ذلك	2:52:4-6	من بعد ذلك	match	
+baqarah-2/repeated-word/03	answer[1]	ثم توليتم من بعد ذلك فلولا فضل الله عليكم	2:64:1-9	ثم توليتم من بعد ذلك فلولا فضل الله عليكم	match	
+baqarah-2/repeated-word/03	answer[2]	ثم قست قلوبكم من بعد ذلك فهي كالحجارة	2:74:1-8	ثم قست قلوبكم من بعد ذلك فهي كالحجاره	match	
+baqarah-2/repeated-word/04	prompt[0]	لعلكم تشكرون	2:52:-2	لعلكم تشكرون	match	
+baqarah-2/repeated-word/05	prompt[0]	وأنتم تنظرون	2:50:-2	وانتم تنظرون	match	
+baqarah-2/repeated-word/05	answer[0]	وأغرقنا آل فرعون وأنتم تنظرون	2:50:-5	واغرقنا ال فرعون وانتم تنظرون	match	
+baqarah-2/repeated-word/05	answer[1]	فأخذتكم الصاعقة وأنتم تنظرون	2:55:-4	فاخذتكم الصاعقه وانتم تنظرون	match	
+baqarah-2/repeated-word/06	prompt[0]	ادع لنا ربك	2:68:2-4	ادع لنا ربك	match	
+baqarah-2/repeated-word/06	answer[0]	فادع لنا ربك يخرج لنا مما تنبت الأرض	2:61:9-16	فادع لنا ربك يخرج لنا مما تنبت الارض	match	
+baqarah-2/repeated-word/06	answer[1]	قالوا ادع لنا ربك يبين لنا ما هي	2:68:1-8	قالوا ادع لنا ربك يبين لنا ما هي	match	
+baqarah-2/repeated-word/06	answer[2]	قالوا ادع لنا ربك يبين لنا ما لونها	2:69:1-8	قالوا ادع لنا ربك يبين لنا ما لونها	match	
+baqarah-2/repeated-word/06	answer[3]	قالوا ادع لنا ربك يبين لنا ما هي إن البقر تشابه علينا	2:70:1-12	قالوا ادع لنا ربك يبين لنا ما هي ان البقر تشابه علينا	match	
+baqarah-2/repeated-word/07	prompt[0]	إنه يقول إنها بقرة	2:68:10-13	انه يقول انها بقره	match	
+baqarah-2/repeated-word/07	answer[0]	لا فارض ولا بكر عوان بين ذلك	2:68:14-20	لا فارض ولا بكر عوان بين ذلك	match	
+baqarah-2/repeated-word/07	answer[1]	صفراء فاقع لونها تسر الناظرين	2:69:-5	صفراء فاقع لونها تسر الناظرين	match	
+baqarah-2/repeated-word/07	answer[2]	لا ذلول تثير الأرض ولا تسقي الحرث	2:71:6-12	لا ذلول تثير الارض ولا تسقي الحرث	match	
+baqarah-2/repeated-word/08	prompt[0]	كلوا	2:57:8-8	كلوا	match	
+baqarah-2/repeated-word/08	answer[0]	كلوا من طيبات ما رزقناكم	2:57:8-12	كلوا من طيبات ما رزقناكم	match	
+baqarah-2/repeated-word/08	answer[1]	فكلوا منها حيث شئتم رغدا	2:58:6-10	فكلوا منها حيث شيتم رغدا	match	
+baqarah-2/repeated-word/08	answer[2]	كلوا واشربوا من رزق الله	2:60:19-23	كلوا واشربوا من رزق الله	match	
+baqarah-2/repeated-word/09	prompt[0]	تعقلون	2:44:-1	تعقلون	match	
+baqarah-2/repeated-word/09	answer[0]	وأنتم تتلون الكتاب أفلا تعقلون	2:44:-5	وانتم تتلون الكتاب افلا تعقلون	match	
+baqarah-2/repeated-word/09	answer[1]	ويريكم آياته لعلكم تعقلون	2:73:-4	ويريكم اياته لعلكم تعقلون	match	
+baqarah-2/repeated-word/10	prompt[0]	اضرب	2:60:6-6	اضرب	match	
+baqarah-2/repeated-word/10	answer[0]	فقلنا اضرب بعصاك الحجر	2:60:5-8	فقلنا اضرب بعصاك الحجر	match	
+baqarah-2/repeated-word/10	answer[1]	فقلنا اضربوه ببعضها	2:73:1-3	فقلنا اضربوه ببعضها	match	
+baqarah-2/lookalikes/01	prompt[0]	يا بني إسرائيل اذكروا نعمتي التي أنعمت عليكم	2:40:1-7	يا بني اسراييل اذكروا نعمتي التي انعمت عليكم	match	
+baqarah-2/lookalikes/01	answer[0]	وأوفوا بعهدي أوف بعهدكم وإياي فارهبون	2:40:-6	واوفوا بعهدي اوف بعهدكم واياي فارهبون	match	
+baqarah-2/lookalikes/01	answer[1]	وأني فضلتكم على العالمين	2:47:-4	واني فضلتكم علي العالمين	match	
+baqarah-2/lookalikes/02	prompt[0]	حيث شئتم	2:58:8-9	حيث شيتم	match	
+baqarah-2/lookalikes/02	prompt[2]	شئتما رغدا	2:35:9-11		override	The baseline cue «شئتم/شئتما رغدا» merges two verses; with Adam (2:35) the order is «رغدا حيث شئتما», so the second part quotes those words.
+baqarah-2/lookalikes/02	answer[0]	وكلا منها رغدا حيث شئتما	2:35:7-11	وكلا منها رغدا حيث شيتما	match	
+baqarah-2/lookalikes/02	answer[1]	فكلوا منها حيث شئتم رغدا	2:58:6-10	فكلوا منها حيث شيتم رغدا	match	
+baqarah-2/lookalikes/02	tip	حيث شئتما	2:35:10-11	حيث شيتما	match	
+baqarah-2/lookalikes/02	tip	حيث شئتم	2:58:8-9	حيث شيتم	match	
+baqarah-2/lookalikes/03	prompt[0]	فتاب عليه	2:37:6-7	فتاب عليه	match	
+baqarah-2/lookalikes/03	prompt[2]	فتاب عليكم	2:54:21-22	فتاب عليكم	match	
+baqarah-2/lookalikes/03	answer[0]	فتاب عليه إنه هو التواب الرحيم	2:37:-6	فتاب عليه انه هو التواب الرحيم	match	
+baqarah-2/lookalikes/03	answer[1]	فتاب عليكم إنه هو التواب الرحيم	2:54:-6	فتاب عليكم انه هو التواب الرحيم	match	
+baqarah-2/lookalikes/04	prompt[0]	ولا خوف عليهم ولا هم يحزنون	2:62:-6	ولا خوف عليهم ولا هم يحزنون	match	
+baqarah-2/lookalikes/04	answer[0]	فمن تبع هداي فلا خوف عليهم ولا هم يحزنون	2:38:-9	فمن تبع هداي فلا خوف عليهم ولا هم يحزنون	match	
+baqarah-2/lookalikes/04	answer[1]	فلهم أجرهم عند ربهم ولا خوف عليهم ولا هم يحزنون	2:62:-10	فلهم اجرهم عند ربهم ولا خوف عليهم ولا هم يحزنون	match	
+baqarah-2/lookalikes/04	tip	فلا خوف	2:38:12-13	فلا خوف	match	
+baqarah-2/lookalikes/04	tip	ولا خوف	2:62:19-20	ولا خوف	match	
+baqarah-2/lookalikes/05	prompt[0]	اهبطوا	2:36:9-9	اهبطوا	match	
+baqarah-2/lookalikes/05	answer[0]	وقلنا اهبطوا بعضكم لبعض عدو	2:36:8-12	وقلنا اهبطوا بعضكم لبعض عدو	match	
+baqarah-2/lookalikes/05	answer[1]	قلنا اهبطوا منها جميعا	2:38:1-4	قلنا اهبطوا منها جميعا	match	
+baqarah-2/lookalikes/05	answer[2]	اهبطوا مصرا فإن لكم ما سألتم	2:61:31-36	اهبطوا مصرا فان لكم ما سالتم	match	
+baqarah-2/lookalikes/06	prompt[0]	شفاعة	2:48:12-12	شفاعه	match	
+baqarah-2/lookalikes/06	prompt[2]	عدل	2:48:16-16	عدل	match	
+baqarah-2/lookalikes/06	answer[0]	ولا يقبل منها شفاعة ولا يؤخذ منها عدل	2:48:9-16	ولا يقبل منها شفاعه ولا يوخذ منها عدل	match	
+baqarah-2/lookalikes/06	tip	ولا يقبل منها عدل ولا تنفعها شفاعة	2:123:9-15	ولا يقبل منها عدل ولا تنفعها شفاعه	match	
+baqarah-2/lookalikes/07	prompt[0]	الذين ظلموا	2:59:2-3	الذين ظلموا	match	first of several occurrences
+baqarah-2/lookalikes/07	answer[0]	فبدل الذين ظلموا قولا غير الذي قيل لهم فأنزلنا على الذين ظلموا رجزا من السماء	2:59:1-15	فبدل الذين ظلموا قولا غير الذي قيل لهم فانزلنا علي الذين ظلموا رجزا من السماء	match	
+baqarah-2/lookalikes/08	prompt[0]	أنفسكم	2:44:5-5	انفسكم	match	
+baqarah-2/lookalikes/08	prompt[2]	أنفسهم	2:57:17-17	انفسهم	match	
+baqarah-2/lookalikes/08	answer[0]	وتنسون أنفسكم	2:44:4-5	وتنسون انفسكم	match	
+baqarah-2/lookalikes/08	answer[1]	إنكم ظلمتم أنفسكم	2:54:6-8	انكم ظلمتم انفسكم	match	
+baqarah-2/lookalikes/08	answer[1]	فاقتلوا أنفسكم	2:54:14-15	فاقتلوا انفسكم	match	
+baqarah-2/lookalikes/08	answer[2]	ولكن كانوا أنفسهم يظلمون	2:57:-4	ولكن كانوا انفسهم يظلمون	match	
+baqarah-2/lookalikes/09	prompt[0]	الحجر	2:60:8-8	الحجر	match	
+baqarah-2/lookalikes/09	prompt[2]	الحجارة	2:74:14-14	الحجاره	match	
+baqarah-2/lookalikes/09	answer[0]	اضرب بعصاك الحجر فانفجرت منه اثنتا عشرة عينا	2:60:6-13	اضرب بعصاك الحجر فانفجرت منه اثنتا عشره عينا	match	
+baqarah-2/lookalikes/09	answer[1]	فهي كالحجارة أو أشد قسوة وإن من الحجارة لما يتفجر منه الأنهار	2:74:7-18	فهي كالحجاره او اشد قسوه وان من الحجاره لما يتفجر منه الانهار	match	
+baqarah-2/mid-verse/01	prompt[0]	فانفجرت منه اثنتا عشرة عينا	2:60:9-13	فانفجرت منه اثنتا عشره عينا	match	
+baqarah-2/mid-verse/02	prompt[0]	من بقلها وقثائها وفومها وعدسها وبصلها	2:61:17-22	من بقلها وقثايها وفومها وعدسها وبصلها	match	
+baqarah-2/mid-verse/03	prompt[0]	وادخلوا الباب سجدا وقولوا حطة	2:58:11-15	وادخلوا الباب سجدا وقولوا حطه	match	
+baqarah-2/mid-verse/04	prompt[0]	فاقتلوا أنفسكم ذلكم خير لكم عند بارئكم	2:54:14-20	فاقتلوا انفسكم ذلكم خير لكم عند باريكم	match	
+baqarah-2/mid-verse/05	prompt[0]	يذبحون أبناءكم ويستحيون نساءكم	2:49:9-12	يذبحون ابناءكم ويستحيون نساءكم	match	
+baqarah-2/mid-verse/06	prompt[0]	فقلنا لهم كونوا قردة خاسئين	2:65:-5	فقلنا لهم كونوا قرده خاسيين	match	
+baqarah-2/mid-verse/07	prompt[0]	مسلمة لا شية فيها	2:71:13-16	مسلمه لا شيه فيها	match	
+baqarah-2/mid-verse/08	prompt[0]	وإن منها لما يشقق فيخرج منه الماء	2:74:19-25	وان منها لما يشقق فيخرج منه الماء	match	
+baqarah-2/mid-verse/09	prompt[0]	خذوا ما آتيناكم بقوة	2:63:7-10	خذوا ما اتيناكم بقوه	match	
+baqarah-2/chain/01	prompt[0]	أتأمرون الناس	2:44:1-2	اتامرون الناس	match	
+baqarah-2/chain/01	answer[0].chain[0]	أتأمرون الناس	2:44:1-2	اتامرون الناس	match	
+baqarah-2/chain/01	answer[0].chain[1]	واستعينوا	2:45:1-1	واستعينوا	match	
+baqarah-2/chain/01	answer[0].chain[2]	الذين يظنون	2:46:1-2	الذين يظنون	match	
+baqarah-2/chain/01	answer[0].chain[3]	يا بني إسرائيل	2:47:1-2	يا بني اسراييل	match	
+baqarah-2/chain/01	answer[0].chain[4]	واتقوا يوما	2:48:1-2	واتقوا يوما	match	
+baqarah-2/chain/01	answer[0].chain[5]	وإذ نجيناكم	2:49:1-2	واذ نجيناكم	match	
+baqarah-2/chain/01	answer[0].chain[6]	وإذ فرقنا	2:50:1-2	واذ فرقنا	match	
+baqarah-2/chain/01	answer[0].chain[7]	وإذ واعدنا	2:51:1-2	واذ واعدنا	match	
+baqarah-2/chain/01	answer[0].chain[8]	ثم عفونا	2:52:1-2	ثم عفونا	match	
+baqarah-2/chain/01	answer[0].chain[9]	وإذ آتينا موسى	2:53:1-3	واذ اتينا موسي	match	
+baqarah-2/chain/02	prompt[0]	وإذ قال موسى لقومه	2:54:1-4	واذ قال موسي لقومه	match	
+baqarah-2/chain/02	answer[0].chain[0]	وإذ قال موسى لقومه	2:54:1-4	واذ قال موسي لقومه	match	
+baqarah-2/chain/02	answer[0].chain[1]	وإذ قلتم يا موسى لن نؤمن	2:55:1-5	واذ قلتم يا موسي لن نومن	match	
+baqarah-2/chain/02	answer[0].chain[2]	ثم بعثناكم	2:56:1-2	ثم بعثناكم	match	
+baqarah-2/chain/02	answer[0].chain[3]	وظللنا	2:57:1-1	وظللنا	match	
+baqarah-2/chain/02	answer[0].chain[4]	وإذ قلنا ادخلوا	2:58:1-3	واذ قلنا ادخلوا	match	
+baqarah-2/chain/02	answer[0].chain[5]	فبدل	2:59:1-1	فبدل	match	
+baqarah-2/chain/02	answer[0].chain[6]	وإذ استسقى	2:60:1-2	واذ استسقي	match	
+baqarah-2/chain/02	answer[0].chain[7]	وإذ قلتم يا موسى لن نصبر	2:61:1-5	واذ قلتم يا موسي لن نصبر	match	
+baqarah-2/chain/02	answer[0].chain[8]	إن الذين آمنوا والذين هادوا	2:62:1-5	ان الذين امنوا والذين هادوا	match	
+baqarah-2/chain/03	prompt[0]	وإذ أخذنا ميثاقكم	2:63:1-3	واذ اخذنا ميثاقكم	match	
+baqarah-2/chain/03	answer[0].chain[0]	وإذ أخذنا ميثاقكم	2:63:1-3	واذ اخذنا ميثاقكم	match	
+baqarah-2/chain/03	answer[0].chain[1]	ثم توليتم	2:64:1-2	ثم توليتم	match	
+baqarah-2/chain/03	answer[0].chain[2]	ولقد علمتم	2:65:1-2	ولقد علمتم	match	
+baqarah-2/chain/03	answer[0].chain[3]	فجعلناها	2:66:1-1	فجعلناها	match	
+baqarah-2/chain/03	answer[0].chain[4]	وإذ قال موسى لقومه	2:67:1-4	واذ قال موسي لقومه	match	
+baqarah-2/chain/03	answer[0].chain[5]	قالوا ادع	2:68:1-2	قالوا ادع	match	
+baqarah-2/chain/03	answer[0].chain[6]	قالوا ادع	2:69:1-2	قالوا ادع	match	
+baqarah-2/chain/03	answer[0].chain[7]	قالوا ادع	2:70:1-2	قالوا ادع	match	
+baqarah-2/chain/03	answer[0].chain[8]	قال إنه يقول	2:71:1-3	قال انه يقول	match	
+baqarah-2/chain/03	answer[0].chain[9]	وإذ قتلتم	2:72:1-2	واذ قتلتم	match	
+baqarah-2/chain/03	answer[0].chain[10]	فقلنا اضربوه	2:73:1-2	فقلنا اضربوه	match	
+baqarah-2/chain/03	answer[0].chain[11]	ثم قست	2:74:1-2	ثم قست	match	
+baqarah-2/chain/04	prompt[0]	ثم قست قلوبكم	2:74:1-3	ثم قست قلوبكم	match	
+baqarah-2/chain/04	answer[0].chain[0]	ثم قست	2:74:1-2	ثم قست	match	
+baqarah-2/chain/04	answer[0].chain[1]	فقلنا اضربوه	2:73:1-2	فقلنا اضربوه	match	
+baqarah-2/chain/04	answer[0].chain[2]	وإذ قتلتم	2:72:1-2	واذ قتلتم	match	
+baqarah-2/chain/04	answer[0].chain[3]	قال إنه يقول	2:71:1-3	قال انه يقول	match	
+baqarah-2/chain/04	answer[0].chain[4]	قالوا ادع	2:70:1-2	قالوا ادع	match	
+baqarah-2/chain/04	answer[0].chain[5]	قالوا ادع	2:69:1-2	قالوا ادع	match	
+baqarah-2/chain/04	answer[0].chain[6]	قالوا ادع	2:68:1-2	قالوا ادع	match	
+baqarah-2/chain/04	answer[0].chain[7]	وإذ قال موسى لقومه	2:67:1-4	واذ قال موسي لقومه	match	
+baqarah-2/chain/04	answer[0].chain[8]	فجعلناها	2:66:1-1	فجعلناها	match	
+baqarah-2/chain/04	answer[0].chain[9]	ولقد علمتم	2:65:1-2	ولقد علمتم	match	
+baqarah-2/chain/04	answer[0].chain[10]	ثم توليتم	2:64:1-2	ثم توليتم	match	
+baqarah-2/chain/04	answer[0].chain[11]	وإذ أخذنا ميثاقكم	2:63:1-3	واذ اخذنا ميثاقكم	match	
+baqarah-2/chain/05	ask	وإذ	2:49:1-1	واذ	match	single word
+baqarah-2/chain/05	prompt[0]	وإذ	2:49:1-1	واذ	match	
+baqarah-2/chain/05	prompt[0]	وإذ	2:49:1-1	واذ	match	
+baqarah-2/chain/05	prompt[0]	وإذ	2:49:1-1	واذ	match	
+baqarah-2/chain/05	answer[0].chain[0]	نجيناكم	2:49:2-2	نجيناكم	match	
+baqarah-2/chain/05	answer[0].chain[1]	فرقنا	2:50:2-2	فرقنا	match	
+baqarah-2/chain/05	answer[0].chain[2]	واعدنا	2:51:2-2	واعدنا	match	
+baqarah-2/chain/05	answer[0].chain[3]	آتينا موسى	2:53:2-3	اتينا موسي	match	
+baqarah-2/chain/05	answer[0].chain[4]	قال موسى لقومه	2:54:2-4	قال موسي لقومه	match	
+baqarah-2/chain/05	answer[0].chain[5]	قلتم يا موسى	2:55:2-3	قلتم يا موسي	match	
+baqarah-2/chain/05	answer[0].chain[6]	قلنا ادخلوا	2:58:2-3	قلنا ادخلوا	match	
+baqarah-2/chain/05	answer[0].chain[7]	استسقى	2:60:2-2	استسقي	match	
+baqarah-2/chain/05	answer[0].chain[8]	قلتم يا موسى	2:61:2-3	قلتم يا موسي	match	
+baqarah-2/chain/05	answer[0].chain[9]	أخذنا ميثاقكم	2:63:2-3	اخذنا ميثاقكم	match	
+baqarah-2/chain/05	answer[0].chain[10]	قال موسى لقومه	2:67:2-4	قال موسي لقومه	match	
+baqarah-2/chain/05	answer[0].chain[11]	قتلتم نفسا	2:72:2-3	قتلتم نفسا	match	
+baqarah-2/summary/1.1	text	أتأمرون الناس بالبر	2:44:1-3	اتامرون الناس بالبر	match	
+baqarah-2/summary/1.2	text	وأني فضلتكم على العالمين	2:47:-4	واني فضلتكم علي العالمين	match	
+baqarah-2/summary/1.4	text	وقولوا حطة	2:58:14-15	وقولوا حطه	match	
+baqarah-2/summary/2.1	text	اثنتا عشرة عينا	2:60:11-13	اثنتا عشره عينا	match	
+baqarah-2/summary/2.1	text	بقلها وقثائها وفومها	2:61:18-20	بقلها وقثايها وفومها	match	
+baqarah-2/summary/2.2	text	ولا خوف عليهم ولا هم يحزنون	2:62:-6	ولا خوف عليهم ولا هم يحزنون	match	
+baqarah-2/summary/2.3	text	كونوا قردة خاسئين	2:65:-3	كونوا قرده خاسيين	match	
+baqarah-2/summary/2.5	text	ثم قست قلوبكم	2:74:1-3	ثم قست قلوبكم	match	
+baqarah-2/summary/3.1	item	وإذ نجيناكم	2:49:1-2	واذ نجيناكم	match	
+baqarah-2/summary/3.2	item	وإذ قلنا ادخلوا	2:58:1-3	واذ قلنا ادخلوا	match	
+baqarah-2/summary/3.3	item	إن الذين آمنوا والذين هادوا	2:62:1-5	ان الذين امنوا والذين هادوا	match	
+baqarah-2/summary/3.4	item	قالوا ادع لنا ربك	2:70:1-4	قالوا ادع لنا ربك	match	
+baqarah-2/summary/4.1	text	وأوفوا بعهدي	2:40:8-9	واوفوا بعهدي	match	
+baqarah-2/summary/4.1	text	وأني فضلتكم	2:47:8-9	واني فضلتكم	match	
+baqarah-2/summary/4.2	text	رغدا حيث شئتما	2:35:9-11	رغدا حيث شيتما	match	
+baqarah-2/summary/4.2	text	حيث شئتم رغدا	2:58:8-10	حيث شيتم رغدا	match	
+baqarah-2/summary/4.3	text	وإذ قلتم يا موسى لن نؤمن	2:55:1-5	واذ قلتم يا موسي لن نومن	match	
+baqarah-2/summary/4.3	text	لن نصبر	2:61:4-5	لن نصبر	match	
+baqarah-2/summary/4.4	text	من بعد ذلك	2:52:4-6	من بعد ذلك	match	
+baqarah-2/summary/4.5	text	ادع لنا ربك يبين لنا	2:68:2-6	ادع لنا ربك يبين لنا	match	
+baqarah-2/summary/4.6	text	فلا خوف	2:38:12-13	فلا خوف	match	
+baqarah-2/summary/4.6	text	ولا خوف	2:62:19-20	ولا خوف	match	
+tuhfa/codes/02	answer[0]	يرملون	t:9:2:2-2	يرملون	match	
+tuhfa/codes/03	answer[0]	ينمو	t:10:2:2		override	In the bayt the code word is joined to the preposition: «بِيَنْمُو»; the whole token is shown.
+tuhfa/codes/04	answer[0]	اللام والراء	t:12:2:2-3		override	The bayt spells «وَالرَّا» without the final hamza; the answer now quotes the bayt's own words.
+tuhfa/codes/05	answer[0]	الباء	t:13:1:-1	الباء	match	
+tuhfa/codes/07	answer[0]	ابغ حجك وخف عقيمه	t:25:2:-4	ابغ حجك وخف عقيمه	match	
+tuhfa/codes/09	answer[0]	واي	t:39:2:3-3	واي	match	
+tuhfa/codes/09	tip	نوحيها	t:39:2:-1	نوحيها	match	single word
+tuhfa/codes/10	answer[0]	كم عسل نقص	t:54:1:-3	كم عسل نقص	match	
+tuhfa/codes/11	answer[0]	حي طاهر	t:56:2:3-4	حي طاهر	match	
+tuhfa/codes/12	answer[0]	صله سحيرا من قطعك	t:57:2:1-4	صله سحيرا من قطعك	match	
+tuhfa/codes/13	tip	رتبت	t:7:2:3-3	رتبت	match	single word
+tuhfa/quran-to-tuhfa/01	prompt[0]	من ربهم	2:5:4-5	من ربهم	match	
+tuhfa/quran-to-tuhfa/02	prompt[0]	ومن يقول	2:8:3-4		override	«ومن يقول» is not contiguous in 2:8 («ومن الناس من يقول»); the rule example (nun sakinah + ya across two words) is «من يقول», words 3–4.
+tuhfa/quran-to-tuhfa/03	prompt[0]	عذاب أليم	2:10:8-9	عذاب اليم	match	
+tuhfa/quran-to-tuhfa/04	prompt[0]	من بعد	2:27:5-6	من بعد	match	
+tuhfa/quran-to-tuhfa/05	prompt[0]	أأنذرتهم	2:6:6-6	اانذرتهم	match	
+tuhfa/quran-to-tuhfa/06	prompt[0]	وما هم بمؤمنين	2:8:-3	وما هم بمومنين	match	
+tuhfa/quran-to-tuhfa/07	prompt[0]	فإن لكم ما سألتم	2:61:33-36	فان لكم ما سالتم	match	
+tuhfa/quran-to-tuhfa/08	prompt[0]	هم فيها خالدون	2:39:-3	هم فيها خالدون	match	
+tuhfa/quran-to-tuhfa/09	prompt[0]	إن الله	2:20:20-21	ان الله	match	
+tuhfa/quran-to-tuhfa/09	prompt[2]	ثم	2:28:7-7	ثم	match	first of several occurrences
+tuhfa/quran-to-tuhfa/10	prompt[0]	الكتاب	2:2:2-2	الكتاب	match	
+tuhfa/quran-to-tuhfa/10	prompt[2]	الصلاة	2:3:5-5	الصلاه	match	
+tuhfa/quran-to-tuhfa/10	answer[0].note	ابغ حجك وخف عقيمه	t:25:2:-4	ابغ حجك وخف عقيمه	match	
+tuhfa/quran-to-tuhfa/10	answer[1].note	طب ثم صل رحما	t:27:1:1-4	طب ثم صل رحما	match	
+tuhfa/quran-to-tuhfa/11	prompt[0]	وقلنا	2:35:1-1	وقلنا	match	
+tuhfa/quran-to-tuhfa/12	prompt[0]	ربحت تجارتهم	2:16:7-8	ربحت تجارتهم	match	
+tuhfa/quran-to-tuhfa/13	prompt[0]	من السماء	2:19:3-4	من السماء	match	
+tuhfa/quran-to-tuhfa/14	prompt[0]	بما أنزل إليك	2:4:3-5	بما انزل اليك	match	
+tuhfa/quran-to-tuhfa/15	prompt[0]	ولا خوف عليهم	2:62:19-21	ولا خوف عليهم	match	
+tuhfa/quran-to-tuhfa/16	prompt[0]	الم	2:1	الم	match	
+tuhfa/chain/01	prompt[0]	يقول راجي	t:1:1:1-2	يقول راجي	match	
+tuhfa/chain/01	answer[0].chain[0]	يقول	t:1:1:1-1	يقول	match	
+tuhfa/chain/01	answer[0].chain[1]	الحمد	t:2:1:1-1	الحمد	match	
+tuhfa/chain/01	answer[0].chain[2]	وبعد	t:3:1:1-1	وبعد	match	
+tuhfa/chain/01	answer[0].chain[3]	سميته	t:4:1:1-1	سميته	match	
+tuhfa/chain/01	answer[0].chain[4]	أرجو	t:5:1:1-1	ارجو	match	
+tuhfa/chain/01	answer[0].chain[5]	للنون	t:6:1:1-1	للنون	match	
+tuhfa/chain/01	answer[0].chain[6]	فالأول	t:7:1:1-1	فالاول	match	
+tuhfa/chain/01	answer[0].chain[7]	همز	t:8:1:1-1	همز	match	
+tuhfa/chain/01	answer[0].chain[8]	والثان	t:9:1:1-1	والثان	match	
+tuhfa/chain/01	answer[0].chain[9]	لكنها	t:10:1:1-1	لكنها	match	
+tuhfa/chain/01	answer[0].chain[10]	إلا إذا	t:11:1:1-2	الا اذا	match	
+tuhfa/chain/01	answer[0].chain[11]	والثان	t:12:1:1-1	والثان	match	
+tuhfa/chain/01	answer[0].chain[12]	والثالث	t:13:1:1-1	والثالث	match	
+tuhfa/chain/01	answer[0].chain[13]	والرابع	t:14:1:1-1	والرابع	match	
+tuhfa/chain/01	answer[0].chain[14]	في خمسة	t:15:1:1-2	في خمسه	match	
+tuhfa/chain/01	answer[0].chain[15]	صف ذا ثنا	t:16:1:1-3	صف ذا ثنا	match	
+tuhfa/chain/02	prompt[0]	وغن ميما	t:17:1:1-2	وغن ميما	match	
+tuhfa/chain/02	answer[0].chain[0]	وغن	t:17:1:1-1	وغن	match	
+tuhfa/chain/02	answer[0].chain[1]	والميم	t:18:1:1-1	والميم	match	
+tuhfa/chain/02	answer[0].chain[2]	أحكامها	t:19:1:1-1	احكامها	match	
+tuhfa/chain/02	answer[0].chain[3]	فالأول	t:20:1:1-1	فالاول	match	
+tuhfa/chain/02	answer[0].chain[4]	والثان	t:21:1:1-1	والثان	match	
+tuhfa/chain/02	answer[0].chain[5]	والثالث	t:22:1:1-1	والثالث	match	
+tuhfa/chain/02	answer[0].chain[6]	واحذر	t:23:1:1-1	واحذر	match	
+tuhfa/chain/02	answer[0].chain[7]	للام أل	t:24:1:1-2	للام ال	match	
+tuhfa/chain/02	answer[0].chain[8]	قبل اربع	t:25:1:1-2	قبل اربع	match	
+tuhfa/chain/02	answer[0].chain[9]	ثانيهما	t:26:1:1-1	ثانيهما	match	
+tuhfa/chain/02	answer[0].chain[10]	طب ثم صل	t:27:1:1-3	طب ثم صل	match	
+tuhfa/chain/02	answer[0].chain[11]	واللام الاولى	t:28:1:1-2	واللام الاولي	match	
+tuhfa/chain/02	answer[0].chain[12]	وأظهرن	t:29:1:1-1	واظهرن	match	
+tuhfa/chain/02	answer[0].chain[13]	إن في الصفات	t:30:1:1-3	ان في الصفات	match	
+tuhfa/chain/02	answer[0].chain[14]	وإن يكونا	t:31:1:1-2	وان يكونا	match	
+tuhfa/chain/02	answer[0].chain[15]	متقاربين	t:32:1:1-1	متقاربين	match	
+tuhfa/chain/02	answer[0].chain[16]	بالمتجانسين	t:33:1:1-1	بالمتجانسين	match	
+tuhfa/chain/02	answer[0].chain[17]	أو حرك	t:34:1:1-2	او حرك	match	
+tuhfa/chain/03	prompt[0]	والمد أصلي	t:35:1:1-2	والمد اصلي	match	
+tuhfa/chain/03	answer[0].chain[0]	والمد	t:35:1:1-1	والمد	match	
+tuhfa/chain/03	answer[0].chain[1]	ما لا توقف	t:36:1:1-3	ما لا توقف	match	
+tuhfa/chain/03	answer[0].chain[2]	بل أي حرف	t:37:1:1-3	بل اي حرف	match	
+tuhfa/chain/03	answer[0].chain[3]	والآخر	t:38:1:1-1	والاخر	match	
+tuhfa/chain/03	answer[0].chain[4]	حروفه	t:39:1:1-1	حروفه	match	
+tuhfa/chain/03	answer[0].chain[5]	والكسر	t:40:1:1-1	والكسر	match	
+tuhfa/chain/03	answer[0].chain[6]	واللين	t:41:1:1-1	واللين	match	
+tuhfa/chain/03	answer[0].chain[7]	للمد أحكام	t:42:1:1-2	للمد احكام	match	
+tuhfa/chain/03	answer[0].chain[8]	فواجب	t:43:1:1-1	فواجب	match	
+tuhfa/chain/03	answer[0].chain[9]	وجائز	t:44:1:1-1	وجايز	match	
+tuhfa/chain/03	answer[0].chain[10]	ومثل ذا	t:45:1:1-2	ومثل ذا	match	
+tuhfa/chain/03	answer[0].chain[11]	أو قدم	t:46:1:1-2	او قدم	match	
+tuhfa/chain/03	answer[0].chain[12]	ولازم	t:47:1:1-1	ولازم	match	
+tuhfa/chain/03	answer[0].chain[13]	أقسام لازم	t:48:1:1-2	اقسام لازم	match	
+tuhfa/chain/03	answer[0].chain[14]	كلاهما مخفف	t:49:1:1-2	كلاهما مخفف	match	
+tuhfa/chain/03	answer[0].chain[15]	فإن بكلمة	t:50:1:1-2	فان بكلمه	match	
+tuhfa/chain/03	answer[0].chain[16]	أو في ثلاثي	t:51:1:1-3	او في ثلاثي	match	
+tuhfa/chain/03	answer[0].chain[17]	كلاهما مثقل	t:52:1:1-2	كلاهما مثقل	match	
+tuhfa/chain/03	answer[0].chain[18]	واللازم الحرفي	t:53:1:1-2	واللازم الحرفي	match	
+tuhfa/chain/03	answer[0].chain[19]	يجمعها	t:54:1:1-1	يجمعها	match	
+tuhfa/chain/03	answer[0].chain[20]	وما سوى	t:55:1:1-2	وما سوي	match	
+tuhfa/chain/03	answer[0].chain[21]	وذاك أيضا	t:56:1:1-2	وذاك ايضا	match	
+tuhfa/chain/03	answer[0].chain[22]	ويجمع	t:57:1:1-1	ويجمع	match	
+tuhfa/chain/03	answer[0].chain[23]	وتم	t:58:1:1-1	وتم	match	
+tuhfa/chain/03	answer[0].chain[24]	أبياته	t:59:1:1-1	ابياته	match	
+tuhfa/chain/03	answer[0].chain[25]	ثم الصلاة	t:60:1:1-2	ثم الصلاه	match	
+tuhfa/chain/03	answer[0].chain[26]	والآل	t:61:1:1-1	والال	match	
+tuhfa/chain/04	answer[0]	والثان إدغام بستة أتت	t:9:1	والثان ادغام بسته اتت	match	
+tuhfa/chain/04	answer[1]	والثان إدغام بغير غنه	t:12:1	والثان ادغام بغير غنه	match	
+tuhfa/chain/04	answer[2]	والثالث الإقلاب عند الباء	t:13:1	والثالث الاقلاب عند الباء	match	
+tuhfa/chain/04	answer[3]	والثان إدغام بمثلها أتى	t:21:1	والثان ادغام بمثلها اتي	match	
+tuhfa/chain/04	answer[4]	والثالث الإظهار في البقيه	t:22:1	والثالث الاظهار في البقيه	match	
+tuhfa/chain/05	prompt[0]	ند بدا	t:59:1:2-3	ند بدا	match	
+tuhfa/chain/05	prompt[0]	بشرى لمن يتقنها	t:59:2:-3	بشري لمن يتقنها	match	
+tuhfa/chain/05	tip	ند بدا	t:59:1:2-3	ند بدا	match	
+tuhfa/chain/05	tip	بشرى لمن يتقنها	t:59:2:-3	بشري لمن يتقنها	match	
+tuhfa/summary/1.1	text	سليمان هو الجمزوري	t:1:2:-3	سليمان هو الجمزوري	match	
+tuhfa/summary/1.1	text	الميهي	t:4:2:3-3	الميهي	match	single word
+tuhfa/summary/1.3	text	حرف غنة	t:17:2:3-4	حرف غنه	match	
+tuhfa/summary/2.1	item	يرملون	t:9:2:2-2	يرملون	match	
+tuhfa/summary/2.2	item	ينمو	t:10:2:2		override	Same as tuhfa/codes/03: the code word is the token «بِيَنْمُو».
+tuhfa/summary/2.3	item	صف ذا ثنا كم جاد	t:16:1:1-5	صف ذا ثنا كم جاد	match	
+tuhfa/summary/2.4	item	ابغ حجك وخف عقيمه	t:25:2:-4	ابغ حجك وخف عقيمه	match	
+tuhfa/summary/2.5	item	طب ثم صل رحما	t:27:1:1-4	طب ثم صل رحما	match	
+tuhfa/summary/2.6	item	واي	t:39:2:3-3	واي	match	
+tuhfa/summary/2.7	item	كم عسل نقص	t:54:1:-3	كم عسل نقص	match	
+tuhfa/summary/2.8	item	حي طاهر	t:56:2:3-4	حي طاهر	match	
+tuhfa/summary/2.9	item	صله سحيرا من قطعك	t:57:2:1-4	صله سحيرا من قطعك	match	
+tuhfa/summary/3.1	text	فالأول الإظهار	t:7:1:1-2	فالاول الاظهار	match	
+tuhfa/summary/3.1	text	فالأول الإخفاء	t:20:1:1-2	فالاول الاخفاء	match	
+tuhfa/summary/3.2	text	والثان إدغام	t:9:1:1-2	والثان ادغام	match	
+tuhfa/summary/3.3	text	والثالث الإقلاب	t:13:1:1-2	والثالث الاقلاب	match	
+tuhfa/summary/3.3	text	والثالث الإظهار	t:22:1:1-2	والثالث الاظهار	match	
+tuhfa/summary/3.4	text	عند الباء	t:13:1:-2	عند الباء	match	

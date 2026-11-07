@@ -1,0 +1,26 @@
+{
+  "tuhfa/codes/03|answer[0]|ينمو": {
+    "ref": "t:10:2:2",
+    "reason": "In the bayt the code word is joined to the preposition: «بِيَنْمُو»; the whole token is shown."
+  },
+  "tuhfa/summary/2.2|item|ينمو": {
+    "ref": "t:10:2:2",
+    "reason": "Same as tuhfa/codes/03: the code word is the token «بِيَنْمُو»."
+  },
+  "tuhfa/codes/04|answer[0]|اللام والراء": {
+    "ref": "t:12:2:2-3",
+    "reason": "The bayt spells «وَالرَّا» without the final hamza; the answer now quotes the bayt's own words."
+  },
+  "baqarah-1/summary/1.1|text|أولئك هم المفلحون": {
+    "ref": "2:5:-3",
+    "reason": "The baseline quote dropped the conjunction; the verse ends «وأولئك هم المفلحون», so the token shows the last three Uthmani words."
+  },
+  "baqarah-2/lookalikes/02|prompt[2]|شئتما رغدا": {
+    "ref": "2:35:9-11",
+    "reason": "The baseline cue «شئتم/شئتما رغدا» merges two verses; with Adam (2:35) the order is «رغدا حيث شئتما», so the second part quotes those words."
+  },
+  "tuhfa/quran-to-tuhfa/02|prompt[0]|ومن يقول": {
+    "ref": "2:8:3-4",
+    "reason": "«ومن يقول» is not contiguous in 2:8 («ومن الناس من يقول»); the rule example (nun sakinah + ya across two words) is «من يقول», words 3–4."
+  }
+}
