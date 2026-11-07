@@ -322,7 +322,7 @@ for (const [exam, cfg0] of Object.entries(EXAMS)) {
   const cfg = { ...cfg0, plainQuotes: draftCfg.plainQuotes || [] };
   const outPath = path.join(SITE, 'data/exams', exam + '.json');
   const existing = tryJson(outPath);
-  if (existing?.ported?.status === 'complete' && !FORCE) { console.log(`${exam}: already ported (complete); use --force to redo`); results.push({ exam, skipped: true }); continue; }
+  if (existing?.ported?.status === 'complete' && !FORCE && !CHECK) { console.log(`${exam}: already ported (complete); use --force to redo`); results.push({ exam, skipped: true }); continue; }
   if (cfg.kind === 'quran' && !qIndex) {
     console.log(`\x1b[33m${exam}: SKIPPED — Quran text missing (site/data/quran/002.json from import-tanzil.mjs, and data/source/quran-simple-clean.txt). See CONTENT-TODO.md\x1b[0m`);
     results.push({ exam, pending: true }); continue;
@@ -361,6 +361,7 @@ for (const [exam, cfg0] of Object.entries(EXAMS)) {
   };
   results.push({ exam, n: questions.length, pending: pending.length, mismatches, status });
   if (!CHECK) writeJson(outPath, doc);
+  else if (existing && JSON.stringify(existing.questions) !== JSON.stringify(doc.questions)) console.log(`\x1b[33m${exam}: the exam file was edited after porting (expected for maintained content)\x1b[0m`);
 }
 
 // ---------- reports ----------
