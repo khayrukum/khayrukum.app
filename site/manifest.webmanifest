@@ -1,0 +1,18 @@
+{
+  "name": "خيركم من تعلّمه",
+  "short_name": "خيركم",
+  "description": "حفظ وتثبيت سورة البقرة ربعًا ربعًا، ومراجعة تحفة الأطفال",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "theme_color": "#1f6b5c",
+  "background_color": "#f2f4f0",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
