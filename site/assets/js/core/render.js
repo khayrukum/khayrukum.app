@@ -17,7 +17,7 @@ export function refHtml(ref, corpus, opts = {}) {
   try { r = resolveRef(ref, corpus); } catch { return `<span class="muted">${esc(ref)}</span>`; }
   if (r.kind === 'q') {
     const body = r.parts.map(p => esc(p.text) + (p.full && (opts.verseNums ?? true) ? ' ' + vnum(p.n) : '')).join(' ');
-    return `<span class="frag q" lang="ar">${body}</span>`;
+    return `<span class="frag qf" lang="ar">${body}</span>`;
   }
   const rn = reviewNote(corpus, r.ref.bayt);
   if (r.parts.length === 2) return `<span class="bayt both"><span class="h">${esc(r.parts[0].text)}</span><span class="h">${esc(r.parts[1].text)}${rn}</span></span>`;

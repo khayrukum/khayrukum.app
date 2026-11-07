@@ -109,7 +109,7 @@ footer.foot a { display: inline-block; padding-block: 0.4rem; min-block-size: 2.
 .bayt .h { display: block; }
 @media (min-width: 37.5em) { .bayt.both { flex-direction: row; flex-wrap: wrap; } .bayt.both .h { flex: 1 1 0; min-inline-size: 0; } }
 .frag { font-family: var(--f-bayt); font-size: 1.2rem; }
-.frag.q { font-family: var(--f-quran); font-size: 1.375rem; line-height: 2; }
+.frag.qf { font-family: var(--f-quran); font-size: 1.375rem; line-height: 2; }
 .dots { color: var(--muted); }
 .note { color: var(--muted); font-size: 0.95rem; font-family: var(--f-body); }
 .qq { white-space: normal; }
@@ -215,8 +215,8 @@ a.card:hover { border-color: var(--accent); }
 .task input:checked::after { content: ""; inline-size: 0.65rem; block-size: 0.35rem; border: 0.16rem solid var(--accent-ink); border-block-start: 0; border-inline-end: 0; transform: rotate(-45deg) translate(-0.05rem, -0.05rem); }
 .task .t { min-inline-size: 0; display: flex; flex-direction: column; }
 .task.checked .main { color: var(--muted); text-decoration: line-through; }
-.task .main.q { font-family: var(--f-quran); font-size: 1.375rem; line-height: 2; }
-.task .main.q::before { content: "۞ "; color: var(--gold); }
+.task .main.qf { font-family: var(--f-quran); font-size: 1.375rem; line-height: 2; }
+.task .main.qf::before { content: "۞ "; color: var(--gold); }
 .reps { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .rep { flex: 1 1 0; min-inline-size: 5.25rem; border: 1.5px dashed var(--line); background: transparent; border-radius: 0.6rem; padding: 0.5rem 0.4rem; display: flex; flex-direction: column; align-items: center; gap: 0.1rem; font-size: 0.9rem; color: var(--muted); min-block-size: 3.5rem; }
 .rep b { font-family: var(--f-display); font-size: 1rem; color: var(--ink); }

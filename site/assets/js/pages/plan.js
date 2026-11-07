@@ -18,7 +18,7 @@ const save = () => { s.updatedAt = Date.now(); return store.set(KEY, s); };
 
 function task(key, mainTxt, sub, quran = false) {
   const on = !!s.week.checks[key];
-  return `<label class="task${on ? ' checked' : ''}"><input type="checkbox" data-k="${esc(key)}"${on ? ' checked' : ''}><span class="t"><span class="main${quran ? ' q' : ''}">${esc(mainTxt)}</span>${sub ? `<span class="muted small">${esc(sub)}</span>` : ''}</span></label>`;
+  return `<label class="task${on ? ' checked' : ''}"><input type="checkbox" data-k="${esc(key)}"${on ? ' checked' : ''}><span class="t"><span class="main${quran ? ' qf' : ''}">${esc(mainTxt)}</span>${sub ? `<span class="muted small">${esc(sub)}</span>` : ''}</span></label>`;
 }
 
 function renderDay() {

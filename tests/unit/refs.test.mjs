@@ -47,7 +47,7 @@ test('item rendering: gapped, note, label, showRef', () => {
   const g = itemText({ refs: ['2:54:6-8', '2:54:14-15'], join: 'dots' }, corpus);
   assert.ok(g.includes(' … '));
   const h = itemHtml({ ref: '2:7:-3', dots: 'before', note: 'الكافرين' }, corpus);
-  assert.match(h, /class="dots">…<\/span> <span class="frag q"/);
+  assert.match(h, /class="dots">…<\/span> <span class="frag qf"/);
   assert.match(h, /\(الكافرين\)/);
   assert.match(itemHtml({ text: 'الكتاب', note: 'قمرية · «[[t:25:2:2-5]]»' }, corpus), /frag t/);
   assert.match(itemHtml({ ref: '2:49:2-2', showRef: true }, corpus), /\(٤٩\)/);
