@@ -22,6 +22,7 @@ export async function grade(input) {
   const [all, dev] = await Promise.all([store.events(), store.device()]);
   const changes = planGrade(all, { ...input, dev: dev.id }, Date.now(), store.uuid);
   await store.putEvents(changes);
+  if (all.length > 20000) store.prune(); // DATA-43
   return changes;
 }
 
