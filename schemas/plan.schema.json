@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "plan",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sura",
+    "rubs",
+    "perWeek",
+    "targets",
+    "repLabels",
+    "reviewPerDay",
+    "dayTasks",
+    "fridayTasks",
+    "rules",
+    "weekStart"
+  ],
+  "properties": {
+    "schema": {
+      "const": "plan"
+    },
+    "version": {
+      "type": "string"
+    },
+    "targets": {
+      "type": "array",
+      "items": {
+        "type": "integer"
+      },
+      "minItems": 7,
+      "maxItems": 7
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "weekStart": {
+      "const": "saturday"
+    }
+  }
+}

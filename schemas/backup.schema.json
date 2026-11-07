@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "backup",
+  "type": "object",
+  "required": [
+    "format",
+    "schema",
+    "exportedAt",
+    "kv",
+    "events"
+  ],
+  "properties": {
+    "format": {
+      "const": "khayrukum-backup"
+    },
+    "schema": {
+      "const": 1
+    },
+    "exportedAt": {
+      "type": "number"
+    },
+    "appVersion": {
+      "type": "string"
+    },
+    "device": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "kv": {
+      "type": "object"
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/event"
+      }
+    }
+  },
+  "definitions": {
+    "event": {
+      "type": "object",
+      "required": [
+        "id",
+        "t",
+        "qid",
+        "g"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "t": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "number"
+        },
+        "dev": {
+          "type": "string"
+        },
+        "session": {
+          "type": "string"
+        },
+        "tool": {
+          "enum": [
+            "exam",
+            "random"
+          ]
+        },
+        "src": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "qid": {
+          "type": "string"
+        },
+        "g": {
+          "enum": [
+            "ok",
+            "mid",
+            "bad"
+          ]
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "snap": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

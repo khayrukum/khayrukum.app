@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "rub-openings",
+  "type": "object",
+  "required": [
+    "schema",
+    "version"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rub-openings"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "patternProperties": {
+    "^\\d+$": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rub",
+          "ref"
+        ],
+        "properties": {
+          "rub": {
+            "type": "integer"
+          },
+          "ref": {
+            "type": "string",
+            "pattern": "^(\\d+:\\d+(-\\d+|:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?|t:\\d+(:[12](:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?)?)$"
+          }
+        }
+      }
+    }
+  }
+}

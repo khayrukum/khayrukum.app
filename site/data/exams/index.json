@@ -1,0 +1,17 @@
+{
+  "schema": "exam-index",
+  "version": "1.0.0",
+  "exams": [
+    {"id": "baqarah-1", "kind": "quran", "status": "published", "title": "اختبار ١ · البقرة ١–٤٣", "short": "البقرة ١", "sub": "آية ١–٤٣",
+     "card": "الربعان الأول والثاني · ص ٢–٧", "intro": "سورة البقرة · الآيات ١–٤٣ · من ص ٢ إلى ٧ في مصحف المدينة",
+     "sura": 2, "range": [1, 43], "rubs": [1, 2], "pages": [2, 7], "file": "baqarah-1.json", "unit": "آية"},
+    {"id": "baqarah-2", "kind": "quran", "status": "published", "title": "اختبار ٢ · البقرة ٤٤–٧٤", "short": "البقرة ٢", "sub": "آية ٤٤–٧٤",
+     "card": "الربعان الثالث والرابع · ص ٧–١١", "intro": "سورة البقرة · الربعان الثالث والرابع · الآيات ٤٤–٧٤ · من ص ٧ إلى ١١ في مصحف المدينة",
+     "sura": 2, "range": [44, 74], "rubs": [3, 4], "pages": [7, 11], "file": "baqarah-2.json", "unit": "آية"},
+    {"id": "baqarah-3", "kind": "quran", "status": "soon", "title": "اختبار ٣ · البقرة ٧٥–١٠٥", "short": "البقرة ٣", "sub": "آية ٧٥–١٠٥",
+     "card": "الربعان الخامس والسادس", "sura": 2, "range": [75, 105], "rubs": [5, 6], "unit": "آية"},
+    {"id": "tuhfa", "kind": "tuhfa", "status": "published", "title": "اختبار تحفة الأطفال", "short": "تحفة الأطفال", "sub": "بيت ١–٦١",
+     "card": "المتن كاملًا · ٦١ بيتًا", "intro": "منظومة الشيخ سليمان الجمزوري في التجويد · ٦١ بيتًا · ١٠ أبواب",
+     "range": [1, 61], "file": "tuhfa.json", "unit": "بيت", "audio": "tuhfa"}
+  ]
+}

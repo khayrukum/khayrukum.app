@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "audio-collection",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "type",
+    "reciter",
+    "format",
+    "items"
+  ],
+  "properties": {
+    "schema": {
+      "const": "audio-collection"
+    },
+    "version": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "poem",
+        "quran",
+        "lesson"
+      ]
+    },
+    "format": {
+      "type": "object",
+      "required": [
+        "codec",
+        "bitrate",
+        "sampleRate"
+      ]
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "src"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "bayt",
+              "chapter",
+              "full",
+              "ayah",
+              "lesson"
+            ]
+          },
+          "src": {
+            "type": "string",
+            "pattern": "^audio/"
+          },
+          "bytes": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "dur": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "segments": {
+      "type": "object"
+    }
+  }
+}
