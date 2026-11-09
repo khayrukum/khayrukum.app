@@ -86,7 +86,8 @@ fs.writeFileSync(path.join(OUT, 'config.json'), JSON.stringify(outCfg, null, 2) 
 
 // ---------- precache list ----------
 const PRE = rel => /\.(html|css|js|json|webmanifest|png|svg|woff2)$/.test(rel) && !rel.startsWith('audio/') && rel !== 'sw.js' && !rel.startsWith('assets/fonts/LICENSES');
-const date = new Date().toISOString();
+// SOURCE_DATE_EPOCH (set by the deploy workflows to the commit time) makes a re-deploy of the same commit byte-identical (OFF-10).
+const date = (process.env.SOURCE_DATE_EPOCH ? new Date(+process.env.SOURCE_DATE_EPOCH * 1000) : new Date()).toISOString();
 const files0 = walk(OUT).filter(PRE);
 const entries0 = files0.map(rel => { const b = fs.readFileSync(path.join(OUT, rel)); return { url: rel, sha256: sha256(b), bytes: b.length }; });
 const BUILD_HASH = sha256(JSON.stringify(entries0)).slice(0, 12);

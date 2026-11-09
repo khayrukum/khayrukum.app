@@ -24,6 +24,32 @@ export const BACKUP_SCHEMA = {
 };
 const KV_KEY = /^(device|exam:[a-z0-9-]+|random:(prefs|current)|plan:[a-z0-9-]+|listen:prefs|ui:[a-zA-Z]+)$/;
 
+
+// Shape of every stored value (NFR-PRV-05, DATA-61): a damaged or hand-edited backup is refused
+// instead of being merged and breaking a page on every load.
+const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+const isNum = v => typeof v === 'number' && Number.isFinite(v);
+const opt = (v, f) => v === undefined || f(v);
+const arrOf = f => v => Array.isArray(v) && v.every(f);
+const isStr = v => typeof v === 'string';
+const GRADE = v => v === 'ok' || v === 'mid' || v === 'bad';
+const KV_SHAPE = {
+  exam: v => opt(v.round, isStr) && opt(v.grades, g => isObj(g) && Object.values(g).every(GRADE)) && opt(v.open, isObj) && opt(v.rand, r => r === null || isObj(r)),
+  'random:prefs': v => opt(v.src, arrOf(isStr)) && opt(v.n, x => isNum(x) && x >= 1 && x <= 200) && opt(v.ranges, isObj),
+  'random:current': v => arrOf(isStr)(v.set) && Array.isArray(v.grades) && v.grades.length === v.set.length && v.grades.every(g => g === null || GRADE(g)) && Number.isInteger(v.idx) && v.idx >= 0 && v.idx < Math.max(1, v.set.length) && opt(v.done, x => typeof x === 'boolean'),
+  plan: v => opt(v.pair, x => Number.isInteger(x) && x >= 1) && opt(v.week, w => isObj(w) && opt(w.reps, arrOf(isNum)) && opt(w.checks, isObj)) && opt(v.mistakes, arrOf(isObj)) && opt(v.done, arrOf(isNum)) && opt(v.history, arrOf(isObj)),
+  'listen:prefs': v => opt(v.sel, Array.isArray) && opt(v.rate, x => isNum(x) && x > 0 && x <= 4) && opt(v.loop, x => typeof x === 'boolean') && opt(v.open, isObj)
+};
+/** Errors for one kv entry (empty when the value is usable). Pure. */
+export function checkKvValue(key, v, now = Date.now()) {
+  if (!isObj(v)) return [`${key}: expected an object`];
+  if (v.updatedAt !== undefined && !(isNum(v.updatedAt) && v.updatedAt >= 0 && v.updatedAt <= now + 86400000)) return [`${key}: bad updatedAt`];
+  const shape = KV_SHAPE[key] || KV_SHAPE[key.split(':')[0]];
+  let ok = true;
+  try { ok = !shape || shape(v) === true; } catch { ok = false; }
+  return ok ? [] : [`${key}: wrong shape`];
+}
+
 export async function makeBackup() {
   const [kv, events, dev, cfg, b] = await Promise.all([store.allKv(), store.events(), store.device(), config(), build()]);
   return { format: 'khayrukum-backup', schema: 1, exportedAt: Date.now(), appVersion: b?.version || cfg.appVersion || '', device: dev, kv, events };
@@ -34,7 +60,7 @@ export function parseBackup(text) {
   let data;
   try { data = JSON.parse(String(text).trim()); } catch { return { ok: false, errors: ['not JSON'] }; }
   const errors = validate(BACKUP_SCHEMA, data);
-  if (data && data.kv && typeof data.kv === 'object') for (const k of Object.keys(data.kv)) if (!KV_KEY.test(k)) errors.push('unknown key ' + k);
+  if (data && data.kv && typeof data.kv === 'object') for (const [k, v] of Object.entries(data.kv)) { if (!KV_KEY.test(k)) errors.push('unknown key ' + k); else errors.push(...checkKvValue(k, v)); }
   return { ok: errors.length === 0, data, errors };
 }
 

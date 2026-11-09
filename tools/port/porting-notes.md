@@ -29,7 +29,7 @@
 | `baqarah-1/summary/1.1` | «أولئك هم المفلحون» | `2:5:-3` | The quote dropped the conjunction; the verse ends «وأولئك هم المفلحون». |
 | `baqarah-2/lookalikes/02` | «شئتما رغدا» (from «حيث شئتم/شئتما رغدا») | `2:35:9-11` | The cue merges two verses; with Adam the order is «رغدا حيث شئتما». |
 | `tuhfa/quran-to-tuhfa/02` | «ومن يقول» | `2:8:3-4` | Not contiguous in 2:8; the example of the rule is «من يقول». |
-| `tuhfa/codes/03`, summary codes | «ينمو» | `t:10:2:2` | The code word is joined to «ب» in the bayt: «بِيَنْمُو». |
+| `tuhfa/codes/03`, summary codes | «ينمو» | `t:10:2:3` | The code word is joined to «ب» in the bayt: «بِيَنْمُو». |
 | `tuhfa/codes/04` | «اللام والراء» | `t:12:2:2-3` | The bayt spells «وَالرَّا»; the answer now quotes the bayt. |
 
 ## Wording changes

@@ -68,7 +68,7 @@ function tryImport(text) {
 function bind() {
   main.addEventListener('click', async e => {
     const b = e.target.closest('button'); if (!b) return;
-    if (b.dataset.theme) { store.setTheme(b.dataset.theme); ui.$$('[data-theme]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.theme === b.dataset.theme))); return; }
+    if (b.dataset.theme) { store.setTheme(b.dataset.theme); ui.$$('button[data-theme]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.theme === b.dataset.theme))); return; }
     if (b.id === 'dlAll') {
       ctrl = new AbortController();
       const r = await downloadAll(col.items, { signal: ctrl.signal, onProgress: p => audioBox(p) });

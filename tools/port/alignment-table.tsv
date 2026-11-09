@@ -392,7 +392,7 @@ baqarah-2/summary/4.5	text	ادع لنا ربك يبين لنا	2:68:2-6	ادع 
 baqarah-2/summary/4.6	text	فلا خوف	2:38:12-13	فلا خوف	match	
 baqarah-2/summary/4.6	text	ولا خوف	2:62:19-20	ولا خوف	match	
 tuhfa/codes/02	answer[0]	يرملون	t:9:2:2-2	يرملون	match	
-tuhfa/codes/03	answer[0]	ينمو	t:10:2:2		override	In the bayt the code word is joined to the preposition: «بِيَنْمُو»; the whole token is shown.
+tuhfa/codes/03	answer[0]	ينمو	t:10:2:3		override	In the bayt the code word is joined to the preposition: «بِيَنْمُو»; the whole token is shown.
 tuhfa/codes/04	answer[0]	اللام والراء	t:12:2:2-3		override	The bayt spells «وَالرَّا» without the final hamza; the answer now quotes the bayt's own words.
 tuhfa/codes/05	answer[0]	الباء	t:13:1:-1	الباء	match	
 tuhfa/codes/07	answer[0]	ابغ حجك وخف عقيمه	t:25:2:-4	ابغ حجك وخف عقيمه	match	
@@ -499,7 +499,7 @@ tuhfa/summary/1.1	text	سليمان هو الجمزوري	t:1:2:-3	سليمان 
 tuhfa/summary/1.1	text	الميهي	t:4:2:3-3	الميهي	match	single word
 tuhfa/summary/1.3	text	حرف غنة	t:17:2:3-4	حرف غنه	match	
 tuhfa/summary/2.1	item	يرملون	t:9:2:2-2	يرملون	match	
-tuhfa/summary/2.2	item	ينمو	t:10:2:2		override	Same as tuhfa/codes/03: the code word is the token «بِيَنْمُو».
+tuhfa/summary/2.2	item	ينمو	t:10:2:3		override	Same as tuhfa/codes/03: the code word is the token «بِيَنْمُو».
 tuhfa/summary/2.3	item	صف ذا ثنا كم جاد	t:16:1:1-5	صف ذا ثنا كم جاد	match	
 tuhfa/summary/2.4	item	ابغ حجك وخف عقيمه	t:25:2:-4	ابغ حجك وخف عقيمه	match	
 tuhfa/summary/2.5	item	طب ثم صل رحما	t:27:1:1-4	طب ثم صل رحما	match	

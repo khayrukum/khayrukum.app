@@ -8,6 +8,7 @@ import * as platform from '../core/platform.js';
 import { loadIndex, loadExam, loadCorpus, loadRoundTypes } from '../core/content.js';
 import { getType } from '../core/registry.js';
 import { inlineHtml, refHtml } from '../core/render.js';
+import { parseRef } from '../core/refs.js';
 import { live, tiles, strengths, needsReview, byType, byDay } from '../core/stats.js';
 
 const H = S.history;
@@ -18,7 +19,8 @@ const srcName = src => entries.find(e => e.id === src)?.short || src;
 const typeName = (type, src) => { const t = rt.types.find(x => x.id === type); const kind = entries.find(e => e.id === src)?.kind === 'tuhfa' ? 'tuhfa' : 'quran'; return t ? (t.title[kind] || t.title.quran || t.title.tuhfa) : type; };
 const findQ = (qid, src) => exams.get(src)?.byId.get(qid) || null;
 const unitOf = e => e.snap?.unit || (entries.find(x => x.id === e.src)?.unit) || '';
-const refsText = refs => [...new Set((refs || []).map(r => { const m = /^(?:t:)?(?:\d+:)?(\d+)/.exec(r.startsWith('t:') ? r : r.replace(/^\d+:/, '')); return m ? +m[1] : null; }).filter(x => x != null))].map(n).join('، ');
+// Verse / bayt numbers of a list of refs (HIS-08): never a word index or a hemistich number.
+const refsText = refs => [...new Set((refs || []).map(r => { try { const p = parseRef(r); return p.kind === 't' ? p.bayt : p.aya; } catch { return null; } }).filter(x => x != null))].map(n).join('، ');
 
 function reviewItem(r) {
   const e = r.last; const q = findQ(r.qid, e.src) || (r.qid.includes('/random-number/') ? null : null);
@@ -42,6 +44,7 @@ async function render() {
   const all = live(await store.events());
   const sources = [...new Set(all.map(e => e.src))];
   if (filter !== 'all' && !sources.includes(filter)) filter = 'all';
+  ui.setNotes([...new Set(sources.map(s => entries.find(e => e.id === s)?.kind === 'tuhfa' ? 'tuhfa' : 'quran'))]); // GEN-08
   const ev = filter === 'all' ? all : all.filter(e => e.src === filter);
   if (!all.length) { main.innerHTML = `<section class="panel"><h2>${esc(H.emptyTitle)}</h2><p class="muted">${esc(H.emptyText)}</p></section>`; return; } // HIS-11
   let h = '';

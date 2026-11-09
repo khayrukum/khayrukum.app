@@ -29,7 +29,7 @@ jobs:
         run: node tools/release-check.mjs
         env:
           OWNER_ACCEPTS_REVIEW: ${{ vars.OWNER_ACCEPTS_REVIEW }}
-      - run: node tools/build.mjs --strict --version "${GITHUB_REF_NAME#v}"
+      - run: SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) node tools/build.mjs --strict --version "${GITHUB_REF_NAME#v}"
       - run: node --test --test-concurrency=1 tests/e2e/*.test.mjs
       - uses: actions/upload-pages-artifact@v3
         with: { path: dist }

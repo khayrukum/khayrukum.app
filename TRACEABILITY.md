@@ -178,7 +178,7 @@ Counted per requirement ID (ranges expanded); TST rows are listed separately at 
 | DATA-15…17 | `tools/import-tuhfa.mjs`, `abyat.json`, «قيد المراجعة» | validate | done |
 | DATA-20…23 | `data/exams/index.json`, exam files, `round-types.json`, `tools/validate-data.mjs` | validate | done |
 | DATA-24 | counts 59 (8/13/7/9/9/8/5), 61, 86 | validate | done |
-| DATA-25 | `tools/port/{extract-baseline,align,resolve}.mjs`, `alignment-table.tsv` | unit/align | done (508 match, 6 override, 0 mismatch) |
+| DATA-25 | `tools/port/{extract-baseline,align,resolve}.mjs`, `alignment-table.tsv` | unit/align | done (508 match, 6 override, 0 mismatch; overrides and labels re-checked by the independent tests in unit/content-findings) |
 | DATA-26 | `tools/port/porting-log.md` (+ `porting-notes.md`) | unit/align | done |
 | DATA-27 | `data/audio/tuhfa.json` | — | partial — follows the §5.x collection shape (`items[]` + `segments`) instead of top-level `bayt/chapter/full` |
 | DATA-30 | `data/plan/baqarah.json` | validate | done |

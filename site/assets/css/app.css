@@ -36,6 +36,7 @@ a { color: var(--accent); }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 0.15rem solid var(--accent); outline-offset: 0.15rem; }
+label.btn:has(+ input.sr-only:focus-visible) { outline: 0.15rem solid var(--accent); outline-offset: 0.15rem; }
 .sr-only { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .wrap {

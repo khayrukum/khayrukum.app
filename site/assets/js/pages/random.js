@@ -70,7 +70,7 @@ function controls() {
 
 function snapOf(q) {
   const unit = q.kind === 'tuhfa' ? S.units.tuhfa : S.units.quran;
-  return makeSnap({ ask: q.ask ? inlineText(q.ask, corpus) : '', prompt: q.type === 'random-number' ? String(q.number) : (q.prompt || []).map(it => itemText(it, corpus)).join(' '), answerRefs: answerRefs(q), answer: (q.answer || []).map(it => itemText(it, corpus)).join(' · '), unit });
+  return makeSnap({ ask: q.ask ? inlineText(q.ask, corpus) : '', prompt: q.type === 'random-number' ? n(q.number) : (q.prompt || []).map(it => itemText(it, corpus)).join(' '), answerRefs: answerRefs(q), answer: (q.answer || []).map(it => itemText(it, corpus)).join(' · '), unit });
 }
 
 function questionView() {

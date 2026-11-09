@@ -26,7 +26,9 @@ async function fetchVerified(entry) {
 }
 
 self.addEventListener('install', event => {
+  let existed = true; // a re-deploy of identical content reuses the cache name of the worker still in control
   event.waitUntil((async () => {
+    existed = await caches.has(APP_CACHE);
     const cache = await caches.open(APP_CACHE);
     const failed = [];
     await Promise.all(PRECACHE.map(async e => {
@@ -38,7 +40,7 @@ self.addEventListener('install', event => {
       for (const e of failed) await cache.put(abs(e.url), await fetchVerified(e));
     }
     announce({ type: 'precached', hash: BUILD_HASH });
-  })().catch(async err => { await caches.delete(APP_CACHE); throw err; }));
+  })().catch(async err => { if (!existed) await caches.delete(APP_CACHE); throw err; })); // never delete a cache that is in use (OFF-02a.5)
 });
 
 self.addEventListener('message', e => { if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting(); });
@@ -96,7 +98,11 @@ self.addEventListener('fetch', event => {
       const app = await caches.open(APP_CACHE);
       let path = url.pathname; if (path.endsWith('/')) path += 'index.html';
       const hit = await app.match(new URL(path, url.origin).href) || await app.match(new URL(path + '/index.html', url.origin).href);
-      if (hit) return hit;
+      if (hit) {
+        // IA-05: «/plan» → «/plan/», as the server does; relative links depend on the trailing slash
+        const dir = !path.endsWith('/index.html') && !/\.[a-z0-9]+$/i.test(path) && !(await app.match(new URL(path, url.origin).href));
+        return dir ? Response.redirect(url.pathname + '/' + url.search, 301) : hit;
+      }
       try { const r = await fetch(req); if (r.status === 404) return (await app.match(abs('404.html'))) || r; return r; }
       catch (e) { return (await app.match(abs('404.html'))) || Response.error(); }
     })());

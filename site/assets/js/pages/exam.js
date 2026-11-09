@@ -130,7 +130,7 @@ function slipLines() {
   const out = [];
   for (const r of ex.rounds) for (const q of roundQs(r.id)) {
     const g = st.grades[q.id]; if (g !== 'mid' && g !== 'bad') continue;
-    const words = (q.prompt || []).map(it => itemText(it, corpus)).join(' ').replace(/…/g, '').trim().split(/\s+/).slice(0, 5).join(' ');
+    const words = (q.prompt || []).map(it => itemText(it, corpus)).join(' ').replace(/…/g, '').trim().split(/\s+/).slice(0, 5).join(' ').replace(/(\s[\u06D6-\u06ED]+)+$/u, '');
     out.push({ g, q, text: E.slipLine(S.grades[g], r.title, unit(), answerNumbers(q).map(n).join('، '), words) });
   }
   return out;
@@ -153,7 +153,7 @@ async function resetAttempt() {
 
 function snapOf(q) {
   const ask = q.ask ? inlineText(q.ask, corpus) : '';
-  const prompt = q.type === 'random-number' ? String(q.number) : (q.prompt || []).map(it => itemText(it, corpus)).join(' ');
+  const prompt = q.type === 'random-number' ? n(q.number) : (q.prompt || []).map(it => itemText(it, corpus)).join(' ');
   const answer = (q.answer || []).map(it => itemText(it, corpus)).join(' · ');
   return makeSnap({ ask, prompt, answerRefs: answerRefs(q), answer, unit: unit() });
 }

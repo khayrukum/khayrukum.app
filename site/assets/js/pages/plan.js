@@ -124,7 +124,7 @@ function bind() {
   ui.$('#app').addEventListener('change', e => {
     const t = e.target;
     if (t.dataset.k) { s.week.checks[t.dataset.k] = t.checked; save(); render(); }
-    else if (t.id === 'pairSel') { s.pair = +t.value; save(); render(); } // PL-12: mistakes kept
+    else if (t.id === 'pairSel') { s.pair = +t.value; for (const k of Object.keys(s.week.checks)) if (/:rv/.test(k)) delete s.week.checks[k]; save(); render(); } // PL-12: mistakes kept; review ticks belong to the old pair
   });
   ui.$('#mForm').addEventListener('submit', e => {
     e.preventDefault(); const inp = ui.$('#mInput'); const v = inp.value.trim();
