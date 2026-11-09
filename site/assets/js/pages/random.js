@@ -38,18 +38,23 @@ async function newSet() {
   const p = pool();
   const picked = orderSet(shuffle(p.questions.concat(p.generated)).slice(0, Math.min(prefs.n, p.questions.length + p.generated.length)));
   cur = { set: picked.map(q => q.id), idx: 0, grades: picked.map(() => null), session: newSession(), startedAt: Date.now(), done: false, updatedAt: Date.now() };
-  revealed = false; resumedNote = false;
+  revealed = false; resumedNote = false; ctlOpen = false;
   await store.set('random:current', cur);
   render(); scrollTop();
 }
 const savePrefs = () => { prefs.updatedAt = Date.now(); return store.set('random:prefs', prefs); };
 const saveCur = () => { cur.updatedAt = Date.now(); return store.set('random:current', cur); };
-const scrollTop = () => window.scrollTo({ top: 0 });
+// Move to the question itself, not to the top of the page (the settings sit above it).
+const scrollTop = () => ui.$('#play')?.scrollIntoView({ block: 'start' });
+let ctlOpen = false; // the settings are folded while a set is in progress
 
 function controls() {
   const c = covered();
   const fams = [...new Set(exams.filter(e => prefs.src.includes(e.entry.id)).map(fam))];
-  let h = `<section class="panel"><h2>${esc(R.sources)}</h2><div class="chips">${exams.map(e => `<button type="button" class="chip" data-src="${e.entry.id}" aria-pressed="${prefs.src.includes(e.entry.id)}">${esc(e.entry.short)} <span class="sub">${esc(e.entry.sub)}</span></button>`).join('')}</div>`;
+  const active = !!(cur && cur.set.length);
+  const sum = fams.map(f => `${f === 'tuhfa' ? R.famTuhfa : R.famQuran} ${n(prefs.ranges[f][0])}–${n(prefs.ranges[f][1])}`).join(' · ');
+  let h = active ? `<details class="panel" id="ctl"${ctlOpen ? ' open' : ''}><summary><span>${esc(R.settings)} <span class="muted small">${esc(sum)}</span></span></summary>` : `<section class="panel">`;
+  h += `<h2${active ? ' class="sr-only"' : ''}>${esc(R.sources)}</h2><div class="chips">${exams.map(e => `<button type="button" class="chip" data-src="${e.entry.id}" aria-pressed="${prefs.src.includes(e.entry.id)}">${esc(e.entry.short)} <span class="sub">${esc(e.entry.sub)}</span></button>`).join('')}</div>`;
   for (const f of fams) {
     const opts = c[f]; const [a, b] = prefs.ranges[f];
     const label = f === 'tuhfa' ? R.rangeTuhfa : R.rangeQuran;
@@ -64,7 +69,7 @@ function controls() {
   h += `<div class="stack"><b>${esc(R.sizeLabel)}</b><div class="chips">${[10, 15, 25].map(k => `<button type="button" class="chip" data-size="${k}" aria-pressed="${prefs.n === k}">${n(k)}</button>`).join('')}</div>`;
   const none = !prefs.src.length;
   h += `<p class="muted small">${esc(none ? R.noSource : avail ? R.available(n(avail)) : R.empty)}</p>`;
-  h += `<div class="row"><button type="button" class="btn primary" id="newSet"${none || !avail ? ' disabled' : ''}>${esc(R.newSet)}</button></div></div></section>`;
+  h += `<div class="row"><button type="button" class="btn primary" id="newSet"${none || !avail ? ' disabled' : ''}>${esc(R.newSet)}</button></div></div>${active ? '</details>' : '</section>'}`;
   return h;
 }
 
@@ -88,6 +93,7 @@ function questionView() {
   h += `<div class="row"><button type="button" class="btn${revealed ? '' : ' show'}" id="reveal" aria-expanded="${revealed}">${esc(revealed ? S.exam.hide : S.exam.reveal)}</button><div class="grade" role="group" aria-label="${esc(S.exam.gradeGroup)}">${['ok', 'mid', 'bad'].map(k => `<button type="button" class="g ${k}" data-g="${k}" aria-pressed="${g === k}">${esc(S.grades[k])}</button>`).join('')}</div></div></article>`;
   h += `<div class="roundnav"><button type="button" class="btn" id="prev"${i === 0 ? ' disabled' : ''}>${esc(R.prev)}</button>${i < N - 1 ? `<button type="button" class="btn show" id="next">${esc(R.next)}</button>` : `<button type="button" class="btn show" id="result">${esc(R.result)}</button>`}</div>`;
   h += `<div class="pdots" aria-label="${esc(R.progress)}" role="img">${cur.grades.map((x, k) => `<i class="${x || ''}${k === i ? ' cur' : ''}"></i>`).join('')}</div>`;
+  h += `<div class="row"><button type="button" class="btn" id="newSet2">${esc(R.newSet)}</button></div>`;
   return h;
 }
 
@@ -104,6 +110,7 @@ function render() {
 }
 
 function bind() {
+  main.addEventListener('toggle', e => { if (e.target.id === 'ctl') ctlOpen = e.target.open; }, true);
   main.addEventListener('click', async e => {
     const b = e.target.closest('button'); if (!b || b.disabled) return; const d = b.dataset;
     if (d.src) { prefs.src = prefs.src.includes(d.src) ? prefs.src.filter(x => x !== d.src) : exams.map(x => x.entry.id).filter(x => x === d.src || prefs.src.includes(x)); }
@@ -117,7 +124,7 @@ function bind() {
       writeGrade({ session: cur.session, qid: q.id, g, tool: 'random', src: q.src, type: q.type, snap: g ? snapOf(q) : undefined });
       return;
     }
-    else if (b.id === 'prev') { cur.idx = Math.max(0, cur.idx - 1); revealed = false; resumedNote = false; await saveCur(); render(); return; }
+    else if (b.id === 'prev') { cur.idx = Math.max(0, cur.idx - 1); revealed = false; resumedNote = false; await saveCur(); render(); scrollTop(); return; }
     else if (b.id === 'next') { cur.idx = Math.min(cur.set.length - 1, cur.idx + 1); revealed = false; resumedNote = false; await saveCur(); render(); scrollTop(); return; }
     else if (b.id === 'result') { cur.done = true; resumedNote = false; await saveCur(); render(); ui.$('#play')?.scrollIntoView({ block: 'start' }); return; }
     else if (b.id === 'again') { cur.done = false; cur.idx = 0; revealed = false; await saveCur(); render(); scrollTop(); return; }

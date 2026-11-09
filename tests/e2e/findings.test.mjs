@@ -42,7 +42,7 @@ test('HIS-08: «انسخ الملخص» lists the verse / bayt NUMBER of each it
 
 test('GEN-03: the history page shows no Western digits for a graded random-number question', async () => {
   const { p } = await page();
-  await p.goto(BASE + 'random/'); await settle(p);
+  await p.goto(BASE + 'random/'); await settle(p); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
   await p.click('[data-src="baqarah-1"]'); await p.click('[data-src="baqarah-2"]');
   await p.click('[data-quick="tuhfa"][data-a="17"]'); await p.waitForTimeout(100);      // chapter 3 = bayt 17 only
   await p.click('#newSet'); await p.waitForTimeout(200);

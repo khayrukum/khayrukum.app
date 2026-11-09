@@ -47,7 +47,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
   await p.goto(BASE + 'exam/?id=tuhfa'); await settle(p); await p.click('.rt[data-round="chapters"]'); await p.locator('button.g.ok').first().click(); await p.waitForTimeout(300);
   await p.locator('.rt[data-round="random-number"]').click(); await p.click('[data-act="roll"]'); const rolled = await p.locator('.bignum').innerText(); await p.waitForTimeout(300);
   // random: preferences and progress
-  await p.goto(BASE + 'random/'); await settle(p);
+  await p.goto(BASE + 'random/'); await settle(p); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
   await p.click('[data-size="25"]'); await p.click('[data-src="baqarah-1"]'); await p.click('[data-quick="tuhfa"][data-a="6"]'); await p.waitForTimeout(100);
   await p.click('#newSet'); await p.waitForTimeout(200);
   await p.click('button.g.ok'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(100); await p.click('button.g.bad'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(200);

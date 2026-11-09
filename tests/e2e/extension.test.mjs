@@ -68,7 +68,7 @@ test('TST-30: a published baqarah-3 fixture appears on the hub, in the random ex
   assert.match(await p.locator('a[href*="exam/?id=baqarah-3"]').innerText(), /١ من ٣ · ٠٪ صحيح/);
 
   // random exam: source chip, covered range 1–105, rub' 5 and 6 quick ranges, pool from the new exam
-  await p.goto(BASE + 'random/'); await settle();
+  await p.goto(BASE + 'random/'); await settle(); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
   assert.equal(await p.locator('[data-src="baqarah-3"]').count(), 1);
   assert.match(await p.locator('[data-src="baqarah-3"]').innerText(), /البقرة ٣/);
   assert.equal(await p.$eval('#to-quran2', s => s.options[s.options.length - 1].value), '105');

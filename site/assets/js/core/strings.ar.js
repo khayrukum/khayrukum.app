@@ -95,7 +95,7 @@ export const S = {
   },
 
   random: {
-    sources: 'المصادر', sizeLabel: 'عدد الأسئلة',
+    sources: 'المصادر', sizeLabel: 'عدد الأسئلة', settings: 'نطاق الاختبار', famQuran: 'البقرة', famTuhfa: 'التحفة',
     rangeQuran: 'نطاق سورة البقرة (الآيات)', rangeTuhfa: 'نطاق تحفة الأطفال (الأبيات)',
     from: 'من', to: 'إلى', fromLabel: 'بداية النطاق', toLabel: 'نهاية النطاق',
     allQuran: 'البقرة كلها', allTuhfa: 'المتن كله', rub: n => `الربع ${n}`,

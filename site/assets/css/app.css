@@ -245,6 +245,7 @@ textarea { inline-size: 100%; min-block-size: 6rem; font-family: ui-monospace, m
 .mlist li.empty { background: none; color: var(--muted); padding: 0; }
 .mlist button { border: 0; background: transparent; color: inherit; font-size: 1.1rem; min-inline-size: 2.5rem; min-block-size: 2.5rem; }
 details.panel > summary { cursor: pointer; font-family: var(--f-display); font-size: 1.05rem; list-style: none; display: flex; justify-content: space-between; min-block-size: 2.75rem; align-items: center; }
+#play { scroll-margin-block-start: 0.5rem; }
 details.panel > summary::-webkit-details-marker { display: none; }
 details.panel > summary::after { content: "＋"; color: var(--muted); }
 details[open].panel > summary::after { content: "－"; }
