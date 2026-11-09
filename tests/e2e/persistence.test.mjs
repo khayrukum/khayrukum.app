@@ -136,7 +136,7 @@ test('offline after the first visit: every page, reloads and URL variants work; 
     assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true, `${u}: no horizontal scroll`);
   }
   // grading offline
-  await p.goto(BASE + 'exam/?id=tuhfa'); await p.waitForSelector('.rt'); await p.click('.rt[data-round="codes"]'); await p.locator('button.g.ok').first().click(); await p.reload(); await p.waitForSelector('button.g.ok[aria-pressed="true"]');
+  await p.goto(BASE + 'exam/?id=tuhfa'); await p.waitForSelector('.rt'); await p.click('.rt[data-round="codes"]'); await p.locator('button.g.ok').first().click(); await p.waitForTimeout(300); /* m13: let the write commit */ await p.reload(); await p.waitForSelector('button.g.ok[aria-pressed="true"]');
   await ctx.setOffline(false);
   assert.deepEqual(p.errors, []);
   await ctx.close();

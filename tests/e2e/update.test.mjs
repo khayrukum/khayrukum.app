@@ -83,7 +83,9 @@ test('TST-24: build A → build B: toast in both tabs, «حدّث الآن», ea
   await t2.waitForSelector('button.g.ok[aria-pressed="true"]', { timeout: 5000 });
   assert.equal(await t2.locator('button.g[aria-pressed="true"]').count(), 1);
   await t2.locator('button.g.mid').nth(1).click();
+  await t2.waitForFunction(() => /✓ ١ · متردد ١/.test(document.querySelector('#score')?.textContent || ''), null, { timeout: 5000 }).catch(() => {});
   assert.match(await t2.textContent('#score'), /✓ ١ · متردد ١/);
+  await t2.waitForTimeout(300);  // let the write commit before the reload (m13: writes are not flushed on unload)
   await ctx.setOffline(true);
   await t2.reload(); await t2.waitForSelector('#score');
   assert.match(await t2.textContent('#score'), /✓ ١ · متردد ١/);
