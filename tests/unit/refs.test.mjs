@@ -52,7 +52,9 @@ test('item rendering: gapped, note, label, showRef', () => {
   assert.match(itemHtml({ text: 'الكتاب', note: 'قمرية · «[[t:25:2:2-5]]»' }, corpus), /frag t/);
   assert.match(itemHtml({ ref: '2:49:2-2', showRef: true }, corpus), /\(٤٩\)/);
   assert.match(itemHtml({ label: 'الإدغام', ref: 't:9:2:2' }, corpus), /<b>الإدغام<\/b>: /);
-  assert.match(itemHtml({ ref: 't:26' }, corpus), /قيد المراجعة/, 'DATA-17 note on a bayt under review');
+  // DATA-17: the note follows the review status, whatever the real data currently says
+  assert.match(itemHtml({ ref: 't:26' }, { ...corpus, review: () => 'pending' }), /قيد المراجعة/, 'note on a bayt under review');
+  assert.doesNotMatch(itemHtml({ ref: 't:26' }, { ...corpus, review: () => 'verified' }), /قيد المراجعة/, 'no note once verified');
 });
 
 test('chain shorthand expands forward and reversed', () => {

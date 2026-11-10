@@ -14,7 +14,7 @@ Status on 2026-11-07, branch `v1`. Items are ordered by what blocks the first re
     in labels (the plan's «۞» comes from the UI). Optional: download again with *rub-el-hizb* and *sajdah* OFF
     (Tanzil → Download → Uthmani, "Text with aya numbers"), replace the file, run
     `npm run import:tanzil && node tools/port/align.mjs --check`: the references stay valid.
-- **Tuhfa text (LIC-10).** From `tuhfa-tashkeel.json`, byte-exact; abyat 26, 28, 57 are marked «قيد المراجعة».
+- **Tuhfa text (LIC-10).** From `tuhfa-tashkeel.json`, with the owner's corrections to abyat 26 and 57 (see §2).
 
 ## 1. Fonts (NFR-TYP-01, NFR-PERF-05, LIC-30) — done
 
@@ -22,13 +22,10 @@ The fonts are in `site/assets/fonts/` with their OFL texts in `LICENSES/`. They 
 github.com/google/fonts (`ofl/reemkufi`, `ofl/ibmplexsansarabic`, `ofl/amiri`, `ofl/amiriquran`) and only re-wrapped
 as WOFF2 (same glyphs, same names). Reem Kufi is the variable font (`reem-kufi-vf.woff2`, weights 400–700).
 
-## 2. Tuhfa verification (LIC-11, OWNER-2)
+## 2. Tuhfa verification (LIC-11, OWNER-2) — done
 
-A qualified person checks abyat **26, 28, 57** against a named printed edition and records it in
-`site/data/tuhfa/abyat.json`: `review: {"26": "verified", …}` and
-`source.verifiedAgainst: {"edition": "…", "page": "…", "verifier": "…", "date": "YYYY-MM-DD"}`.
-If you accept shipping them marked «قيد المراجعة» (the default), set the repository variable
-`OWNER_ACCEPTS_REVIEW=1` (used by `release-check.mjs` in the deploy workflow).
+The owner reviewed abyat 26, 28 and 57 on 2026-11-10: 26 reads «وَرَمْزَهَا», 57 reads «قَطَعْكَ», 28 was correct.
+All three are recorded as `verified` in `site/data/tuhfa/abyat.json`.
 
 ## 3. Audio (LIC-20, AUD-33, AUD-40/41, OWNER-1)
 
