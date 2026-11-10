@@ -24,7 +24,7 @@ const refsText = refs => [...new Set((refs || []).map(r => { try { const p = par
 
 function reviewItem(r) {
   const e = r.last; const q = findQ(r.qid, e.src) || (r.qid.includes('/random-number/') ? null : null);
-  const known = !!findQ(r.qid, e.src) || /\/random-number\/\d+$/.test(r.qid) && exams.has(e.src);
+  const known = !!findQ(r.qid, e.src) || /\/(random|which)-number\/\d+$/.test(r.qid) && exams.has(e.src);
   const old = !known;
   let body = '';
   if (q && !old) {

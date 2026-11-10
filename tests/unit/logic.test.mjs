@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { planGrade } from '../../site/assets/js/core/grading.js';
 import { tiles, strengths, needsReview, byType, attemptTally } from '../../site/assets/js/core/stats.js';
 import * as P from '../../site/assets/js/core/plan-logic.js';
-import { buildPool, orderSet, inRange } from '../../site/assets/js/core/random-logic.js';
+import { buildPool, orderSet, inRange, numberChoices, pickBalanced } from '../../site/assets/js/core/random-logic.js';
 import { mergeKv, mergeEvents, planImport, parseBackup } from '../../site/assets/js/core/backup.js';
 
 let k = 0; const id = () => 'e' + (++k);
@@ -74,7 +74,15 @@ test('random pool (RND-05/06)', () => {
   ];
   const p = buildPool([{ id: 'b', kind: 'quran', range: [1, 43], questions: qs }], { quran2: [1, 20], tuhfa: [1, 61] }, () => 0.3);
   assert.deepEqual(p.questions.map(q => q.id), ['b/next/01']);
-  assert.equal(p.generated.length, 6); assert.ok(p.generated.every(g => g.number >= 1 && g.number <= 20 && g.id === `b/random-number/${g.number}`));
+  assert.equal(p.generated.length, 12); assert.ok(p.generated.every(g => g.number >= 1 && g.number <= 20 && g.id === `b/${g.type}/${g.number}`));
+  assert.deepEqual([...new Set(p.generated.map(g => g.type))], ['random-number', 'which-number']);
+  // «ما رقمها؟»: four distinct choices in order, the right one among them, all inside the range, stable for a seed
+  for (const [num, lo, hi] of [[1, 1, 43], [43, 1, 43], [20, 1, 43], [3, 1, 4], [60, 44, 74]]) {
+    const c = numberChoices(num, lo, hi, 'seed' + num);
+    assert.equal(new Set(c).size, 4); assert.ok(c.includes(num)); assert.ok(c.every(x => x >= lo && x <= hi)); assert.deepEqual(c, [...c].sort((x, y) => x - y));
+    assert.deepEqual(c, numberChoices(num, lo, hi, 'seed' + num));
+  }
+  assert.equal(buildPool([{ id: 'b', kind: 'quran', range: [1, 43], questions: [] }], { quran2: [1, 3], tuhfa: [1, 61] }).generated.filter(g => g.type === 'which-number').length, 0, 'no multiple choice with fewer than four numbers');
   assert.equal(inRange({ answer: [{ chain: [{ ref: '2:5:1-1' }, { ref: '2:21:1-1' }] }] }, { quran2: [1, 20] }), false);
   const o = orderSet([{ src: 'a', type: 'x' }, { src: 'a', type: 'x' }, { src: 'a', type: 'y' }]);
   assert.notDeepEqual([o[0].type, o[1].type], ['x', 'x']);
@@ -97,4 +105,13 @@ test('merge rules (DATA-44): events, kv, mistake tombstones, done union; idempot
   assert.equal(parseBackup(JSON.stringify(data)).ok, true);
   assert.equal(parseBackup('{"format":"x"}').ok, false);
   assert.equal(parseBackup(JSON.stringify({ ...data, kv: { evil: 1 } })).ok, false);
+});
+
+test('random exam: every source gets an equal share', () => {
+  const mk = (src, k) => Array.from({ length: k }, (_, i) => ({ id: `${src}/${i}`, src, type: 'x' }));
+  const count = l => l.reduce((m, q) => (m[q.src] = (m[q.src] || 0) + 1, m), {});
+  assert.deepEqual(count(pickBalanced([...mk('b1', 30), ...mk('b2', 25), ...mk('t', 90)], 15)), { b1: 5, b2: 5, t: 5 });
+  const short = count(pickBalanced([...mk('b1', 2), ...mk('t', 90)], 10)); assert.deepEqual(short, { b1: 2, t: 8 }, 'a short source gives its share away');
+  assert.equal(pickBalanced(mk('t', 3), 10).length, 3);
+  const ids = pickBalanced([...mk('b1', 30), ...mk('t', 90)], 25).map(q => q.id); assert.equal(new Set(ids).size, 25, 'no duplicates');
 });

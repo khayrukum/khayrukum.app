@@ -126,6 +126,21 @@
       }
     },
     {
+      "id": "which-number",
+      "title": {
+        "quran": "ما رقمها؟",
+        "tuhfa": "ما رقمه؟"
+      },
+      "intro": {
+        "quran": "اقرأ الآية ثم اختر رقمها.",
+        "tuhfa": "اقرأ البيت ثم اختر رقمه."
+      },
+      "gradable": {
+        "exam": false,
+        "random": true
+      }
+    },
+    {
       "id": "chapters",
       "title": {
         "tuhfa": "الأبواب"

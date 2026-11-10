@@ -94,7 +94,7 @@ test('unified history: one grade in each exam + one in the random exam = 4 event
     await p.locator('.rt').nth(1).click(); await p.locator('button.g.ok').first().click(); await p.waitForTimeout(300);
   }
   await p.goto(BASE + 'random/'); await settle(p);
-  await p.locator('#rq button.g.bad').click(); await p.waitForTimeout(300);
+  await (async g => { if (await p.locator('#rq .choice').count()) await p.locator('#rq .choice').first().click(); else await p.click('#rq button.g.' + g); })('bad'); await p.waitForTimeout(300);
   await p.goto(BASE + 'history/'); await settle(p);
   assert.match(await p.textContent('.tiles'), /٤/);
   assert.ok(await p.locator('.chips [data-f]').count() >= 4, '«الكل» + one chip per source (HIS-02)');

@@ -50,7 +50,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
   await p.goto(BASE + 'random/'); await settle(p); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
   await p.click('[data-size="25"]'); await p.click('[data-src="baqarah-1"]'); await p.click('[data-quick="tuhfa"][data-a="6"]'); await p.waitForTimeout(100);
   await p.click('#newSet'); await p.waitForTimeout(200);
-  await p.click('button.g.ok'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(100); await p.click('button.g.bad'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(200);
+  const rg = (async g => { if (await p.locator('#rq .choice').count()) await p.locator('#rq .choice').first().click(); else await p.click('#rq button.g.' + g); }); /* a multiple-choice question is answered by its first choice */ await rg('ok'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(100); await rg('bad'); await p.waitForTimeout(100); await p.click('#next'); await p.waitForTimeout(200);
   const setBefore = (await kv(p, 'random:current')).set;
   assert.equal(new Set(setBefore).size, setBefore.length, 'no duplicate question in a run');
   // plan: reps, a checkbox, a mistake

@@ -8,7 +8,7 @@ import { publishedExams, loadExam, loadCorpus, loadMeta, suraRubs, answerRefs } 
 import { getType, isGradable } from '../core/registry.js';
 import { inlineHtml, inlineText, itemText } from '../core/render.js';
 import { grade as writeGrade, newSession, makeSnap } from '../core/grading.js';
-import { buildPool, orderSet, shuffle } from '../core/random-logic.js';
+import { buildPool, orderSet, shuffle, numberChoices, pickBalanced } from '../core/random-logic.js';
 import { parseRef } from '../core/refs.js';
 
 const R = S.random;
@@ -28,15 +28,19 @@ function pool() {
   return buildPool(sel.map(e => ({ id: e.entry.id, kind: e.entry.kind, range: e.entry.range, questions: e.questions.filter(q => isGradable(q.type, 'random')) })), prefs.ranges);
 }
 function resolveQ(qid) {
-  const m = /^(.+)\/random-number\/(\d+)$/.exec(qid);
-  if (m) { const e = exams.find(x => x.entry.id === m[1]); if (!e) return null; const num = +m[2]; return { id: qid, type: 'random-number', src: m[1], kind: e.entry.kind, number: num, ask: e.entry.kind === 'tuhfa' ? R.askBayt(n(num)) : R.askAya(n(num)), prompt: [], answer: [{ ref: e.entry.kind === 'tuhfa' ? `t:${num}` : `2:${num}` }] }; }
+  const m = /^(.+)\/(random|which)-number\/(\d+)$/.exec(qid);
+  if (m) {
+    const e = exams.find(x => x.entry.id === m[1]); if (!e) return null; const num = +m[3]; const t = e.entry.kind === 'tuhfa';
+    const which = m[2] === 'which';
+    return { id: qid, type: `${m[2]}-number`, src: m[1], kind: e.entry.kind, number: num, range: e.entry.range, ask: which ? (t ? R.whichBayt : R.whichAya) : (t ? R.askBayt(n(num)) : R.askAya(n(num))), prompt: which ? [{ ref: t ? `t:${num}` : `2:${num}` }] : [], answer: [{ ref: t ? `t:${num}` : `2:${num}` }] };
+  }
   for (const e of exams) { const q = e.byId.get(qid); if (q) return q; }
   return null;
 }
 
 async function newSet() {
   const p = pool();
-  const picked = orderSet(shuffle(p.questions.concat(p.generated)).slice(0, Math.min(prefs.n, p.questions.length + p.generated.length)));
+  const picked = orderSet(shuffle(pickBalanced(p.questions.concat(p.generated), prefs.n))); // equal share per source
   cur = { set: picked.map(q => q.id), idx: 0, grades: picked.map(() => null), session: newSession(), startedAt: Date.now(), done: false, updatedAt: Date.now() };
   revealed = false; resumedNote = false; ctlOpen = false;
   await store.set('random:current', cur);
@@ -86,11 +90,19 @@ function questionView() {
   const g = cur.grades[i] || '';
   let h = '';
   if (resumedNote) h += `<p class="banner">${esc(R.resumed(n(cur.grades.filter(Boolean).length), n(N)))}</p>`;
-  h += `<article class="q${g ? ' r-' + g : ''}" id="rq"><div class="qtags"><span class="qtag">${esc(e?.entry.short || q.src)}</span><span class="qtag g">${esc(round?.title || q.type)}</span><span class="qn">${esc(R.qOf(n(i + 1), n(N)))}</span>${g ? `<span class="gradetag">· ${esc(S.grades[g])}</span>` : ''}</div>`;
+  h += `<article class="q${g ? ' r-' + g : ''}" id="rq"><div class="qtags"><span class="qtag">${esc(e?.entry.short || q.src)}</span><span class="qtag g">${esc(round?.title || (t.choice ? (q.kind === 'tuhfa' ? R.whichTitleT : R.whichTitleQ) : q.type))}</span><span class="qn">${esc(R.qOf(n(i + 1), n(N)))}</span>${g ? `<span class="gradetag">· ${esc(S.grades[g])}</span>` : ''}</div>`;
   h += `<div class="ask">${q.ask ? inlineHtml(q.ask, corpus) : esc(round?.intro || '')}</div>`;
   h += t.render(q, { corpus });
+  if (t.choice) {
+    // multiple choice: a tap answers and grades the question; the choice is kept with the set
+    const pick = cur.picks?.[i]; const fam2 = fam(e.entry); const lo = Math.max(q.range[0], prefs.ranges[fam2]?.[0] ?? q.range[0]), hi = Math.min(q.range[1], prefs.ranges[fam2]?.[1] ?? q.range[1]);
+    const [a, b] = lo <= q.number && q.number <= hi && hi - lo >= 3 ? [lo, hi] : q.range;
+    h += `<div class="choices" role="group" aria-label="${esc(R.choose)}">${numberChoices(q.number, a, b, cur.session + q.id).map(c => `<button type="button" class="choice${pick != null && c === q.number ? ' right' : ''}${pick === c && c !== q.number ? ' wrong' : ''}" data-pick="${c}"${pick != null ? ' disabled' : ''} aria-pressed="${pick === c}">${n(c)}</button>`).join('')}</div>`;
+    if (pick != null) h += `<p class="banner ${pick === q.number ? 'good' : 'warn'}" role="status">${esc(pick === q.number ? R.pickRight : R.pickWrong(n(q.number)))}</p>`;
+  } else {
   if (revealed) h += `<div class="ans">${t.answerView(q, { corpus })}</div>`;
   h += `<div class="row"><button type="button" class="btn${revealed ? '' : ' show'}" id="reveal" aria-expanded="${revealed}">${esc(revealed ? S.exam.hide : S.exam.reveal)}</button><div class="grade" role="group" aria-label="${esc(S.exam.gradeGroup)}">${['ok', 'mid', 'bad'].map(k => `<button type="button" class="g ${k}" data-g="${k}" aria-pressed="${g === k}">${esc(S.grades[k])}</button>`).join('')}</div></div></article>`;
+  }
   h += `<div class="roundnav"><button type="button" class="btn" id="prev"${i === 0 ? ' disabled' : ''}>${esc(R.prev)}</button>${i < N - 1 ? `<button type="button" class="btn show" id="next">${esc(R.next)}</button>` : `<button type="button" class="btn show" id="result">${esc(R.result)}</button>`}</div>`;
   h += `<div class="pdots" aria-label="${esc(R.progress)}" role="img">${cur.grades.map((x, k) => `<i class="${x || ''}${k === i ? ' cur' : ''}"></i>`).join('')}</div>`;
   h += `<div class="row"><button type="button" class="btn" id="newSet2">${esc(R.newSet)}</button></div>`;
@@ -122,6 +134,12 @@ function bind() {
       const q = resolveQ(cur.set[cur.idx]); const prev = cur.grades[cur.idx]; const g = prev === d.g ? null : d.g;
       cur.grades[cur.idx] = g; await saveCur(); render(); ui.$(`[data-g="${d.g}"]`)?.focus();
       writeGrade({ session: cur.session, qid: q.id, g, tool: 'random', src: q.src, type: q.type, snap: g ? snapOf(q) : undefined });
+      return;
+    }
+    else if (d.pick) {
+      const q = resolveQ(cur.set[cur.idx]); const pick = +d.pick; const g = pick === q.number ? 'ok' : 'bad';
+      cur.picks = { ...(cur.picks || {}), [cur.idx]: pick }; cur.grades[cur.idx] = g; await saveCur(); render(); ui.$('#next, #result')?.focus();
+      writeGrade({ session: cur.session, qid: q.id, g, tool: 'random', src: q.src, type: q.type, snap: snapOf(q) });
       return;
     }
     else if (b.id === 'prev') { cur.idx = Math.max(0, cur.idx - 1); revealed = false; resumedNote = false; await saveCur(); render(); scrollTop(); return; }

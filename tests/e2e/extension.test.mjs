@@ -83,7 +83,7 @@ test('TST-30: a published baqarah-3 fixture appears on the hub, in the random ex
   assert.ok(set.includes('baqarah-3/next/01') && set.includes('baqarah-3/mid-verse/01'), 'rub\' 5 questions are in the pool');
   assert.ok(!set.includes('baqarah-3/next/02'), 'the rub\' 6 question (answer 2:93) drops out of the rub\' 5 range');
   assert.ok(set.filter(id => id.includes('/random-number/')).every(id => { const n = +id.split('/').pop(); return n >= 75 && n <= 91; }), 'generated numbers stay inside the range');
-  await p.click('button.g.ok'); await p.waitForTimeout(200);
+  await (async g => { if (await p.locator('#rq .choice').count()) await p.locator('#rq .choice').first().click(); else await p.click('#rq button.g.' + g); })('ok'); await p.waitForTimeout(200);
 
   // history: both events, with the new source name and a filter chip
   await p.goto(BASE + 'history/'); await settle();

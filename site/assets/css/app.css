@@ -349,3 +349,10 @@ details[open].panel > summary::after { content: "－"; }
 details.more > summary { cursor: pointer; color: var(--accent); min-block-size: 2.75rem; display: flex; align-items: center; }
 .pol h2 { display: flex; align-items: center; gap: 0.6rem; font-size: 1.05rem; }
 .pn { flex: none; inline-size: 1.8rem; block-size: 1.8rem; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 0.9rem; }
+
+/* multiple choice */
+.choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+.choice { min-block-size: 3.25rem; border: 1px solid var(--line); border-radius: 0.8rem; background: var(--surface); color: var(--ink); font: inherit; font-size: 1.35rem; font-weight: 600; cursor: pointer; }
+.choice:disabled { cursor: default; opacity: 0.55; }
+.choice.right { background: var(--ok); border-color: var(--ok); color: var(--accent-ink); opacity: 1; }
+.choice.wrong { background: var(--bad); border-color: var(--bad); color: var(--surface); opacity: 1; }
