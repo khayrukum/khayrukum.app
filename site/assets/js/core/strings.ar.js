@@ -75,7 +75,7 @@ export const S = {
     score: (ok, mid, bad, t) => `نتيجتك: ✓ ${ok} · متردد ${mid} · ✗ ${bad} · من ${t} سؤال`,
     roundsLabel: 'جولات الاختبار',
     q: i => `سؤال ${i}`,
-    reveal: 'اكشف الإجابة', hide: 'أخفِ',
+    reveal: 'اكشف الإجابة', hide: 'أخفِ', answerH: 'الإجابة',
     gradeGroup: 'قيّم إجابتك',
     start: 'ابدأ الاختبار ←',
     listen: '▶ استمع', listenBayt: '▶ استمع إلى البيت', stop: '⏸ إيقاف',

@@ -30,8 +30,11 @@ before(async () => {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'khayr-tst30-'));
   fs.cpSync(path.join(ROOT, 'site'), tmp, { recursive: true, filter: s => !/\/audio(\/|$)/.test(s.slice(path.join(ROOT, 'site').length)) || s.includes('/data/audio') });
   const idxP = path.join(tmp, 'data/exams/index.json'); const idx = JSON.parse(fs.readFileSync(idxP, 'utf8'));
-  const e = idx.exams.find(x => x.id === 'baqarah-3'); assert.ok(e, 'index.json lists baqarah-3 as «soon»'); assert.equal(e.status, 'soon');
+  // The real exam 3 is published now; the test still proves the point by swapping in a three-question fixture
+  // (data only) and dropping the «soon» entry that follows it.
+  const e = idx.exams.find(x => x.id === 'baqarah-3'); assert.ok(e, 'index.json lists baqarah-3');
   Object.assign(e, { status: 'published', file: 'baqarah-3.json', pages: [11, 16] });
+  idx.exams = idx.exams.filter(x => x.status !== 'soon');
   fs.writeFileSync(idxP, JSON.stringify(idx)); fs.writeFileSync(path.join(tmp, 'data/exams/baqarah-3.json'), JSON.stringify(FIXTURE));
   srv = createServer(tmp); await new Promise(r => srv.listen(0, r)); BASE = `http://localhost:${srv.address().port}/`;
   browser = await chromium.launch();

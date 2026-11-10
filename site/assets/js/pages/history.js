@@ -35,7 +35,7 @@ function reviewItem(r) {
     body = `${s.ask ? `<div class="ask">${esc(s.ask)}</div>` : ''}${s.prompt ? `<div>${esc(s.prompt)}</div>` : ''}${s.answer ? `<div class="ans"><div class="al"><span class="ref">${esc(refsText(s.answerRefs))}</span><span class="tx">${/random-number/.test(r.qid) && s.answerRefs?.[0] ? refHtml(s.answerRefs[0], corpus) : esc(s.answer)}</span></div></div>` : ''}`;
   }
   const link = q && !old ? ` · <a href="${href(`exam/?id=${encodeURIComponent(e.src)}#q=${encodeURIComponent(r.qid)}`)}">${esc(H.open)}</a>` : '';
-  return `<div class="rv"><div class="qtags"><span class="qtag">${esc(srcName(e.src))}</span><span class="qtag g">${esc(typeName(e.type, e.src))}</span>${old ? `<span class="qtag">${esc(H.old)}</span>` : ''}${getType(e.type)?.choice ? `<span class="qtag">${esc(H.auto)}</span>` : ''}</div>
+  return `<div class="rv"><div class="qtags"><span class="qtag">${esc(srcName(e.src))}</span><span class="qtag alt">${esc(typeName(e.type, e.src))}</span>${old ? `<span class="qtag">${esc(H.old)}</span>` : ''}${getType(e.type)?.choice ? `<span class="qtag">${esc(H.auto)}</span>` : ''}</div>
     <span class="muted small">${esc(H.lastTime(S.grades[e.g], fullDate(e.t)))} · ${esc(H.tally(n(r.counts.ok), n(r.counts.mid), n(r.counts.bad)))}${link}</span>${body}</div>`;
 }
 

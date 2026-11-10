@@ -117,7 +117,7 @@ test('canonical URLs, unknown and soon exams, #q= (IA-01/03/06)', async () => {
   assert.equal(new URL(p.url()).pathname + new URL(p.url()).search, '/exam/?id=baqarah-1');
   assert.equal(await p.getAttribute('link[rel=canonical]', 'href'), 'https://khayrukum.app/exam/?id=baqarah-1');
   await p.goto(BASE + 'exam/?id=nope'); await settle(p); assert.match(await p.textContent('h1'), /لم نجد هذا الاختبار/);
-  await p.goto(BASE + 'exam/?id=baqarah-3'); await settle(p); assert.match(await p.textContent('h1'), /هذا الاختبار لم يُنشر بعد/);
+  await p.goto(BASE + 'exam/?id=baqarah-4'); await settle(p); assert.match(await p.textContent('h1'), /هذا الاختبار لم يُنشر بعد/);
   await p.goto(BASE + 'exam/?id=baqarah-2#q=baqarah-2/chain/03'); await settle(p);
   assert.equal(await p.getAttribute('.rt[aria-selected="true"]', 'data-round'), 'chain');
   await ctx.close();

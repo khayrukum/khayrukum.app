@@ -2,7 +2,7 @@
 :root {
   --bg: #f2f4f0; --surface: #ffffff; --ink: #1c2925; --muted: #56655f; --line: #c9d3cb; --line-soft: #dbe2db;
   --accent: #1f6b5c; --accent-ink: #ffffff; --accent-soft: #e1eee8; --gold: #85661f; --gold-soft: #f4ecd9;
-  --ok: #1f6b5c; --ok-soft: #e1eee8; --mid: #8a5a00; --mid-soft: #f8ecd2; --bad: #a2361f; --bad-soft: #f7e3dc;
+  --ok: #1f6b5c; --ok-soft: #e1eee8; --mid: #7a5f0c; --mid-soft: #f6efcf; --bad: #9a4b1f; --bad-soft: #f7e6dc;
   --warn: #8f4419; --warn-soft: #f7e6dc;
   --f-display: "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
   --f-body: "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
@@ -16,14 +16,14 @@
   :root:not([data-theme="light"]) {
     --bg: #111714; --surface: #19221f; --ink: #e5ece8; --muted: #a2b1aa; --line: #3a4843; --line-soft: #2a3632;
     --accent: #62b6a2; --accent-ink: #0d1714; --accent-soft: #1d3731; --gold: #d6b066; --gold-soft: #2f2a1d;
-    --ok: #62b6a2; --ok-soft: #1d3731; --mid: #e3b45a; --mid-soft: #3a2f17; --bad: #f0947a; --bad-soft: #3d2219;
+    --ok: #62b6a2; --ok-soft: #1d3731; --mid: #e2c46a; --mid-soft: #332d17; --bad: #e9a07a; --bad-soft: #3a2519;
     --warn: #e9a07a; --warn-soft: #3a2519; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #111714; --surface: #19221f; --ink: #e5ece8; --muted: #a2b1aa; --line: #3a4843; --line-soft: #2a3632;
   --accent: #62b6a2; --accent-ink: #0d1714; --accent-soft: #1d3731; --gold: #d6b066; --gold-soft: #2f2a1d;
-  --ok: #62b6a2; --ok-soft: #1d3731; --mid: #e3b45a; --mid-soft: #3a2f17; --bad: #f0947a; --bad-soft: #3d2219;
+  --ok: #62b6a2; --ok-soft: #1d3731; --mid: #e2c46a; --mid-soft: #332d17; --bad: #e9a07a; --bad-soft: #3a2519;
   --warn: #e9a07a; --warn-soft: #3a2519; color-scheme: dark;
 }
 
@@ -67,7 +67,8 @@ p { margin: 0; }
   padding: 0.45rem 0.9rem; min-block-size: 2.75rem; min-inline-size: 2.75rem; line-height: 1.4;
   display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; text-decoration: none; color: inherit;
 }
-.btn.primary, .btn.show { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.show { background: var(--gold-soft); color: var(--ink); border-color: transparent; }
 .btn.danger { border-color: var(--bad); color: var(--bad); }
 .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
 .btn.small { min-block-size: 2.25rem; padding: 0.25rem 0.7rem; font-size: 0.9rem; }
@@ -152,23 +153,24 @@ a.card:hover { border-color: var(--accent); }
 .rintro { display: flex; flex-direction: column; gap: 0.25rem; scroll-margin-block-start: 4.5rem; }
 .qs { display: flex; flex-direction: column; gap: 0.75rem; }
 .q { background: var(--surface); border: 1px solid var(--line-soft); border-inline-start: 0.3rem solid var(--line-soft); border-radius: var(--radius); padding: 0.9rem; display: flex; flex-direction: column; gap: 0.6rem; scroll-margin-block-start: 4.5rem; }
-.q.r-ok { border-inline-start-color: var(--ok); background: color-mix(in srgb, var(--ok-soft) 45%, var(--surface)); }
-.q.r-mid { border-inline-start-color: var(--mid); background: color-mix(in srgb, var(--mid-soft) 45%, var(--surface)); }
-.q.r-bad { border-inline-start-color: var(--bad); background: color-mix(in srgb, var(--bad-soft) 45%, var(--surface)); }
+.q.r-ok { border-color: var(--ok); }
+.q.r-mid { border-color: var(--mid); }
+.q.r-bad { border-color: var(--bad); }
 .qtop { display: flex; gap: 0.5rem; align-items: baseline; flex-wrap: wrap; }
 .qn { font-family: var(--f-display); color: var(--muted); font-size: 0.9rem; }
 .gradetag { font-size: 0.85rem; font-weight: 600; }
 .ask { font-weight: 600; }
 .prompt { display: flex; flex-direction: column; gap: 0.25rem; }
-.ans { border-block-start: 1px dashed var(--line); padding-block-start: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.ans { background: var(--bg); border-inline-start: 0.2rem solid var(--gold); border-radius: 0.6rem; padding: 0.65rem 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.ans-h { font-size: 0.8rem; font-weight: 600; color: var(--gold); }
 .al { display: flex; gap: 0.6rem; align-items: baseline; }
-.al .ref { flex: none; font-family: var(--f-display); color: var(--gold); min-inline-size: 1.6rem; font-size: 0.95rem; }
+.al .ref { flex: none; font-family: var(--f-display); color: var(--gold); background: var(--gold-soft); border-radius: 0.4rem; padding: 0.05rem 0.45rem; min-inline-size: 1.9rem; text-align: center; font-size: 0.85rem; }
 .al .tx { min-inline-size: 0; flex: 1 1 auto; }
-.tip { background: var(--gold-soft); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.95rem; }
+.tip { background: var(--surface); color: var(--muted); border: 1px solid var(--line-soft); border-radius: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.95rem; }
 .grade { display: flex; gap: 0.4rem; margin-inline-start: auto; flex-wrap: wrap; }
 .g { border: 1px solid var(--line); background: var(--surface); border-radius: 0.6rem; padding: 0.3rem 0.8rem; min-block-size: 2.75rem; min-inline-size: 2.75rem; }
 .g.ok[aria-pressed="true"] { background: var(--ok); color: var(--accent-ink); border-color: var(--ok); }
-.g.mid[aria-pressed="true"] { background: var(--mid); color: var(--surface); border-color: var(--mid); }
+.g.mid[aria-pressed="true"] { background: var(--mid-soft); color: var(--mid); border-color: var(--mid); }
 .g.bad[aria-pressed="true"] { background: var(--bad); color: var(--surface); border-color: var(--bad); }
 .g[aria-pressed="true"]::before { content: "● "; }
 .sum ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
@@ -261,7 +263,7 @@ details[open].panel > summary::after { content: "－"; }
 .rng select { min-inline-size: 5rem; }
 .qtags { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
 .qtag { font-size: 0.85rem; border-radius: 0.35rem; background: var(--accent-soft); color: var(--accent); padding-inline: 0.45rem; }
-.qtag.g { background: var(--gold-soft); color: var(--gold); }
+.qtag.alt { background: var(--gold-soft); color: var(--gold); }
 .pdots { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 .pdots i { inline-size: 0.6rem; block-size: 0.6rem; border-radius: 50%; border: 1px solid var(--line); display: inline-block; }
 .pdots i.cur { border-color: var(--accent); border-width: 0.15rem; }

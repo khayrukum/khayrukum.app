@@ -112,7 +112,7 @@ function questionView() {
   const g = cur.grades[i] || '';
   let h = '';
   if (resumedNote && !DUE) h += `<p class="banner">${esc(R.resumed(n(cur.grades.filter(Boolean).length), n(N)))}</p>`;
-  h += `<article class="q${g ? ' r-' + g : ''}" id="rq"><div class="qtags"><span class="qtag">${esc(e?.entry.short || q.src)}</span><span class="qtag g">${esc(round?.title || (t.choice ? (q.kind === 'tuhfa' ? R.whichTitleT : R.whichTitleQ) : q.type))}</span><span class="qn">${esc(R.qOf(n(i + 1), n(N)))}</span>${g ? `<span class="gradetag">· ${esc(S.grades[g])}</span>` : ''}</div>`;
+  h += `<article class="q${g ? ' r-' + g : ''}" id="rq"><div class="qtags"><span class="qtag">${esc(e ? `${e.entry.short} · ${e.entry.sub}` : q.src)}</span><span class="qtag alt">${esc(round?.title || (t.choice ? (q.kind === 'tuhfa' ? R.whichTitleT : R.whichTitleQ) : q.type))}</span><span class="qn">${esc(R.qOf(n(i + 1), n(N)))}</span>${g ? `<span class="gradetag">· ${esc(S.grades[g])}</span>` : ''}</div>`;
   h += `<div class="ask">${q.ask ? inlineHtml(q.ask, corpus) : esc(round?.intro || '')}</div>`;
   h += t.render(q, { corpus });
   if (t.choice) {
@@ -122,10 +122,10 @@ function questionView() {
     h += `<div class="choices" role="group" aria-label="${esc(R.choose)}">${numberChoices(q.number, a, b, cur.session + q.id).map(c => `<button type="button" class="choice${pick != null && c === q.number ? ' right' : ''}${pick === c && c !== q.number ? ' wrong' : ''}" data-pick="${c}"${pick != null ? ' disabled' : ''} aria-pressed="${pick === c}">${n(c)}</button>`).join('')}</div>`;
     if (pick != null) h += `<p class="banner ${pick === q.number ? 'good' : 'warn'}" role="status">${esc(pick === q.number ? R.pickRight : R.pickWrong(n(q.number)))}</p>`;
   } else {
-  if (revealed) h += `<div class="ans">${t.answerView(q, { corpus })}</div>`;
+  if (revealed) h += `<div class="ans"><div class="ans-h">${esc(S.exam.answerH)}</div>${t.answerView(q, { corpus })}</div>`;
   h += `<div class="row"><button type="button" class="btn${revealed ? '' : ' show'}" id="reveal" aria-expanded="${revealed}">${esc(revealed ? S.exam.hide : S.exam.reveal)}</button><div class="grade" role="group" aria-label="${esc(S.exam.gradeGroup)}">${['ok', 'mid', 'bad'].map(k => `<button type="button" class="g ${k}" data-g="${k}" aria-pressed="${g === k}">${esc(S.grades[k])}</button>`).join('')}</div></div></article>`;
   }
-  h += `<div class="roundnav"><button type="button" class="btn" id="prev"${i === 0 ? ' disabled' : ''}>${esc(R.prev)}</button>${i < N - 1 ? `<button type="button" class="btn show" id="next">${esc(R.next)}</button>` : `<button type="button" class="btn show" id="result">${esc(R.result)}</button>`}</div>`;
+  h += `<div class="roundnav"><button type="button" class="btn" id="prev"${i === 0 ? ' disabled' : ''}>${esc(R.prev)}</button>${i < N - 1 ? `<button type="button" class="btn primary" id="next">${esc(R.next)}</button>` : `<button type="button" class="btn primary" id="result">${esc(R.result)}</button>`}</div>`;
   h += `<div class="pdots" aria-label="${esc(R.progress)}" role="img">${cur.grades.map((x, k) => `<i class="${x || ''}${k === i ? ' cur' : ''}"></i>`).join('')}</div>`;
   if (!DUE) h += `<div class="row"><button type="button" class="btn" id="newSet2">${esc(R.newSet)}</button></div>`;
   return h;

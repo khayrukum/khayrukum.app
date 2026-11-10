@@ -70,7 +70,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
     assert.equal(await p.$eval('.rt[aria-selected="true"]', e => e.dataset.round), 'random-number'); assert.equal(await p.locator('.bignum').innerText(), rolled, label + ': random number restored');
     await p.goto(BASE + 'random/'); await settle(p);
     assert.equal(await p.$eval('[data-size][aria-pressed="true"]', b => b.dataset.size), '25', label + ': set size');
-    assert.deepEqual(await p.$$eval('[data-src]', b => b.map(x => x.getAttribute('aria-pressed'))), ['false', 'true', 'true'], label + ': sources');
+    assert.deepEqual(await p.$$eval('[data-src]', b => b.map(x => x.getAttribute('aria-pressed'))), ['false', 'true', 'true', 'true'], label + ': sources');
     assert.deepEqual([await p.inputValue('#from-tuhfa'), await p.inputValue('#to-tuhfa')], ['6', '16'], label + ': range');
     assert.match(await p.locator('#rq .qn').innerText(), /سؤال ٣ من/, label + ': position in the set');
     assert.match(await p.locator('#play .banner').innerText(), /تابعتَ من حيث توقفت · ٢ من/, label + ': RND-08 note');
@@ -82,7 +82,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
     await p.goto(BASE + 'history/'); await settle(p);
     assert.equal(await p.locator('.evline').count(), 6, label + ': 6 history lines');
     const ev = (await events(p)).filter(e => !e.deleted);
-    assert.deepEqual([...new Set(ev.map(e => e.tool + ':' + e.src))].sort(), ['exam:baqarah-1', 'exam:baqarah-2', 'exam:tuhfa', 'random:baqarah-2', 'random:tuhfa'].filter(x => ev.some(e => e.tool + ':' + e.src === x)).sort());
+    assert.deepEqual([...new Set(ev.map(e => e.tool + ':' + e.src))].sort(), ['exam:baqarah-1', 'exam:baqarah-2', 'exam:tuhfa', 'random:baqarah-2', 'random:baqarah-3', 'random:tuhfa'].filter(x => ev.some(e => e.tool + ':' + e.src === x)).sort());
     assert.ok(ev.some(e => e.tool === 'random') && ['baqarah-1', 'baqarah-2', 'tuhfa'].every(s => ev.some(e => e.tool === 'exam' && e.src === s)), label + ': events from every exam and from the random exam');
   };
   await p.reload(); await check('reload');

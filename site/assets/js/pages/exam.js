@@ -89,7 +89,7 @@ function questionHtml(q, i) {
   let h = `<article class="q${g ? ' r-' + g : ''}" id="${qDom(q.id)}"><div class="qtop"><span class="qn">${esc(E.q(n(i + 1)))}</span>${g ? `<span class="gradetag">· ${esc(S.grades[g])}</span>` : ''}${q.ask ? `<span class="ask">${inlineHtml(q.ask, corpus)}</span>` : ''}</div>`;
   h += t.render(q, ctx);
   if (open) {
-    h += `<div class="ans">${t.answerView(q, ctx)}`;
+    h += `<div class="ans"><div class="ans-h">${esc(S.exam.answerH)}</div>${t.answerView(q, ctx)}`;
     if (ex.kind === 'tuhfa') { const b = baytNumbers(q.answer)[0]; if (b) h += `<div>${playBtn('bayt:' + b, E.listenBayt)}</div>`; } // EX-11: first bayt reference
     h += '</div>';
   }
