@@ -108,7 +108,9 @@ p { margin: 0; }
 .qtext .vnum { font-size: 1.05rem; color: var(--gold); white-space: nowrap; }
 .bayt { font-family: var(--f-bayt); font-size: 1.2rem; line-height: 1.9; display: flex; flex-direction: column; gap: 0 2rem; }
 .bayt .h { display: block; }
-@media (min-width: 37.5em) { .bayt.both { flex-direction: row; flex-wrap: wrap; } .bayt.both .h { flex: 1 1 0; min-inline-size: 0; } }
+/* narrow screens: the second hemistich sits toward the far edge, as in printed mutun */
+.bayt.both .h + .h { align-self: flex-end; margin-inline-start: 2.5rem; text-align: end; }
+@media (min-width: 37.5em) { .bayt.both { flex-direction: row; flex-wrap: wrap; } .bayt.both .h { flex: 1 1 0; min-inline-size: 0; } .bayt.both .h + .h { align-self: auto; margin-inline-start: 0; text-align: start; } }
 .frag { font-family: var(--f-bayt); font-size: 1.2rem; }
 .frag.qf { font-family: var(--f-quran); font-size: 1.375rem; line-height: 2; }
 .dots { color: var(--muted); }
