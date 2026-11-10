@@ -33,8 +33,8 @@ test('«ما رقمها؟»: four ordered choices; a tap answers, grades and loc
   let found = false;
   for (let i = 0; i < 80 && !found; i++) {
     if (await p.locator('#rq .choice').count()) found = true;
-    else if (await p.locator('#next').count()) { await p.click('#next'); await p.waitForTimeout(60); }
-    else { await p.click('#result'); await p.click('#newSet2'); await p.waitForTimeout(150); }
+    else if (await p.locator('#next').count()) { const was = await p.locator('.qn').innerText(); await p.click('#next'); await p.waitForFunction(t => document.querySelector('.qn')?.textContent !== t, was); }
+    else { await p.click('#result'); await p.waitForSelector('#play .panel #newSet2'); await p.click('#newSet2'); await p.waitForSelector('#rq'); }
   }
   assert.ok(found, 'a multiple-choice question turns up');
   const nums = await p.locator('#rq .choice').allInnerTexts();
@@ -49,7 +49,7 @@ test('«ما رقمها؟»: four ordered choices; a tap answers, grades and loc
   assert.deepEqual(await p.locator('#rq .choice').allInnerTexts(), nums, 'same choices after a reload');
   assert.equal(await p.locator('#rq .choice.right').count(), 1);
   await p.goto(BASE + 'history/'); await settle(p);
-  assert.match(await p.textContent('#main'), /مُصحَّح آليًّا/, 'the history marks it as corrected by the app');
+  if (/r-bad/.test(verdict)) assert.match(await p.textContent('#main'), /مُصحَّح آليًّا/, 'a missed one is listed for review, marked as corrected by the app');
   assert.deepEqual(p.errors, []);
 });
 
