@@ -4,7 +4,7 @@
   --accent: #1f6b5c; --accent-ink: #ffffff; --accent-soft: #e1eee8; --gold: #85661f; --gold-soft: #f4ecd9;
   --ok: #1f6b5c; --ok-soft: #e1eee8; --mid: #8a5a00; --mid-soft: #f8ecd2; --bad: #a2361f; --bad-soft: #f7e3dc;
   --warn: #8f4419; --warn-soft: #f7e6dc;
-  --f-display: "Reem Kufi", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --f-display: "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
   --f-body: "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
   --f-bayt: "Amiri", "Traditional Arabic", serif;
   --f-quran: "Amiri Quran", "Amiri", "Traditional Arabic", serif;
@@ -334,3 +334,18 @@ details[open].panel > summary::after { content: "－"; }
 .notice { font-family: ui-monospace, monospace; font-size: 0.8rem; white-space: pre-wrap; direction: ltr; text-align: start; background: var(--bg); border: 1px solid var(--line-soft); border-radius: 0.5rem; padding: 0.6rem; overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+
+/* about / privacy */
+.lead { font-size: 1.1rem; line-height: 1.9; margin: 0; }
+.center { text-align: center; }
+.feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
+.feat li { display: flex; flex-direction: column; gap: 0.1rem; padding-inline-start: 0.85rem; border-inline-start: 0.2rem solid var(--accent-soft); }
+.feat li span { color: var(--muted); }
+.src { display: flex; flex-direction: column; gap: 0.35rem; padding-block-start: 0.75rem; border-block-start: 1px solid var(--line-soft); }
+.src:first-of-type { border-block-start: 0; padding-block-start: 0; }
+.src h3 { font-size: 1rem; color: var(--accent); }
+.src p, .panel > p { margin: 0; }
+.src ul { margin: 0; padding-inline-start: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; }
+details.more > summary { cursor: pointer; color: var(--accent); min-block-size: 2.75rem; display: flex; align-items: center; }
+.pol h2 { display: flex; align-items: center; gap: 0.6rem; font-size: 1.05rem; }
+.pn { flex: none; inline-size: 1.8rem; block-size: 1.8rem; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 0.9rem; }

@@ -127,7 +127,7 @@ test('offline after the first visit: every page, reloads and URL variants work; 
   assert.deepEqual(list.filter(u => !cached.includes(u)), [], 'every precache entry is in the app cache');
   await ctx.setOffline(true);
   const pages = { '': 'خيركم من تعلّمه', 'plan/': 'خطة تثبيت البقرة', 'exam/?id=baqarah-1': 'اختبار ١ · البقرة ١–٤٣', 'exam/?id=baqarah-2': 'اختبار ٢ · البقرة ٤٤–٧٤', 'exam/?id=tuhfa': 'اختبار تحفة الأطفال',
-    'random/': 'الاختبار العشوائي', 'history/': 'سجلي', 'listen/': 'استماع تحفة الأطفال', 'settings/': 'الإعدادات', 'about/': 'عن الموقع', 'privacy/': 'الخصوصية', '404.html': 'الصفحة غير موجودة', 'no-such-page/': 'الصفحة غير موجودة',
+    'random/': 'الاختبار العشوائي', 'history/': 'سجلي', 'listen/': 'استماع تحفة الأطفال', 'settings/': 'الإعدادات', 'about/': 'عن التطبيق', 'privacy/': 'سياسة الخصوصية', '404.html': 'الصفحة غير موجودة', 'no-such-page/': 'الصفحة غير موجودة',
     '?source=pwa': 'خيركم من تعلّمه', 'exam/index.html?id=tuhfa&x=1': 'اختبار تحفة الأطفال' };
   for (const [u, h1] of Object.entries(pages)) {
     await p.goto(BASE + u); await p.waitForFunction(t => document.querySelector('h1')?.textContent === t, h1, { timeout: 8000 });

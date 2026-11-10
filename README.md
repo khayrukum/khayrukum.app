@@ -56,10 +56,10 @@ node tools/release-check.mjs     # TST-60 release gate
 
 ### Known limitation
 Background audio with the screen locked in an iOS home-screen web app was not verified (AUD-16 needs a real iPhone);
-«عن الموقع» says to use Safari if playback stops.
+«عن التطبيق» says to use Safari if playback stops.
 
 ### Licenses
 Code: MIT (`LICENSE`). Quran text (`data/source/quran-*`, `site/data/quran/`): Tanzil terms — verbatim copies only,
-attribution with a link to tanzil.net, notice kept (it is in every Quran data file and on «عن الموقع»).
+attribution with a link to tanzil.net, notice kept (it is in every Quran data file and on «عن التطبيق»).
 Recitation: all rights reserved to the reciter, used with permission (not in this repository).
 Fonts: SIL OFL. Other content: © the project, all rights reserved.

@@ -19,8 +19,8 @@ Status on 2026-11-07, branch `v1`. Items are ordered by what blocks the first re
 ## 1. Fonts (NFR-TYP-01, NFR-PERF-05, LIC-30) — done
 
 The fonts are in `site/assets/fonts/` with their OFL texts in `LICENSES/`. They were taken unmodified from
-github.com/google/fonts (`ofl/reemkufi`, `ofl/ibmplexsansarabic`, `ofl/amiri`, `ofl/amiriquran`) and only re-wrapped
-as WOFF2 (same glyphs, same names). Reem Kufi is the variable font (`reem-kufi-vf.woff2`, weights 400–700).
+github.com/google/fonts (`ofl/ibmplexsansarabic`, `ofl/amiri`, `ofl/amiriquran`) and only re-wrapped
+as WOFF2 (same glyphs, same names). Headings use IBM Plex Sans Arabic (Reem Kufi was dropped: hard to read at small sizes).
 
 ## 2. Tuhfa verification (LIC-11, OWNER-2) — done
 
@@ -60,7 +60,7 @@ Create a Cloudflare Web Analytics *manual* site for khayrukum.app and put its to
 ## 6. Real-device tests (TST-50, AUD-16, NFR-BRW-01)
 
 Run M-01…M-11 on one iPhone (Safari and home-screen app) and one Android phone before the first release that
-ships audio. If background audio fails in the iOS home-screen app, the limitation note is already on «عن الموقع».
+ships audio. If background audio fails in the iOS home-screen app, the limitation note is already on «عن التطبيق».
 
 ## 7. Later
 
