@@ -1,6 +1,6 @@
 // Hub «/» (HUB-01…09, §2.2).
 import { S } from '../core/strings.ar.js';
-import { esc, n, npct, when } from '../core/fmt.js';
+import { esc, n, npct, when, soon } from '../core/fmt.js';
 import { href, url, config } from '../core/base.js';
 import * as store from '../core/store.js';
 import * as ui from '../core/ui.js';
@@ -11,6 +11,7 @@ import { isGradable } from '../core/registry.js';
 import { attemptTally, live } from '../core/stats.js';
 import { collection, cachedCount } from '../core/audio-cache.js';
 import { planTotals } from '../core/plan-logic.js';
+import { dueNow } from '../core/srs.js';
 
 const main = ui.$('#main');
 const card = (link, num, numCls, title, sub, key) =>
@@ -35,6 +36,7 @@ async function render() {
   </header>
   <div id="hints" class="stack"></div>
   <section class="sec"><h2>${esc(S.hub.secAll)}</h2><ul class="list">
+    ${card('random/?due=1', '☀', ' g', S.hub.due, S.hub.dueSub, 'due')}
     ${card('random/', '↻', ' g', S.hub.random, S.hub.randomSub, 'random')}
     ${card('history/', '٪', '', S.hub.history, S.hub.historySub, 'history')}
   </ul></section>
@@ -78,6 +80,8 @@ async function progress(idx) {
   } else put('random', '');
   // HUB-04: history card
   const ev = live(await store.events());
+  const d = dueNow(ev);
+  put('due', `<span>${esc(d.due.length ? S.hub.dueCount(n(d.due.length)) : d.nextAt ? S.hub.dueLater(soon(d.nextAt, S.days)) : S.hub.dueClear)}</span>`);
   if (ev.length) {
     const ok = ev.filter(x => x.g === 'ok').length, last = Math.max(...ev.map(x => x.t));
     put('history', `<span>${esc(S.hub.histLine(n(ev.length), npct(ok, ev.length), when(last)))}</span>`);

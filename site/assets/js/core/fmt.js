@@ -18,6 +18,13 @@ export const weekday = t => new Date(t).toLocaleDateString('ar-EG', { weekday: '
 export const dayMonth = t => new Date(t).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
 export const fullDate = t => new Date(t).toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' });
 export const time = t => new Date(t).toLocaleTimeString('ar-EG', { hour: 'numeric', minute: '2-digit' });
+/** A coming day: «غدًا», the weekday within a week, otherwise the date. */
+export function soon(t, words, now = Date.now()) {
+  const d0 = new Date(now); d0.setHours(0, 0, 0, 0);
+  const d1 = new Date(t); d1.setHours(0, 0, 0, 0);
+  const days = Math.round((d1 - d0) / 86400000);
+  return days <= 0 ? words.today : days === 1 ? words.tomorrow : days <= 6 ? weekday(t) : dayMonth(t);
+}
 /** HUB-04: weekday if within 6 days, otherwise the date. */
 export function when(t, now = Date.now()) {
   const d0 = new Date(now); d0.setHours(0, 0, 0, 0);

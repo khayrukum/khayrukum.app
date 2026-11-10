@@ -67,7 +67,8 @@
         "tool": {
           "enum": [
             "exam",
-            "random"
+            "random",
+            "review"
           ]
         },
         "src": {
