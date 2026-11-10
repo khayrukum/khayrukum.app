@@ -78,3 +78,32 @@ test('«وِرد اليوم»: a missed question comes back the next day, a righ
   assert.equal(await p.locator('#title').innerText(), 'الاختبار العشوائي'); assert.equal(await p.locator('#newSet2').count(), 1, 'the random exam keeps its own state');
   assert.deepEqual(p.errors, []);
 });
+
+test('«ما رقمها؟» drill inside an exam: ten per batch, a miss comes back until right, not in the exam score, saved', async () => {
+  const { p } = await page();
+  await p.goto(BASE + 'exam/?id=baqarah-2'); await settle(p);
+  const score = await p.locator('#score').innerText();
+  await p.click('.rt[data-round="which-number"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  assert.match(await p.locator('#qs .qn').innerText(), /١٠/);
+  const answer = async wrongFirst => {          // returns the verse number of the question just answered
+    const btns = p.locator('#qs .choice');
+    if (wrongFirst) { await btns.first().click(); }
+    else { // find the right one without guessing: tap, and if wrong this question returns later
+      await btns.first().click();
+    }
+    await p.waitForTimeout(60);
+    const num = await p.locator('#qs .choice.right').innerText(); const wrong = await p.locator('#qs .choice.wrong').count();
+    assert.equal(await p.locator('#qs .choice:disabled').count(), 4);
+    await p.click('[data-act="drillNext"]'); await p.waitForTimeout(60);
+    return { num, wrong };
+  };
+  const log = []; for (let k = 0; k < 40 && await p.locator('#qs .choice').count(); k++) log.push(await answer());
+  // every miss is followed later by the same number again, and the batch ends only when each was answered right
+  for (const [i, x] of log.entries()) if (x.wrong && i < log.length - 10) assert.ok(log.slice(i + 1).some(y => y.num === x.num), `${x.num} came back`); // the queue holds at most ten
+  const last = new Map(); log.forEach(x => last.set(x.num, x)); assert.equal(last.size, 10, 'ten verses in the batch');
+  if (log.length < 40) assert.ok([...last.values()].every(x => !x.wrong), 'each verse was finally answered right');
+  assert.equal(await p.locator('#score').innerText(), score, 'the exam score is unchanged');
+  await p.reload(); await settle(p);
+  assert.match(await p.locator('.rt[data-round="which-number"]').innerText(), /١٠\/٣١/, 'progress saved');
+  assert.deepEqual(p.errors, []);
+});

@@ -9,10 +9,11 @@ import * as audio from '../core/audio.js';
 import { collection } from '../core/audio-cache.js';
 import { loadIndex, loadExam, loadCorpus, loadMeta, answerNumbers, answerRefs } from '../core/content.js';
 import { getType, isGradable } from '../core/registry.js';
-import { inlineHtml, inlineText, itemHtml, itemText, refHtml, baytNumbers, promptHtml } from '../core/render.js';
+import { inlineHtml, inlineText, itemHtml, itemText, refHtml, refText, baytNumbers, promptHtml } from '../core/render.js';
 import { grade as writeGrade, newSession, makeSnap } from '../core/grading.js';
 import { attemptTally } from '../core/stats.js';
 import { parseRef } from '../core/refs.js';
+import { numberChoices, shuffle } from '../core/random-logic.js';
 
 const main = ui.$('#main');
 const E = S.exam;
@@ -49,6 +50,7 @@ function tabs() {
   ui.$('#rounds').innerHTML = ex.rounds.map(r => {
     const qs = roundQs(r.id); const g = r.gradable?.exam && qs.length;
     const done = qs.filter(q => st.grades[q.id]).length;
+    if (r.id === 'which-number' && st.drill) return `<button type="button" role="tab" class="rt" id="tab-${r.id}" aria-controls="qs" aria-selected="${st.round === r.id}" tabindex="${st.round === r.id ? 0 : -1}" data-round="${r.id}">${esc(r.title)}<span class="c">${n(Object.keys(st.drill.first).length)}/${n(st.drill.deck.length)}</span></button>`;
     const sel = st.round === r.id;
     return `<button type="button" role="tab" class="rt" id="tab-${r.id}" aria-controls="qs" aria-selected="${sel}" tabindex="${sel ? 0 : -1}" data-round="${r.id}">${esc(r.title)}${g ? `<span class="c">${n(done)}/${n(qs.length)}</span>` : ''}</button>`;
   }).join('');
@@ -112,6 +114,58 @@ function randomRound() {
   return h + '</div></div>';
 }
 
+// «ما رقمها؟» drill: every verse/bayt of the exam, ten per batch, a miss comes back in the same batch.
+// Not part of the exam score; the first answer per verse in a pass goes to the history (and so to «وِرد اليوم»).
+const BATCH = 10;
+const drillRef = num => (ex.kind === 'tuhfa' ? `t:${num}` : `2:${num}`);
+function drillState() {
+  if (!st.drill) { const [a, z] = entry.range; const deck = []; for (let x = a; x <= z; x++) deck.push(x); st.drill = { deck: shuffle(deck), done: 0, queue: [], batch: [], first: {}, tries: {}, pick: null, seed: newSession() }; }
+  return st.drill;
+}
+function drillRound() {
+  const t = ex.kind === 'tuhfa'; const d = drillState(); const N = d.deck.length;
+  const firstOk = list => list.filter(x => d.first[x] === 'ok').length;
+  if (!d.queue.length) {
+    let h = '<div class="q drill">';
+    if (d.batch.length) h += `<p class="banner ${firstOk(d.batch) === d.batch.length ? 'good' : ''}">${esc(E.drillBatch(n(firstOk(d.batch)), n(d.batch.length)))}</p>`;
+    if (d.done >= N) {
+      const missed = d.deck.filter(x => d.first[x] && d.first[x] !== 'ok').sort((x, y) => x - y);
+      h += `<h3>${esc((t ? E.drillAllT : E.drillAll)(n(firstOk(d.deck)), n(N)))}</h3>`;
+      if (missed.length) h += `<p class="muted">${esc(E.drillMissed)} ${missed.map(n).join('، ')}</p>`;
+      h += `<div class="row"><button type="button" class="btn primary" data-act="drillAgain">${esc(E.drillAgain)}</button></div>`;
+    } else {
+      h += `<p class="muted">${esc((t ? E.drillLeftT : E.drillLeft)(n(N - d.done), n(N)))}</p><div class="row"><button type="button" class="btn primary" data-act="drillMore">${esc(d.done ? E.drillMore(n(Math.min(BATCH, N - d.done))) : E.drillStart(n(BATCH)))}</button></div>`;
+    }
+    return h + '</div>';
+  }
+  const num = d.queue[0]; const pick = d.pick; const [a, z] = entry.range;
+  let h = `<article class="q drill${pick == null ? '' : pick === num ? ' r-ok' : ' r-bad'}"><div class="qtags"><span class="qn">${esc(E.drillInBatch(n(d.queue.length)))}</span></div>`;
+  h += `<div class="ask">${esc(t ? E.drillAskBayt : E.drillAskAya)}</div><div class="prompt">${refHtml(drillRef(num), corpus, { verseNums: false })}</div>`;
+  h += `<div class="choices" role="group" aria-label="${esc(E.drillChoose)}">${numberChoices(num, a, z, d.seed + ':' + num + ':' + ((d.tries[num] || 0) - (pick == null ? 0 : 1))  /* same choices before and after the tap */).map(c => `<button type="button" class="choice${pick != null && c === num ? ' right' : ''}${pick === c && c !== num ? ' wrong' : ''}" data-drill="${c}"${pick != null ? ' disabled' : ''} aria-pressed="${pick === c}">${n(c)}</button>`).join('')}</div>`;
+  if (pick != null) {
+    h += `<div class="drill-fb"><div class="bignum">${n(num)}</div><p>${esc(pick === num ? (t ? E.drillRightT : E.drillRight) : (t ? E.drillWrongT : E.drillWrong)(n(num)))}</p></div>`;
+    h += `<div class="row"><button type="button" class="btn primary" data-act="drillNext">${esc(E.drillNext)}</button></div>`;
+  }
+  return h + '</article>';
+}
+async function drillPick(c) {
+  const d = drillState(); const num = d.queue[0]; if (num == null || d.pick != null) return;
+  d.pick = c; d.tries[num] = (d.tries[num] || 0) + 1;
+  if (!d.first[num]) {
+    d.first[num] = c === num ? 'ok' : 'bad';
+    const t = ex.kind === 'tuhfa'; const ref = drillRef(num);
+    writeGrade({ session, qid: `${entry.id}/which-number/${num}`, g: d.first[num], tool: 'exam', src: entry.id, type: 'which-number',
+      snap: makeSnap({ ask: t ? E.drillAskBayt : E.drillAskAya, prompt: refText(ref, corpus), answerRefs: [ref], answer: n(num), unit: unit() }) });
+  }
+  await save(); renderRound(); ui.$('[data-act="drillNext"]')?.focus();
+}
+function drillAct(act) {
+  const d = drillState();
+  if (act === 'drillMore') { d.batch = d.deck.slice(d.done, d.done + BATCH); d.queue = d.batch.slice(); d.done += d.batch.length; d.pick = null; }
+  else if (act === 'drillNext') { const num = d.queue.shift(); if (d.pick !== num) d.queue.push(num); d.pick = null; }
+  else if (act === 'drillAgain') { st.drill = null; drillState(); }
+}
+
 function renderRound() {
   const r = ex.rounds.find(x => x.id === st.round) || ex.rounds[0];
   st.round = r.id;
@@ -119,6 +173,7 @@ function renderRound() {
   let h;
   if (r.id === 'summary') h = summaryHtml();
   else if (r.id === 'random-number') h = randomRound();
+  else if (r.id === 'which-number') h = drillRound();
   else h = roundQs(r.id).map(questionHtml).join('');
   const i = ex.rounds.indexOf(r), pv = ex.rounds[i - 1], nx = ex.rounds[i + 1];
   h += `<div class="roundnav">${pv ? `<button type="button" class="btn" data-round="${pv.id}" data-top="1">${esc(E.prev(pv.title))}</button>` : '<span></span>'}${nx ? `<button type="button" class="btn show" data-round="${nx.id}" data-top="1">${esc(E.next(nx.title))}</button>` : ''}</div>`;
@@ -198,6 +253,8 @@ function bind() {
       writeGrade({ session, qid: q.id, g, tool: 'exam', src: ex.entry.id, type: q.type, snap: g ? snapOf(q) : undefined });
       return;
     }
+    if (d.drill) { await drillPick(+d.drill); return; }
+    if (d.act === 'drillMore' || d.act === 'drillNext' || d.act === 'drillAgain') { drillAct(d.act); await save(); renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); ui.$('#qs .choice, #qs [data-act]')?.focus({ preventScroll: true }); return; }
     if (d.act === 'roll') { const [a, z] = entry.range; let x; do { x = a + Math.floor(Math.random() * (z - a + 1)); } while (st.rand && x === st.rand.n && z > a); st.rand = { n: x, open: false }; }
     else if (d.act === 'randShow') { st.rand.open = true; if (ex.kind === 'tuhfa') ui.setTuhfaContext(st.rand.n); }
     else if (b.id === 'resetBtn') { confirmReset = true; ui.confirmInline(ui.$('#resetBox'), E.restartConfirm, E.restartYes, resetAttempt); return; }

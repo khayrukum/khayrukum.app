@@ -54,7 +54,7 @@
       ]
     }
   ],
-  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number"],
+  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number", "which-number"],
   "roundText": {},
   "plainQuotes": [],
   "questions": [
