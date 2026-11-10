@@ -114,8 +114,8 @@ test('offline after the first visit: every page, reloads and URL variants work; 
   const sw = fs.readFileSync(path.join(DIST, 'sw.js'), 'utf8');
   const list = JSON.parse(/const PRECACHE = (\[.*?\]);/s.exec(sw)[1]).map(e => e.url);
   const walk = (d, a = []) => { for (const f of fs.readdirSync(d)) { const x = path.join(d, f); fs.statSync(x).isDirectory() ? walk(x, a) : a.push(path.relative(DIST, x)); } return a; };
-  const notPre = walk(DIST).filter(f => !list.includes(f));
-  assert.deepEqual(notPre.sort(), ['CNAME', 'assets/fonts/LICENSES/README.md', 'robots.txt', 'sw.js'], 'everything a page can request is precached');
+  const notPre = walk(DIST).filter(f => !list.includes(f) && !f.startsWith('assets/fonts/LICENSES/')); // licence texts are documents, not page resources
+  assert.deepEqual(notPre.sort(), ['CNAME', 'robots.txt', 'sw.js'], 'everything a page can request is precached');
   assert.equal(walk(DIST).filter(f => /\.(mp3|m4a|ogg|wav|opus|aac|flac)$/i.test(f)).length, 0, 'no audio file in dist (AUD-40)');
 
   const { ctx, p } = await launch(profile());

@@ -16,21 +16,11 @@ Status on 2026-11-07, branch `v1`. Items are ordered by what blocks the first re
     `npm run import:tanzil && node tools/port/align.mjs --check`: the references stay valid.
 - **Tuhfa text (LIC-10).** From `tuhfa-tashkeel.json`, byte-exact; abyat 26, 28, 57 are marked «قيد المراجعة».
 
-## 1. Fonts (NFR-TYP-01, NFR-PERF-05, LIC-30) — blocks release
+## 1. Fonts (NFR-TYP-01, NFR-PERF-05, LIC-30) — done
 
-The sandbox could not download fonts. Put these WOFF2 files in `site/assets/fonts/` (exact names), then run
-`node tools/fonts.mjs` (the build also generates `fonts.css` from what is present):
-
-| File | Font | Source |
-|---|---|---|
-| `reem-kufi-500.woff2`, `reem-kufi-700.woff2` | Reem Kufi | Google Fonts / github.com/aliftype/reem-kufi |
-| `ibm-plex-sans-arabic-400.woff2`, `-500`, `-600` | IBM Plex Sans Arabic | github.com/IBM/plex (releases) |
-| `amiri-400.woff2`, `amiri-700.woff2` | Amiri | github.com/aliftype/amiri (releases) |
-| `amiri-quran-400.woff2` | Amiri Quran | github.com/aliftype/amiri (releases, `AmiriQuran.ttf` → WOFF2) |
-
-Add each font's OFL text to `site/assets/fonts/LICENSES/` (e.g. `OFL-Amiri.txt`). Keep the total under the 2 MB
-precache budget (the build fails above it). Until then the system Arabic fonts are used, which render some
-Uthmani marks poorly (e.g. small high meem in «أَلِيمٌۢ»).
+The fonts are in `site/assets/fonts/` with their OFL texts in `LICENSES/`. They were taken unmodified from
+github.com/google/fonts (`ofl/reemkufi`, `ofl/ibmplexsansarabic`, `ofl/amiri`, `ofl/amiriquran`) and only re-wrapped
+as WOFF2 (same glyphs, same names). Reem Kufi is the variable font (`reem-kufi-vf.woff2`, weights 400–700).
 
 ## 2. Tuhfa verification (LIC-11, OWNER-2)
 

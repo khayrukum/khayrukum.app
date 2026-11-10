@@ -260,7 +260,7 @@ Counted per requirement ID (ranges expanded); TST rows are listed separately at 
 | LIC-20 | audio off, `permission.json`, release-check | done (fallback; permission is owner) |
 | LIC-21 | `S.credit.audio` | done |
 | LIC-22 | `tools/audio/cut.mjs` + `segments-baseline.json` | partial — not verified to reproduce the provided files byte-for-byte |
-| LIC-30 | `assets/fonts/LICENSES/`, hadith «رواه البخاري» | partial — OFL texts to add with the fonts |
+| LIC-30 | `assets/fonts/LICENSES/`, hadith «رواه البخاري» | done — fonts and their OFL texts are in `assets/fonts/` |
 | LIC-31 | README «Licenses», `LICENSE` | done |
 
 ## 9 Deployment

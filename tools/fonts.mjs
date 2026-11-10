@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const FACES = [
-  ['Reem Kufi', 500, 'reem-kufi-500.woff2'], ['Reem Kufi', 700, 'reem-kufi-700.woff2'],
+  ['Reem Kufi', '400 700', 'reem-kufi-vf.woff2'], // variable font: one file covers every weight
   ['IBM Plex Sans Arabic', 400, 'ibm-plex-sans-arabic-400.woff2'], ['IBM Plex Sans Arabic', 500, 'ibm-plex-sans-arabic-500.woff2'], ['IBM Plex Sans Arabic', 600, 'ibm-plex-sans-arabic-600.woff2'],
   ['Amiri', 400, 'amiri-400.woff2'], ['Amiri', 700, 'amiri-700.woff2'],
   ['Amiri Quran', 400, 'amiri-quran-400.woff2']
