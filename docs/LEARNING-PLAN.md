@@ -24,3 +24,20 @@ Most current questions are graded by the reader. Three things reduce the weaknes
 1. More questions the app corrects itself (steps 0, 4, 5, 6, 7).
 2. Spaced repetition (step 1): a verse marked «صحيح» too generously comes back and is missed later, so the schedule corrects itself.
 3. The history tags questions corrected by the app «مُصحَّح آليًّا» (done). A side-by-side comparison of the two kinds is still to do.
+
+## Beyond Al-Baqarah: general titles and structure
+
+The app covers the whole Quran, so nothing a reader sees should assume Al-Baqarah. To do before the
+second sura gets an exam (owner's request, 2026-11-11):
+
+| Where | Today | Target |
+|---|---|---|
+| Exam titles (`data/exams/index.json`) | «اختبار ٣ · البقرة ٧٥–١٠٥» | Numbered by the mushaf, not the sura: «الحزب ٣ · الربعان ٥–٦» with the verses as the subtitle («البقرة ٧٥–١٠٥»). An exam that crosses two suras names both («البقرة ٢٥٣ – آل عمران ١٤»). |
+| Exam ids | `baqarah-3` | `rub-05-06` (by rub'), with the old ids kept as aliases so saved progress and history still match. |
+| Home page | section «اختبارات البقرة» | «اختبارات الحفظ», grouped by juz' once there are more than one |
+| Plan | «خطة تثبيت البقرة», `plan:baqarah` | «خطة التثبيت» for any range of rub's the reader chooses; Al-Baqarah becomes the first preset |
+| Random exam | «نطاق سورة البقرة (الآيات)», «البقرة كلها», «اقرأ الآية رقم ٧ من سورة البقرة» | Range by sura + verse (or juz'/hizb/rub'), shortcuts per rub', the question names the sura |
+| Code | refs built as `2:${n}`, one Quran range family `quran2`, the page table filtered on sura 2 | refs carry the sura; ranges are «sura:verse» pairs; the Quran file per sura is loaded on demand |
+| «عن التطبيق» | «يبدأ المحتوى بسورة البقرة …» | keep, it is a fact about the content |
+
+Data stays as it is (refs already carry the sura: `2:75`), so this is mostly titles, ids and the range picker.
