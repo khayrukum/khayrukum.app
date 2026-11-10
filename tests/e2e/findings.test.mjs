@@ -61,7 +61,7 @@ test('NFR-PRV-05 / DATA-61: a backup whose kv values have the wrong shape is rej
   await p.click('#copyJson'); await p.waitForTimeout(150);
   const bk = JSON.parse(await p.evaluate(() => navigator.clipboard.readText()));
   bk.kv = { 'exam:baqarah-1': { grades: null, open: 'x', round: 5, updatedAt: 9e15 }, 'random:prefs': { src: 'x', ranges: null, n: 'big', updatedAt: 9e15 }, 'random:current': { set: 'abc', updatedAt: 9e15 } };
-  await p.fill('#paste', JSON.stringify(bk)); await p.click('#importText'); await p.waitForTimeout(200);
+  await p.click('#pasteBox > summary'); await p.fill('#paste', JSON.stringify(bk)); await p.click('#importText'); await p.waitForTimeout(200);
   if (await p.locator('#importYes').count()) { await p.click('#importYes'); await p.waitForTimeout(300); }   // accepted → it must then be harmless
   p.errors.length = 0;
   await p.goto(BASE + 'exam/?id=baqarah-1'); await settle(p);

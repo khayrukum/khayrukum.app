@@ -145,7 +145,7 @@ test('backup: export text → import into a clean profile; second import adds no
   assert.match(json, /khayrukum-backup/);
   const b = await page();
   await b.p.goto(BASE + 'settings/'); await settle(b.p);
-  await b.p.fill('#paste', '{"format":"other"}'); await b.p.click('#importText'); assert.match(await b.p.textContent('#importBox'), /ليس نسخة صالحة/);
+  await b.p.click('#pasteBox > summary'); await b.p.fill('#paste', '{"format":"other"}'); await b.p.click('#importText'); assert.match(await b.p.textContent('#importBox'), /ليس نسخة صالحة/);
   await b.p.fill('#paste', json); await b.p.click('#importText'); await b.p.click('#importYes'); await b.p.waitForSelector('#importBox .good');
   assert.match(await b.p.textContent('#importBox'), /أُضيف ١ إجابة، وحُدِّث ١ من الاختبارات/);
   await b.p.fill('#paste', json); await b.p.click('#importText'); await b.p.click('#importYes'); await b.p.waitForSelector('#importBox .good');

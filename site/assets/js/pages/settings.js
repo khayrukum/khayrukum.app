@@ -19,10 +19,12 @@ function skeleton(audioOn) {
     ${[['auto', T.themeAuto], ['light', T.themeLight], ['dark', T.themeDark]].map(([k, l]) => `<button type="button" class="chip" data-theme="${k}" aria-pressed="${store.getTheme() === k}">${esc(l)}</button>`).join('')}</div></section>
   ${audioOn ? `<section class="panel" id="audio"><h2>${esc(T.audio)}</h2><div id="audioBox" class="stack"></div><div id="audioConfirm"></div></section>` : ''}
   <section class="panel" id="storage"><h2>${esc(T.storage)}</h2><p id="usage" class="small"></p><p id="persist" class="small"></p></section>
-  <section class="panel" id="backup"><h2>${esc(T.backup)}</h2>
+  <section class="panel" id="backup"><h2>${esc(T.backup)}</h2><p class="muted small">${esc(T.backupHint)}</p>
+    <h3>${esc(T.saveH)}</h3>
     <div class="row"><button type="button" class="btn primary" id="export">${esc(T.export)}</button><button type="button" class="btn" id="copyJson">${esc(T.copyJson)}</button></div>
-    <div class="stack"><label class="btn" for="file">${esc(T.import)} · ${esc(T.chooseFile)}</label><input type="file" id="file" class="sr-only" accept=".json,application/json,text/plain"></div>
-    <div class="field"><label for="paste">${esc(T.paste)}</label><textarea id="paste" dir="ltr" spellcheck="false"></textarea><div class="row"><button type="button" class="btn" id="importText">${esc(T.importText)}</button></div></div>
+    <h3>${esc(T.restoreH)}</h3>
+    <div class="stack"><label class="btn" for="file">${esc(T.import)}</label><input type="file" id="file" class="sr-only" accept=".json,application/json,text/plain"></div>
+    <details class="more" id="pasteBox"><summary>${esc(T.fromText)}</summary><div class="field"><label for="paste">${esc(T.paste)}</label><textarea id="paste" dir="ltr" spellcheck="false"></textarea><div class="row"><button type="button" class="btn" id="importText">${esc(T.importText)}</button></div></div></details>
     <div id="importBox" role="status"></div></section>
   <section class="panel"><p id="version" class="small"></p><div id="updBox"></div></section>
   <section class="panel"><button type="button" class="btn danger" id="wipe">${esc(T.wipe)}</button><div id="wipeBox"></div></section>`;
