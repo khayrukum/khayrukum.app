@@ -15,7 +15,7 @@
 ## English
 
 Static PWA (no framework, no server) for Quran memorization (Al-Baqarah) and Tuhfat al-Atfal review.
-Requirements: `REQUIREMENTS.md` v2.1 (kept outside the repo); coverage: `TRACEABILITY.md`.
+Requirements: `docs/REQUIREMENTS.md`; coverage: `TRACEABILITY.md`; standing rules: `CLAUDE.md`.
 
 ### Layout
 ```
