@@ -9,8 +9,8 @@ One step at a time; each step ships on its own.
 | 0 | «ما رقمها؟» | Multiple choice: the verse / bayt is shown, pick its number among four close numbers | app | none | **done** (random exam) |
 | 0 | Balanced random exam | Every selected source gets an equal share of the questions | — | none | **done** |
 | 1 | المراجعة المتباعدة «وِرد اليوم» | Questions answered wrong come back tomorrow, then after 3 days, a week, a month | as the question | none (uses the history) | **done** (`random/?due=1`, `core/srs.js`: steps 1, 3, 7, 16, 35 days) |
-| 2 | أول حرف من كل كلمة | The verse is shown as first letters only; recite from them | reader | none (generated from the text) | next |
-| 3 | الإخفاء التدريجي | The verse is shown in full, then words disappear step by step | reader | none (generated) | |
+| 2 | أول حرف من كل كلمة | The verse is shown as first letters only; recite from them | reader | none (generated from the text) | **done** (round «أوائل الحروف» in every exam: ten per batch, tap a letter for its word, a non-«صحيح» grade brings it back) |
+| 3 | الإخفاء التدريجي | The verse is shown in full, then words disappear step by step | reader | none (generated) | next |
 | 4 | رتّب الآيات | Four or five shuffled verses to put in order | app | none (generated) | |
 | 5 | تدريب المتشابهات | Two similar verses side by side with the difference marked, then «which is in verse N?» | app | uses the existing «المتشابهات» rounds; more pairs need review | |
 | 6 | خريطة الصفحة | «Which page? top, middle or bottom?» as multiple choice | app | none (page table) | |
@@ -41,3 +41,17 @@ second sura gets an exam (owner's request, 2026-11-11):
 | «عن التطبيق» | «يبدأ المحتوى بسورة البقرة …» | keep, it is a fact about the content |
 
 Data stays as it is (refs already carry the sura: `2:75`), so this is mostly titles, ids and the range picker.
+
+## Daily reminders (owner's request, 2026-11-11)
+
+A daily reminder of the day's wird: new memorisation, consolidation (the plan's repetitions) and review
+(«وِرد اليوم», with the number due). The app has no server and works offline, which decides how:
+
+| Stage | How | Reach | Notes |
+|---|---|---|---|
+| A — now | «أضف تذكيرًا يوميًّا إلى التقويم»: a recurring calendar event (.ics) at a time the reader picks, linking to the app | every phone and computer | no server, no permission prompt; the text is fixed (it cannot show today's count) |
+| B — Android, installed app | Periodic Background Sync + a local notification with today's count | Chrome on Android only, roughly daily, not at an exact minute | best effort; iOS has no equivalent for a web app |
+| C — the Android and iOS apps | Local scheduled notifications (Capacitor), computed on the device: «في وِردك اليوم ٧ أسئلة، وتكرار الربعين ١٢ من ٢٠» | both platforms, exact time, offline | the real solution; part of the native apps milestone |
+| (D — optional) | Web Push from a small server | all installed web apps incl. iOS 16.4+ | needs a server and storing a push subscription per device: only with accounts/sync, and stated in the privacy policy |
+
+Settings: on/off, time of day, which parts (new memorisation / consolidation / review). Off by default.

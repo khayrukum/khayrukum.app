@@ -115,3 +115,11 @@ test('random exam: every source gets an equal share', () => {
   assert.equal(pickBalanced(mk('t', 3), 10).length, 3);
   const ids = pickBalanced([...mk('b1', 30), ...mk('t', 90)], 25).map(q => q.id); assert.equal(new Set(ids).size, 25, 'no duplicates');
 });
+
+test('first letters: one letter per word, pause marks kept, diacritics dropped', async () => {
+  const { letterTokens, firstLetter } = await import('../../site/assets/js/core/refs.js');
+  assert.equal(firstLetter('ٱلْحَمْدُ'), 'ٱ'); assert.equal(firstLetter('ءَامَنُوا۟'), 'ء'); assert.equal(firstLetter('وَإِذَا'), 'و');
+  const t = letterTokens('ذَٰلِكَ ٱلْكِتَـٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى', 'q');
+  assert.deepEqual(t.map(x => x.letter), ['ذ', 'ٱ', 'ل', 'ر', 'ۛ', 'ف', 'ۛ', 'ه']);
+  assert.deepEqual(t.filter(x => x.mark).length, 2);
+});

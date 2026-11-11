@@ -71,6 +71,14 @@ export function selectWords(text, sel, kind) {
   return toks.slice(wi[a - 1], wi[b - 1] + 1).join(' ');
 }
 
+/** First letter of an Arabic word (no diacritics), for the «أوائل الحروف» drill. */
+const LETTER = /[\u0621-\u063A\u0641-\u064A\u0671-\u06D3\u06FA-\u06FC]/u;
+export function firstLetter(word) { const m = LETTER.exec(word); return m ? m[0] : word; }
+/** Tokens of a text as [{ word, letter, mark }] — pause marks stay as they are (they help the reciter). */
+export function letterTokens(text, kind) {
+  return tokens(text).map(t => (kind === 'q' && isMarkToken(t) ? { word: t, letter: t, mark: true } : { word: t, letter: firstLetter(t), mark: false }));
+}
+
 /** Number of words in a stored text. */
 export function wordCount(text, kind) { return wordIndex(tokens(text), kind).length; }
 

@@ -107,3 +107,25 @@ test('«ما رقمها؟» drill inside an exam: ten per batch, a miss comes ba
   assert.match(await p.locator('.rt[data-round="which-number"]').innerText(), /١٠\/٣١/, 'progress saved');
   assert.deepEqual(p.errors, []);
 });
+
+test('«أوائل الحروف»: first letters only, tap reveals a word, a non-«صحيح» grade brings the verse back, not in the score, due the next day', async () => {
+  const { p } = await page(); const t0 = Date.now();
+  await p.goto(BASE + 'exam/?id=baqarah-1'); await settle(p);
+  const score = await p.locator('#score').innerText();
+  await p.click('.rt[data-round="first-letters"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  const letters = await p.locator('#qs button.fl').allInnerTexts();
+  assert.ok(letters.length >= 3 && letters.every(x => [...x].length === 1), 'one letter per word');
+  await p.locator('#qs button.fl').first().click(); await p.waitForTimeout(80);
+  assert.ok([...(await p.locator('#qs .fl.open').first().innerText())].length > 1, 'the tapped letter shows its whole word');
+  const first = await p.locator('#qs .qtag').innerText();
+  await p.click('[data-flg="mid"]'); await p.waitForTimeout(120);
+  const seen = [];
+  for (let k = 0; k < 15 && await p.locator('[data-flg]').count(); k++) { seen.push(await p.locator('#qs .qtag').innerText()); await p.click('[data-flg="ok"]'); await p.waitForTimeout(120); }
+  assert.equal(seen[seen.length - 1], first, 'the verse graded «متردد» came back at the end of the batch');
+  assert.match(await p.textContent('#qs'), /أتقنت من أول مرة ٩ من ١٠/);
+  assert.equal(await p.locator('#score').innerText(), score);
+  await p.clock.install({ time: t0 + 86400000 + 3600000 }); // the clock is set only now: a frozen clock stalls the taps above
+  await p.goto(BASE + 'random/?due=1'); await settle(p);
+  assert.match(await p.textContent('#main'), /سمّع الآية من أوائل حروفها/, 'it is due in «وِرد اليوم» the next day');
+  assert.deepEqual(p.errors, []);
+});
