@@ -14,7 +14,7 @@ One step at a time; each step ships on its own.
 | 4 | رتّب الآيات | Four or five shuffled verses to put in order | app | none (generated) | **done** (round in every exam: four consecutive verses shown by their opening words, tap in order, checked by the app; five groups per batch, a missed group comes back) |
 | 5 | تدريب المتشابهات | Two similar verses side by side with the difference marked, then «which is in verse N?» | app | **waits for a verified source** of mutashabihat (owner, 2026-11-11); not built from the exam pairs alone | on hold |
 | 6 | خريطة الصفحة | «Which page? top, middle or bottom?» as multiple choice | app | none (page table) | **done** (Quran exams: page among four near pages + first verse / last verse / in between, from the Tanzil page table; both right = صحيح, one = متردد) |
-| 7 | الربط بالمعنى | A topic title per passage, and «what comes after the story of …?» | app | **yes — titles must be written and reviewed** | next (needs titles) |
+| 7 | الربط بالمعنى | A topic title per passage, and «what comes after the story of …?» | app | **waits for a verified source** of topic divisions (owner, 2026-11-11); not built from the exam summaries | on hold |
 | 8 | التسميع الصوتي | Recite aloud; the app follows and marks slips | app | speech recognition — separate project | later |
 
 ## Self-grading
