@@ -45,13 +45,29 @@ if (excluded.length) {
 }
 
 // ---------- copy ----------
+// Shipped JS drops whole-line comments (`// …` lines and `/** … */` blocks that start and end on their own lines).
+// Nothing else changes: code, strings and line structure stay as written, so errors still point at readable code.
+// Lines inside a template literal are never touched (a running count of backticks tells where we are).
+function stripComments(src) {
+  const out = []; let inDoc = false, inTpl = false;
+  for (const line of src.split('\n')) {
+    if (inDoc) { if (/\*\/\s*$/.test(line)) inDoc = false; continue; }
+    if (!inTpl && /^\s*\/\//.test(line)) continue;
+    if (!inTpl && /^\s*\/\*/.test(line)) { if (!/\*\/\s*$/.test(line)) inDoc = true; continue; }
+    out.push(line);
+    const ticks = (line.replace(/\\./g, '').match(/`/g) || []).length;
+    if (ticks % 2) inTpl = !inTpl;
+  }
+  return out.join('\n');
+}
 const SKIP = rel => rel === 'sw.template.js' || rel === 'config.local.json' || rel.startsWith('audio/') || (!audioOn && rel.startsWith('data/audio/'))
   || rel === 'assets/css/fonts.css' || rel.endsWith('.DS_Store');
 for (const rel of walk(SITE)) {
   if (SKIP(rel)) continue;
   const dst = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(dst), { recursive: true });
-  fs.copyFileSync(path.join(SITE, rel), dst);
+  if (rel.startsWith('assets/js/') && rel.endsWith('.js')) fs.writeFileSync(dst, stripComments(fs.readFileSync(path.join(SITE, rel), 'utf8')));
+  else fs.copyFileSync(path.join(SITE, rel), dst);
 }
 if (excluded.length) {
   const idx = readJson(path.join(OUT, 'data/exams/index.json'));

@@ -52,7 +52,7 @@
       ]
     }
   ],
-  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number", "which-number", "first-letters"],
+  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number", "which-number", "first-letters", "progressive-hide"],
   "roundText": {},
   "plainQuotes": ["ما هي","ما لونها"],
   "questions": [

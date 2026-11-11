@@ -371,3 +371,8 @@ details.more > summary { cursor: pointer; color: var(--accent); min-block-size: 
 button.fl:hover { background: var(--accent-soft); }
 .fl.open { color: var(--ink); cursor: default; }
 .fl-mark { color: var(--gold); font-size: 1.2rem; }
+
+/* «الإخفاء التدريجي» */
+.hd { font-size: 1.45rem; line-height: 2.2; }
+.hw { font: inherit; color: transparent; background: none; border: 0; border-block-end: 2px dotted var(--muted); padding: 0; cursor: pointer; user-select: none; }
+button.hw:hover { background: var(--accent-soft); }

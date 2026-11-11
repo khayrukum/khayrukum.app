@@ -129,3 +129,26 @@ test('«أوائل الحروف»: first letters only, tap reveals a word, a non
   assert.match(await p.textContent('#main'), /سمّع الآية من أوائل حروفها/, 'it is due in «وِرد اليوم» the next day');
   assert.deepEqual(p.errors, []);
 });
+
+test('«الإخفاء التدريجي»: verses in order, five per batch, a quarter more hidden per step until only the first word is left; grade only at the end', async () => {
+  const { p } = await page();
+  await p.goto(BASE + 'exam/?id=baqarah-2'); await settle(p);
+  await p.click('.rt[data-round="progressive-hide"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  assert.equal(await p.locator('#qs .qtag').innerText(), 'آية ٤٤', 'starts at the first verse of the exam');
+  const count = async () => [await p.locator('#qs .hw').count(), await p.locator('#qs .hw-open').count()];
+  const [h0, o0] = await count(); assert.equal(h0, 0); const words = o0;
+  let prev = 0;
+  for (let s = 1; s <= 4; s++) {
+    assert.equal(await p.locator('[data-flg]').count(), 0, 'no grading before the last step');
+    await p.click('[data-act="hdMore"]'); await p.waitForTimeout(60);
+    const [h] = await count(); assert.ok(h > prev, `step ${s} hides more`); prev = h;
+  }
+  assert.deepEqual(await count(), [words - 1, 1], 'only the first word is left');
+  await p.locator('#qs button.hw').first().click(); await p.waitForTimeout(60);
+  assert.deepEqual(await count(), [words - 2, 2], 'a tap shows one hidden word');
+  const order = [];
+  for (let k = 0; k < 5; k++) { order.push(await p.locator('#qs .qtag').innerText()); if (k) for (let s = 0; s < 4; s++) await p.click('[data-act="hdMore"]'); await p.click('[data-flg="ok"]'); await p.waitForTimeout(120); }
+  assert.deepEqual(order, ['آية ٤٤', 'آية ٤٥', 'آية ٤٦', 'آية ٤٧', 'آية ٤٨'], 'in order, five per batch');
+  assert.match(await p.textContent('#qs'), /أتقنت من أول مرة ٥ من ٥/);
+  assert.deepEqual(p.errors, []);
+});

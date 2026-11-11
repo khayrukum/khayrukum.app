@@ -36,8 +36,8 @@ function pool() {
   return buildPool(sel.map(e => ({ id: e.entry.id, kind: e.entry.kind, range: e.entry.range, questions: e.questions.filter(q => isGradable(q.type, 'random')) })), prefs.ranges);
 }
 function resolveQ(qid) {
-  const fl = /^(.+)\/first-letters\/(\d+)$/.exec(qid);
-  if (fl) { const e = exams.find(x => x.entry.id === fl[1]); if (!e) return null; const num = +fl[2]; const t = e.entry.kind === 'tuhfa'; return { id: qid, type: 'first-letters', src: fl[1], kind: e.entry.kind, number: num, ask: t ? S.exam.flAskBayt : S.exam.flAskAya, prompt: [], answer: [{ ref: t ? `t:${num}` : `2:${num}` }] }; }
+  const fl = /^(.+)\/(first-letters|progressive-hide)\/(\d+)$/.exec(qid);
+  if (fl) { const e = exams.find(x => x.entry.id === fl[1]); if (!e) return null; const num = +fl[3]; const t = e.entry.kind === 'tuhfa'; const hd = fl[2] === 'progressive-hide'; return { id: qid, type: fl[2], src: fl[1], kind: e.entry.kind, number: num, ask: hd ? (t ? S.exam.hdAskBayt : S.exam.hdAskAya) : t ? S.exam.flAskBayt : S.exam.flAskAya, prompt: [], answer: [{ ref: t ? `t:${num}` : `2:${num}` }] }; }
   const m = /^(.+)\/(random|which)-number\/(\d+)$/.exec(qid);
   if (m) {
     const e = exams.find(x => x.entry.id === m[1]); if (!e) return null; const num = +m[3]; const t = e.entry.kind === 'tuhfa';

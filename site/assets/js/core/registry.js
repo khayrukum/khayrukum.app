@@ -11,6 +11,7 @@ import chain from '../types/chain.js';
 import randomNumber from '../types/random-number.js';
 import whichNumber from '../types/which-number.js';
 import firstLetters from '../types/first-letters.js';
+import progressiveHide from '../types/progressive-hide.js';
 import chapters from '../types/chapters.js';
 import completeHemistich from '../types/complete-hemistich.js';
 import nextBayt from '../types/next-bayt.js';
@@ -18,7 +19,7 @@ import baytTopic from '../types/bayt-topic.js';
 import codes from '../types/codes.js';
 import quranToTuhfa from '../types/quran-to-tuhfa.js';
 
-const TYPES = new Map([summary, pages, next, topicEnd, repeatedWord, lookalikes, midVerse, chain, randomNumber, whichNumber, firstLetters,
+const TYPES = new Map([summary, pages, next, topicEnd, repeatedWord, lookalikes, midVerse, chain, randomNumber, whichNumber, firstLetters, progressiveHide,
   chapters, completeHemistich, nextBayt, baytTopic, codes, quranToTuhfa].map(t => [t.id, t]));
 
 export const getType = id => TYPES.get(id);

@@ -34,7 +34,7 @@ const arrOf = f => v => Array.isArray(v) && v.every(f);
 const isStr = v => typeof v === 'string';
 const GRADE = v => v === 'ok' || v === 'mid' || v === 'bad';
 const KV_SHAPE = {
-  exam: v => opt(v.round, isStr) && opt(v.grades, g => isObj(g) && Object.values(g).every(GRADE)) && opt(v.open, isObj) && opt(v.rand, r => r === null || isObj(r)) && opt(v.letters, x => x === null || (isObj(x) && arrOf(isNum)(x.deck) && arrOf(isNum)(x.queue) && Number.isInteger(x.done))) && opt(v.drill, x => x === null || (isObj(x) && arrOf(isNum)(x.deck) && arrOf(isNum)(x.queue) && Number.isInteger(x.done))),
+  exam: v => opt(v.round, isStr) && opt(v.grades, g => isObj(g) && Object.values(g).every(GRADE)) && opt(v.open, isObj) && opt(v.rand, r => r === null || isObj(r)) && opt(v.hide, x => x === null || (isObj(x) && arrOf(isNum)(x.deck) && arrOf(isNum)(x.queue) && Number.isInteger(x.done))) && opt(v.letters, x => x === null || (isObj(x) && arrOf(isNum)(x.deck) && arrOf(isNum)(x.queue) && Number.isInteger(x.done))) && opt(v.drill, x => x === null || (isObj(x) && arrOf(isNum)(x.deck) && arrOf(isNum)(x.queue) && Number.isInteger(x.done))),
   'random:prefs': v => opt(v.src, arrOf(isStr)) && opt(v.n, x => isNum(x) && x >= 1 && x <= 200) && opt(v.ranges, isObj),
   'random:current': v => arrOf(isStr)(v.set) && Array.isArray(v.grades) && v.grades.length === v.set.length && v.grades.every(g => g === null || GRADE(g)) && Number.isInteger(v.idx) && v.idx >= 0 && v.idx < Math.max(1, v.set.length) && opt(v.done, x => typeof x === 'boolean'),
   'review:current': v => KV_SHAPE['random:current'](v),
