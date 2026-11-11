@@ -17,6 +17,7 @@ import { numberChoices, shuffle } from '../core/choices.js';
 import { lettersHtml } from '../types/first-letters.js';
 import { hideHtml, STAGES } from '../types/progressive-hide.js';
 import { SPAN, windows, shownOrder, opening } from '../types/order-verses.js';
+import { pageOf } from '../core/pages.js';
 
 const main = ui.$('#main');
 const E = S.exam;
@@ -123,10 +124,14 @@ function randomRound() {
 const BATCH = 10;
 const drillRef = num => (ex.kind === 'tuhfa' ? `t:${num}` : `2:${num}`);
 // Drill rounds share the batching: «ما رقمها؟» (st.drill), «أوائل الحروف» (st.letters), «الإخفاء التدريجي» (st.hide).
-const DKEY = { 'which-number': 'drill', 'first-letters': 'letters', 'progressive-hide': 'hide', 'order-verses': 'order' };
+const DKEY = { 'which-number': 'drill', 'first-letters': 'letters', 'progressive-hide': 'hide', 'order-verses': 'order', 'page-map': 'pmap' };
 const SELF = { letters: { type: 'first-letters', size: BATCH, shuffled: true }, hide: { type: 'progressive-hide', size: 5, shuffled: false } };
 const dk = () => DKEY[st.round] || 'drill';
 function drillState(k = dk()) {
+  if (k === 'pmap') {
+    if (!st.pmap) { const [a, z] = entry.range; const deck = []; for (let x = a; x <= z; x++) deck.push(x); st.pmap = { deck: shuffle(deck), size: BATCH, done: 0, queue: [], batch: [], first: {}, tries: {}, pp: null, ppos: null, seed: newSession() }; }
+    return st.pmap;
+  }
   if (k === 'order') {
     if (!st.order) st.order = { deck: shuffle(windows(...entry.range)), size: 5, done: 0, queue: [], batch: [], first: {}, tries: {}, picked: [], seed: newSession() };
     return st.order;
@@ -152,6 +157,34 @@ function batchScreen(d, L) {
     h += `<p class="muted">${esc((L.left || (t ? E.drillLeftT : E.drillLeft))(n(N - d.done), n(N)))}</p><div class="row"><button type="button" class="btn primary" data-act="drillMore">${esc(d.done ? E.drillMore(n(Math.min(d.size || BATCH, N - d.done))) : E.drillStart(n(d.size || BATCH)))}</button></div>`;
   }
   return h + '</div>';
+}
+function pmapRound() {
+  const d = drillState('pmap');
+  if (!d.queue.length || !meta) return batchScreen(d, { batch: E.pmBatch, all: E.drillAll, allT: E.drillAll, missed: E.drillMissed });
+  const num = d.queue[0]; const { page, pos } = pageOf(meta, 2, num); const done = d.pp != null && d.ppos != null;
+  const g = !done ? null : (d.pp === page) + (d.ppos === pos) === 2 ? 'ok' : (d.pp === page) || (d.ppos === pos) ? 'mid' : 'bad';
+  const cls = (sel, v, right) => (done ? (v === right ? ' right' : sel === v ? ' wrong' : '') : sel === v ? ' on' : '');
+  let h = `<article class="q drill${g ? ' r-' + g : ''}"><div class="qtags"><span class="qn">${esc(E.drillInBatch(n(d.queue.length)))}</span></div>`;
+  h += `<div class="ask">${esc(E.pmAsk)}</div><div class="prompt">${refHtml(`2:${num}`, corpus, { verseNums: false })}</div>`;
+  h += `<div class="muted small">${esc(E.pmPage)}</div><div class="choices">${numberChoices(page, Math.max(1, page - 3), Math.min(604, page + 3), d.seed + ':' + num + ':' + ((d.tries[num] || 0) - (done ? 1 : 0))).map(c => `<button type="button" class="choice${cls(d.pp, c, page)}" data-pp="${c}"${done ? ' disabled' : ''} aria-pressed="${d.pp === c}">${n(c)}</button>`).join('')}</div>`;
+  h += `<div class="muted small">${esc(E.pmPos)}</div><div class="choices pos">${['first', 'mid', 'last'].map(v => `<button type="button" class="choice${cls(d.ppos, v, pos)}" data-ppos="${v}"${done ? ' disabled' : ''} aria-pressed="${d.ppos === v}">${esc(E.pmPosL[v])}</button>`).join('')}</div>`;
+  if (done) h += `<p class="banner ${g === 'ok' ? 'good' : 'warn'}" role="status">${esc(E.pmAns(n(num), n(page), E.pmPosL[pos]))}</p><div class="row"><button type="button" class="btn primary" data-act="pmNext">${esc(E.drillNext)}</button></div>`;
+  return h + '</article>';
+}
+async function pmapPick(field, v) {
+  const d = drillState('pmap'); const num = d.queue[0]; if (num == null || (d.pp != null && d.ppos != null)) return;
+  d[field] = v;
+  if (d.pp != null && d.ppos != null) {
+    d.tries[num] = (d.tries[num] || 0) + 1;
+    const { page, pos } = pageOf(meta, 2, num);
+    const g = (d.pp === page) + (d.ppos === pos) === 2 ? 'ok' : (d.pp === page) || (d.ppos === pos) ? 'mid' : 'bad';
+    if (!d.first[num]) {
+      d.first[num] = g;
+      writeGrade({ session, qid: `${entry.id}/page-map/${num}`, g, tool: 'exam', src: entry.id, type: 'page-map',
+        snap: makeSnap({ ask: E.pmAsk, prompt: refText(`2:${num}`, corpus), answerRefs: [`2:${num}`], answer: E.pmAns(n(num), n(page), E.pmPosL[pos]), unit: unit() }) });
+    }
+  }
+  renderRound(); tabs(); await save();
 }
 function orderRound() {
   const t = ex.kind === 'tuhfa'; const d = drillState('order');
@@ -239,7 +272,7 @@ async function drillPick(c) {
 }
 function drillAct(act) {
   const k = dk(); const d = drillState(k);
-  if (act === 'drillMore') { d.batch = d.deck.slice(d.done, d.done + (d.size || BATCH)); d.stage = 0; d.queue = d.batch.slice(); d.done += d.batch.length; d.pick = null; d.open = {}; d.all = false; }
+  if (act === 'drillMore') { d.batch = d.deck.slice(d.done, d.done + (d.size || BATCH)); d.stage = 0; d.pp = d.ppos = null; d.queue = d.batch.slice(); d.done += d.batch.length; d.pick = null; d.open = {}; d.all = false; }
   else if (act === 'drillNext') { const num = d.queue.shift(); if (d.pick !== num) d.queue.push(num); d.pick = null; }
   else if (act === 'drillAgain') { st[k] = null; drillState(k); }
 }
@@ -255,6 +288,7 @@ function renderRound() {
   else if (r.id === 'first-letters') h = selfRound('letters');
   else if (r.id === 'progressive-hide') h = selfRound('hide');
   else if (r.id === 'order-verses') h = orderRound();
+  else if (r.id === 'page-map') h = pmapRound();
   else h = roundQs(r.id).map(questionHtml).join('');
   const i = ex.rounds.indexOf(r), pv = ex.rounds[i - 1], nx = ex.rounds[i + 1];
   h += `<div class="roundnav">${pv ? `<button type="button" class="btn" data-round="${pv.id}" data-top="1">${esc(E.prev(pv.title))}</button>` : '<span></span>'}${nx ? `<button type="button" class="btn show" data-round="${nx.id}" data-top="1">${esc(E.next(nx.title))}</button>` : ''}</div>`;
@@ -340,6 +374,9 @@ function bind() {
     if (d.act === 'hdMore' || d.act === 'hdLess') { const H = drillState('hide'); H.stage = Math.max(0, Math.min(STAGES, H.stage + (d.act === 'hdMore' ? 1 : -1))); H.open = {}; renderRound(); ui.$(`[data-act="${d.act}"], [data-act="hdLess"]`)?.focus(); await save(); return; }
     if (d.flg) { await selfGrade(dk(), d.flg); return; }
     if (d.ord) { await orderTap(+d.ord); return; }
+    if (d.pp) { await pmapPick('pp', +d.pp); return; }
+    if (d.ppos) { await pmapPick('ppos', d.ppos); return; }
+    if (d.act === 'pmNext') { const P = drillState('pmap'); const x = P.queue.shift(); if (P.first[x] && pageOf(meta, 2, x).page === P.pp && pageOf(meta, 2, x).pos === P.ppos) { /* mastered */ } else P.queue.push(x); P.pp = P.ppos = null; renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); await save(); return; }
     if (d.act === 'orUndo') { drillState('order').picked.pop(); renderRound(); await save(); return; }
     if (d.act === 'orNext') { const O = drillState('order'); const s0 = O.queue.shift(); if (!O.picked.every((y, i) => y === s0 + i)) O.queue.push(s0); O.picked = []; renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); await save(); return; }
     if (d.act === 'drillMore' || d.act === 'drillNext' || d.act === 'drillAgain') { drillAct(d.act); await save(); renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); ui.$('#qs .choice, #qs [data-act]')?.focus({ preventScroll: true }); return; }

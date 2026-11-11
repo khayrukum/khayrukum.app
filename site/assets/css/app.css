@@ -388,3 +388,8 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
 .ord-n { flex: none; inline-size: 1.7rem; block-size: 1.7rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-body); font-size: 0.9rem; font-weight: 700; background: var(--bg); color: var(--accent); }
 .ord-t { flex: 1; min-inline-size: 0; }
 .ord-r, .ord-i b { flex: none; font-family: var(--f-body); color: var(--gold); font-size: 0.9rem; }
+
+/* «خريطة الصفحة» */
+.choices.pos { grid-template-columns: repeat(3, 1fr); }
+.choices.pos .choice { font-size: 0.95rem; font-weight: 500; line-height: 1.4; padding: 0.3rem; }
+.choice.on { border-color: var(--accent); background: var(--accent-soft); }

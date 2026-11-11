@@ -179,3 +179,28 @@ test('«رتّب الآيات»: four consecutive verses shown out of order; tap
   assert.equal(await p.locator('#score').innerText(), score);
   assert.deepEqual(p.errors, []);
 });
+
+test('«خريطة الصفحة»: page and position checked against the page table; the picks stay visible; Quran exams only', async () => {
+  const { p } = await page();
+  const meta = JSON.parse(fs.readFileSync(path.join(DIST, 'data/quran/meta.json'), 'utf8'));
+  const { pageOf } = await import(path.join(DIST, 'assets/js/core/pages.js'));
+  assert.deepEqual(pageOf(meta, 2, 5), { page: 2, pos: 'last' }); assert.deepEqual(pageOf(meta, 2, 77), { page: 12, pos: 'first' }); assert.deepEqual(pageOf(meta, 2, 80), { page: 12, pos: 'mid' });
+  await p.goto(BASE + 'exam/?id=baqarah-3'); await settle(p);
+  await p.click('.rt[data-round="page-map"]'); await p.click('[data-act="drillMore"]'); await p.waitForSelector('#qs article.drill');
+  for (let k = 0; k < 3; k++) {
+    const pages = await p.locator('#qs [data-pp]').evaluateAll(bs => bs.map(b => +b.dataset.pp));
+    const pick = pages[0];
+    await p.click(`#qs [data-pp="${pick}"]`); await p.click('#qs [data-ppos="mid"]'); await p.waitForTimeout(80);
+    assert.deepEqual(await p.locator('#qs [data-pp]').evaluateAll(bs => bs.map(b => +b.dataset.pp)), pages, 'same page choices after answering');
+    const banner = await p.locator('#qs .banner').innerText();
+    const [, aya, pg] = banner.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).match(/الآية (\d+) · صفحة (\d+)/).map(Number);
+    const truth = pageOf(meta, 2, aya); assert.equal(pg, truth.page, 'the stated page matches the table');
+    const want = (pick === truth.page) + (truth.pos === 'mid') === 2 ? 'r-ok' : (pick === truth.page) || truth.pos === 'mid' ? 'r-mid' : 'r-bad';
+    assert.match(await p.locator('#qs article').getAttribute('class'), new RegExp(want));
+    if (pick !== truth.page) assert.equal(await p.locator(`#qs [data-pp="${pick}"].wrong`).count(), 1, 'a wrong pick stays visible');
+    await p.click('[data-act="pmNext"]'); await p.waitForTimeout(80);
+  }
+  await p.goto(BASE + 'exam/?id=tuhfa'); await settle(p);
+  assert.equal(await p.locator('.rt[data-round="page-map"]').count(), 0, 'not in the Tuhfa');
+  assert.deepEqual(p.errors, []);
+});
