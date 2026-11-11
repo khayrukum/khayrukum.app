@@ -11,8 +11,8 @@ One step at a time; each step ships on its own.
 | 1 | المراجعة المتباعدة «وِرد اليوم» | Questions answered wrong come back tomorrow, then after 3 days, a week, a month | as the question | none (uses the history) | **done** (`random/?due=1`, `core/srs.js`: steps 1, 3, 7, 16, 35 days) |
 | 2 | أول حرف من كل كلمة | The verse is shown as first letters only; recite from them | reader | none (generated from the text) | **done** (round «أوائل الحروف» in every exam: ten per batch, tap a letter for its word, a non-«صحيح» grade brings it back) |
 | 3 | الإخفاء التدريجي | The verse is shown in full, then words disappear step by step | reader | none (generated) | **done** (round in every exam: verses in order, five per batch, four steps of a quarter each, the first word stays, tap a hidden word to see it) |
-| 4 | رتّب الآيات | Four or five shuffled verses to put in order | app | none (generated) | next |
-| 5 | تدريب المتشابهات | Two similar verses side by side with the difference marked, then «which is in verse N?» | app | uses the existing «المتشابهات» rounds; more pairs need review | |
+| 4 | رتّب الآيات | Four or five shuffled verses to put in order | app | none (generated) | **done** (round in every exam: four consecutive verses shown by their opening words, tap in order, checked by the app; five groups per batch, a missed group comes back) |
+| 5 | تدريب المتشابهات | Two similar verses side by side with the difference marked, then «which is in verse N?» | app | uses the existing «المتشابهات» rounds; more pairs need review | next |
 | 6 | خريطة الصفحة | «Which page? top, middle or bottom?» as multiple choice | app | none (page table) | |
 | 7 | الربط بالمعنى | A topic title per passage, and «what comes after the story of …?» | app | **yes — titles must be written and reviewed** | |
 | 8 | التسميع الصوتي | Recite aloud; the app follows and marks slips | app | speech recognition — separate project | later |

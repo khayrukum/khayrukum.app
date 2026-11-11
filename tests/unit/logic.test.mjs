@@ -123,3 +123,10 @@ test('first letters: one letter per word, pause marks kept, diacritics dropped',
   assert.deepEqual(t.map(x => x.letter), ['ذ', 'ٱ', 'ل', 'ر', 'ۛ', 'ف', 'ۛ', 'ه']);
   assert.deepEqual(t.filter(x => x.mark).length, 2);
 });
+
+test('order windows cover the range with four verses each; the shown order is never already sorted', async () => {
+  const { windows, shownOrder } = await import('../../site/assets/js/types/order-verses.js');
+  assert.deepEqual(windows(1, 43), [1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 40]);
+  assert.deepEqual(windows(75, 105), [75, 79, 83, 87, 91, 95, 99, 102]);
+  for (const s of [1, 40, 75, 102]) for (const seed of ['a', 'b', 'c']) { const o = shownOrder(s, seed); assert.deepEqual([...o].sort((x, y) => x - y), [s, s + 1, s + 2, s + 3]); assert.notDeepEqual(o, [s, s + 1, s + 2, s + 3]); assert.deepEqual(o, shownOrder(s, seed)); }
+});

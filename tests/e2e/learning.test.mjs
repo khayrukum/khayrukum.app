@@ -152,3 +152,30 @@ test('«الإخفاء التدريجي»: verses in order, five per batch, a qu
   assert.match(await p.textContent('#qs'), /أتقنت من أول مرة ٥ من ٥/);
   assert.deepEqual(p.errors, []);
 });
+
+test('«رتّب الآيات»: four consecutive verses shown out of order; tapping them in order is right, otherwise the group returns; undo works', async () => {
+  const { p } = await page(); const num = s => +s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  await p.goto(BASE + 'exam/?id=baqarah-1'); await settle(p);
+  const score = await p.locator('#score').innerText();
+  await p.click('.rt[data-round="order-verses"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  const startOf = async () => num((await p.locator('#qs .qtag').innerText()).match(/[٠-٩]+/)[0]);
+  const s1 = await startOf();
+  const shown = (await p.locator('#qs button.ord-i').evaluateAll(bs => bs.map(b => +b.dataset.ord)));
+  assert.deepEqual([...shown].sort((a, b) => a - b), [s1, s1 + 1, s1 + 2, s1 + 3], 'four consecutive verses');
+  assert.notDeepEqual(shown, [s1, s1 + 1, s1 + 2, s1 + 3], 'not already in order');
+  await p.click(`#qs [data-ord="${s1 + 1}"]`); await p.click('[data-act="orUndo"]'); assert.equal(await p.locator('#qs [aria-pressed="true"]').count(), 0);
+  for (const x of [s1 + 1, s1, s1 + 2, s1 + 3]) await p.click(`#qs [data-ord="${x}"]`);
+  assert.equal(await p.locator('#qs .banner.warn').count(), 1, 'a wrong order is marked');
+  await p.click('[data-act="orNext"]'); await p.waitForTimeout(100);
+  const seen = [];
+  for (let k = 0; k < 6 && await p.locator('#qs button.ord-i').count(); k++) {
+    const s0 = await startOf(); seen.push(s0);
+    for (let i = 0; i < 4; i++) await p.click(`#qs [data-ord="${s0 + i}"]`);
+    assert.equal(await p.locator('#qs .banner.good').count(), 1);
+    await p.click('[data-act="orNext"]'); await p.waitForTimeout(100);
+  }
+  assert.equal(seen[seen.length - 1], s1, 'the missed group came back at the end');
+  assert.match(await p.textContent('#qs'), /رتّبت من أول مرة ٤ من ٥/);
+  assert.equal(await p.locator('#score').innerText(), score);
+  assert.deepEqual(p.errors, []);
+});

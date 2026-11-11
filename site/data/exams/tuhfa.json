@@ -47,7 +47,7 @@
       ]
     }
   ],
-  "rounds": ["summary","chapters","complete-hemistich","next-bayt","bayt-topic","codes","quran-to-tuhfa","chain","random-number", "which-number", "first-letters", "progressive-hide"],
+  "rounds": ["summary","chapters","complete-hemistich","next-bayt","bayt-topic","codes","quran-to-tuhfa","chain","random-number", "which-number", "first-letters", "progressive-hide", "order-verses"],
   "roundText": {},
   "plainQuotes": ["والثان / والثالث"],
   "questions": [

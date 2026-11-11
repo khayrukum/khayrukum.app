@@ -16,6 +16,7 @@ import { parseRef } from '../core/refs.js';
 import { numberChoices, shuffle } from '../core/choices.js';
 import { lettersHtml } from '../types/first-letters.js';
 import { hideHtml, STAGES } from '../types/progressive-hide.js';
+import { SPAN, windows, shownOrder, opening } from '../types/order-verses.js';
 
 const main = ui.$('#main');
 const E = S.exam;
@@ -122,10 +123,14 @@ function randomRound() {
 const BATCH = 10;
 const drillRef = num => (ex.kind === 'tuhfa' ? `t:${num}` : `2:${num}`);
 // Drill rounds share the batching: «ما رقمها؟» (st.drill), «أوائل الحروف» (st.letters), «الإخفاء التدريجي» (st.hide).
-const DKEY = { 'which-number': 'drill', 'first-letters': 'letters', 'progressive-hide': 'hide' };
+const DKEY = { 'which-number': 'drill', 'first-letters': 'letters', 'progressive-hide': 'hide', 'order-verses': 'order' };
 const SELF = { letters: { type: 'first-letters', size: BATCH, shuffled: true }, hide: { type: 'progressive-hide', size: 5, shuffled: false } };
 const dk = () => DKEY[st.round] || 'drill';
 function drillState(k = dk()) {
+  if (k === 'order') {
+    if (!st.order) st.order = { deck: shuffle(windows(...entry.range)), size: 5, done: 0, queue: [], batch: [], first: {}, tries: {}, picked: [], seed: newSession() };
+    return st.order;
+  }
   if (SELF[k]) {
     if (!st[k]) { const [a, z] = entry.range; const deck = []; for (let x = a; x <= z; x++) deck.push(x); st[k] = { deck: SELF[k].shuffled ? shuffle(deck) : deck, size: SELF[k].size, done: 0, queue: [], batch: [], first: {}, open: {}, all: false, stage: 0 }; }
     return st[k];
@@ -144,9 +149,38 @@ function batchScreen(d, L) {
     if (missed.length) h += `<p class="muted">${esc(L.missed)} ${missed.map(n).join('، ')}</p>`;
     h += `<div class="row"><button type="button" class="btn primary" data-act="drillAgain">${esc(E.drillAgain)}</button></div>`;
   } else {
-    h += `<p class="muted">${esc((t ? E.drillLeftT : E.drillLeft)(n(N - d.done), n(N)))}</p><div class="row"><button type="button" class="btn primary" data-act="drillMore">${esc(d.done ? E.drillMore(n(Math.min(d.size || BATCH, N - d.done))) : E.drillStart(n(d.size || BATCH)))}</button></div>`;
+    h += `<p class="muted">${esc((L.left || (t ? E.drillLeftT : E.drillLeft))(n(N - d.done), n(N)))}</p><div class="row"><button type="button" class="btn primary" data-act="drillMore">${esc(d.done ? E.drillMore(n(Math.min(d.size || BATCH, N - d.done))) : E.drillStart(n(d.size || BATCH)))}</button></div>`;
   }
   return h + '</div>';
+}
+function orderRound() {
+  const t = ex.kind === 'tuhfa'; const d = drillState('order');
+  if (!d.queue.length) return batchScreen(d, { batch: E.orBatch, all: E.orAll, allT: E.orAll, missed: E.orMissed, left: E.orLeft });
+  const start = d.queue[0]; const shown = shownOrder(start, d.seed + (d.tries[start] || 0)); const done = d.picked.length === SPAN;
+  const ok = done && d.picked.every((x, i) => x === start + i);
+  let h = `<article class="q drill${done ? (ok ? ' r-ok' : ' r-bad') : ''}"><div class="qtags"><span class="qtag">${esc(E.orRange(n(start), n(start + SPAN - 1), unit()))}</span><span class="qn">${esc(E.drillInBatch(n(d.queue.length)))}</span></div>`;
+  h += `<div class="ask">${esc(t ? E.orAskT : E.orAsk)}</div><div class="ord">${shown.map(x => {
+    const pos = d.picked.indexOf(x);
+    const cls = pos < 0 ? '' : done ? (x === start + pos ? ' right' : ' wrong') : ' on';
+    return `<button type="button" class="ord-i${cls}" data-ord="${x}"${pos >= 0 ? ' aria-pressed="true"' : ''}${done ? ' disabled' : ''}><span class="ord-n">${pos >= 0 ? n(pos + 1) : ''}</span><span class="ord-t">${esc(opening(corpus, ex.kind, x))}</span>${done ? `<b class="ord-r">${n(x)}</b>` : ''}</button>`;
+  }).join('')}</div>`;
+  if (done) h += `<p class="banner ${ok ? 'good' : 'warn'}" role="status">${esc(ok ? E.orRight : t ? E.orWrongT : E.orWrong)}</p><div class="row"><button type="button" class="btn primary" data-act="orNext">${esc(E.drillNext)}</button></div>`;
+  else if (d.picked.length) h += `<div class="row"><button type="button" class="btn" data-act="orUndo">${esc(E.orUndo)}</button></div>`;
+  return h + '</article>';
+}
+async function orderTap(x) {
+  const d = drillState('order'); const start = d.queue[0]; if (start == null || d.picked.length === SPAN || d.picked.includes(x)) return;
+  d.picked.push(x);
+  if (d.picked.length === SPAN) {
+    d.tries[start] = (d.tries[start] || 0) + 1;
+    if (!d.first[start]) {
+      const g = d.picked.every((y, i) => y === start + i) ? 'ok' : 'bad'; d.first[start] = g;
+      const t = ex.kind === 'tuhfa'; const refs = Array.from({ length: SPAN }, (_, i) => (t ? `t:${start + i}` : `2:${start + i}`));
+      writeGrade({ session, qid: `${entry.id}/order-verses/${start}`, g, tool: 'exam', src: entry.id, type: 'order-verses',
+        snap: makeSnap({ ask: t ? E.orAskT : E.orAsk, prompt: refs.map(r => opening(corpus, ex.kind, +r.split(':').pop())).join(' / '), answerRefs: refs, answer: E.orRange(n(start), n(start + SPAN - 1), unit()), unit: unit() }) });
+    }
+  }
+  renderRound(); tabs(); await save();
 }
 function selfRound(k) {
   const t = ex.kind === 'tuhfa'; const d = drillState(k); const hide = k === 'hide';
@@ -220,6 +254,7 @@ function renderRound() {
   else if (r.id === 'which-number') h = drillRound();
   else if (r.id === 'first-letters') h = selfRound('letters');
   else if (r.id === 'progressive-hide') h = selfRound('hide');
+  else if (r.id === 'order-verses') h = orderRound();
   else h = roundQs(r.id).map(questionHtml).join('');
   const i = ex.rounds.indexOf(r), pv = ex.rounds[i - 1], nx = ex.rounds[i + 1];
   h += `<div class="roundnav">${pv ? `<button type="button" class="btn" data-round="${pv.id}" data-top="1">${esc(E.prev(pv.title))}</button>` : '<span></span>'}${nx ? `<button type="button" class="btn show" data-round="${nx.id}" data-top="1">${esc(E.next(nx.title))}</button>` : ''}</div>`;
@@ -304,6 +339,9 @@ function bind() {
     if (d.act === 'flAll') { const L = drillState('letters'); L.all = !L.all; renderRound(); ui.$('[data-act="flAll"]')?.focus(); await save(); return; }
     if (d.act === 'hdMore' || d.act === 'hdLess') { const H = drillState('hide'); H.stage = Math.max(0, Math.min(STAGES, H.stage + (d.act === 'hdMore' ? 1 : -1))); H.open = {}; renderRound(); ui.$(`[data-act="${d.act}"], [data-act="hdLess"]`)?.focus(); await save(); return; }
     if (d.flg) { await selfGrade(dk(), d.flg); return; }
+    if (d.ord) { await orderTap(+d.ord); return; }
+    if (d.act === 'orUndo') { drillState('order').picked.pop(); renderRound(); await save(); return; }
+    if (d.act === 'orNext') { const O = drillState('order'); const s0 = O.queue.shift(); if (!O.picked.every((y, i) => y === s0 + i)) O.queue.push(s0); O.picked = []; renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); await save(); return; }
     if (d.act === 'drillMore' || d.act === 'drillNext' || d.act === 'drillAgain') { drillAct(d.act); await save(); renderRound(); tabs(); ui.$('#qs .drill')?.scrollIntoView({ block: 'nearest' }); ui.$('#qs .choice, #qs [data-act]')?.focus({ preventScroll: true }); return; }
     if (d.act === 'roll') { const [a, z] = entry.range; let x; do { x = a + Math.floor(Math.random() * (z - a + 1)); } while (st.rand && x === st.rand.n && z > a); st.rand = { n: x, open: false }; }
     else if (d.act === 'randShow') { st.rand.open = true; if (ex.kind === 'tuhfa') ui.setTuhfaContext(st.rand.n); }
