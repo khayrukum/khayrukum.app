@@ -27,20 +27,22 @@ Most current questions are graded by the reader. Three things reduce the weaknes
 
 ## Beyond Al-Baqarah: general titles and structure
 
-The app covers the whole Quran, so nothing a reader sees should assume Al-Baqarah. To do before the
-second sura gets an exam (owner's request, 2026-11-11):
+The app covers the whole Quran, so nothing a reader sees should assume Al-Baqarah (owner's request, 2026-11-11).
 
-| Where | Today | Target |
-|---|---|---|
-| Exam titles (`data/exams/index.json`) | «اختبار ٣ · البقرة ٧٥–١٠٥» | Numbered by the mushaf, not the sura: «الحزب ٣ · الربعان ٥–٦» with the verses as the subtitle («البقرة ٧٥–١٠٥»). An exam that crosses two suras names both («البقرة ٢٥٣ – آل عمران ١٤»). |
-| Exam ids | `baqarah-3` | `rub-05-06` (by rub'), with the old ids kept as aliases so saved progress and history still match. |
-| Home page | section «اختبارات البقرة» | «اختبارات الحفظ», grouped by juz' once there are more than one |
-| Plan | «خطة تثبيت البقرة», `plan:baqarah` | «خطة التثبيت» for any range of rub's the reader chooses; Al-Baqarah becomes the first preset |
-| Random exam | «نطاق سورة البقرة (الآيات)», «البقرة كلها», «اقرأ الآية رقم ٧ من سورة البقرة» | Range by sura + verse (or juz'/hizb/rub'), shortcuts per rub', the question names the sura |
-| Code | refs built as `2:${n}`, one Quran range family `quran2`, the page table filtered on sura 2 | refs carry the sura; ranges are «sura:verse» pairs; the Quran file per sura is loaded on demand |
-| «عن التطبيق» | «يبدأ المحتوى بسورة البقرة …» | keep, it is a fact about the content |
+Done (before launch):
+- Exam titles are numbered by the mushaf's rub's, the verses below: «اختبار ٣ · الربعان ٥–٦», «البقرة ٧٥–١٠٥ · ص ١١–١٦».
+  The random exam's source chips and question tags use the same names.
+- Home page section «اختبارات الحفظ»; plan «خطة التثبيت» («… مع مراجعة ما سبق»).
 
-Data stays as it is (refs already carry the sura: `2:75`), so this is mostly titles, ids and the range picker.
+Kept on purpose:
+- Internal exam ids (`baqarah-3`) stay: they key saved progress and history, and readers do not see them
+  (except in the address bar). Revisit only if a reason appears.
+- Questions and ranges name the sura where it is a fact: «اقرأ الآية رقم ٧ من سورة البقرة», «نطاق الحفظ: سورة البقرة».
+
+To do with the second sura:
+- Plan for any range of rub's (Al-Baqarah becomes the first preset); `plan:baqarah` key migrated.
+- Random exam range by sura + verse (or juz'/hizb/rub'); refs carry the sura; Quran file per sura loaded on demand.
+- Home page grouped by juz' once there is more than one.
 
 ## Daily reminders (owner's request, 2026-11-11)
 

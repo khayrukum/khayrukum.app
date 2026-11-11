@@ -70,7 +70,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
     assert.equal(await p.$eval('.rt[aria-selected="true"]', e => e.dataset.round), 'random-number'); assert.equal(await p.locator('.bignum').innerText(), rolled, label + ': random number restored');
     await p.goto(BASE + 'random/'); await settle(p);
     assert.equal(await p.$eval('[data-size][aria-pressed="true"]', b => b.dataset.size), '25', label + ': set size');
-    assert.deepEqual(await p.$$eval('[data-src]', b => b.map(x => x.getAttribute('aria-pressed'))), ['false', 'true', 'true', 'true'], label + ': sources');
+    assert.deepEqual(await p.$$eval('[data-src]', b => b.map(x => x.getAttribute('aria-pressed'))), ['false', 'true', 'true', 'true', 'true'], label + ': sources');
     assert.deepEqual([await p.inputValue('#from-tuhfa'), await p.inputValue('#to-tuhfa')], ['6', '16'], label + ': range');
     assert.match(await p.locator('#rq .qn').innerText(), /سؤال ٣ من/, label + ': position in the set');
     assert.match(await p.locator('#play .banner').innerText(), /تابعتَ من حيث توقفت · ٢ من/, label + ': RND-08 note');
@@ -82,7 +82,7 @@ test('exam, random exam, plan and history survive a reload and a browser restart
     await p.goto(BASE + 'history/'); await settle(p);
     assert.equal(await p.locator('.evline').count(), 6, label + ': 6 history lines');
     const ev = (await events(p)).filter(e => !e.deleted);
-    assert.deepEqual([...new Set(ev.map(e => e.tool + ':' + e.src))].sort(), ['exam:baqarah-1', 'exam:baqarah-2', 'exam:tuhfa', 'random:baqarah-2', 'random:baqarah-3', 'random:tuhfa'].filter(x => ev.some(e => e.tool + ':' + e.src === x)).sort());
+    assert.deepEqual([...new Set(ev.map(e => e.tool + ':' + e.src))].sort(), ['exam:baqarah-1', 'exam:baqarah-2', 'exam:tuhfa', 'random:baqarah-2', 'random:baqarah-3', 'random:baqarah-4', 'random:tuhfa'].filter(x => ev.some(e => e.tool + ':' + e.src === x)).sort());
     assert.ok(ev.some(e => e.tool === 'random') && ['baqarah-1', 'baqarah-2', 'tuhfa'].every(s => ev.some(e => e.tool === 'exam' && e.src === s)), label + ': events from every exam and from the random exam');
   };
   await p.reload(); await check('reload');
@@ -126,7 +126,7 @@ test('offline after the first visit: every page, reloads and URL variants work; 
   const cached = await p.evaluate(async () => { const k = (await caches.keys()).find(x => x.startsWith('khayr-app-')); return (await (await caches.open(k)).keys()).map(r => new URL(r.url).pathname.slice(1)); });
   assert.deepEqual(list.filter(u => !cached.includes(u)), [], 'every precache entry is in the app cache');
   await ctx.setOffline(true);
-  const pages = { '': 'خيركم من تعلّمه', 'plan/': 'خطة تثبيت البقرة', 'exam/?id=baqarah-1': 'اختبار ١ · البقرة ١–٤٣', 'exam/?id=baqarah-2': 'اختبار ٢ · البقرة ٤٤–٧٤', 'exam/?id=tuhfa': 'اختبار تحفة الأطفال',
+  const pages = { '': 'خيركم من تعلّمه', 'plan/': 'خطة التثبيت', 'exam/?id=baqarah-1': 'اختبار ١ · الربعان ١–٢', 'exam/?id=baqarah-2': 'اختبار ٢ · الربعان ٣–٤', 'exam/?id=tuhfa': 'اختبار تحفة الأطفال',
     'random/': 'الاختبار العشوائي', 'history/': 'سجلي', 'listen/': 'استماع تحفة الأطفال', 'settings/': 'الإعدادات', 'about/': 'عن التطبيق', 'privacy/': 'سياسة الخصوصية', '404.html': 'الصفحة غير موجودة', 'no-such-page/': 'الصفحة غير موجودة',
     '?source=pwa': 'خيركم من تعلّمه', 'exam/index.html?id=tuhfa&x=1': 'اختبار تحفة الأطفال' };
   for (const [u, h1] of Object.entries(pages)) {

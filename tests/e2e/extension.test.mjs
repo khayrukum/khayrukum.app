@@ -34,7 +34,7 @@ before(async () => {
   // (data only) and dropping the «soon» entry that follows it.
   const e = idx.exams.find(x => x.id === 'baqarah-3'); assert.ok(e, 'index.json lists baqarah-3');
   Object.assign(e, { status: 'published', file: 'baqarah-3.json', pages: [11, 16] });
-  idx.exams = idx.exams.filter(x => x.status !== 'soon');
+  idx.exams = idx.exams.filter(x => x.status !== 'soon' && !(x.kind === 'quran' && x.range[0] > 105)); // the fixture is the last Quran exam
   fs.writeFileSync(idxP, JSON.stringify(idx)); fs.writeFileSync(path.join(tmp, 'data/exams/baqarah-3.json'), JSON.stringify(FIXTURE));
   srv = createServer(tmp); await new Promise(r => srv.listen(0, r)); BASE = `http://localhost:${srv.address().port}/`;
   browser = await chromium.launch();
@@ -50,13 +50,13 @@ test('TST-30: a published baqarah-3 fixture appears on the hub, in the random ex
   await p.goto(BASE); await settle();
   const card = p.locator('a[href*="exam/?id=baqarah-3"]');
   assert.equal(await card.count(), 1, 'hub card for baqarah-3');
-  assert.match(await card.innerText(), /اختبار ٣ · البقرة ٧٥–١٠٥/);
-  assert.match(await card.innerText(), /الربعان الخامس والسادس/);
+  assert.match(await card.innerText(), /اختبار ٣ · الربعان ٥–٦/);
+  assert.match(await card.innerText(), /البقرة ٧٥–١٠٥/);
   assert.doesNotMatch(await p.locator('#main').innerText(), /الاختبار القادم/);
 
   // exam page renders from the fixture and grades
   await card.click(); await settle();
-  assert.equal(await p.locator('h1').innerText(), 'اختبار ٣ · البقرة ٧٥–١٠٥');
+  assert.equal(await p.locator('h1').innerText(), 'اختبار ٣ · الربعان ٥–٦');
   assert.deepEqual(await p.$$eval('.rt', t => t.map(x => x.dataset.round)), ['summary', 'next', 'mid-verse', 'random-number']);
   await p.click('.rt[data-round="next"]');
   assert.equal(await p.locator('article.q').count(), 2);
@@ -73,7 +73,7 @@ test('TST-30: a published baqarah-3 fixture appears on the hub, in the random ex
   // random exam: source chip, covered range 1–105, rub' 5 and 6 quick ranges, pool from the new exam
   await p.goto(BASE + 'random/'); await settle(); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
   assert.equal(await p.locator('[data-src="baqarah-3"]').count(), 1);
-  assert.match(await p.locator('[data-src="baqarah-3"]').innerText(), /البقرة ٣/);
+  assert.match(await p.locator('[data-src="baqarah-3"]').innerText(), /الربعان ٥–٦/);
   assert.equal(await p.$eval('#to-quran2', s => s.options[s.options.length - 1].value), '105');
   const quick = await p.$$eval('[data-quick="quran2"]', b => b.map(x => `${x.textContent}|${x.dataset.a}-${x.dataset.b}`));
   assert.ok(quick.includes('الربع ٥|75-91'), 'quick range for rub\' 5: ' + quick.join(' ; '));
@@ -91,7 +91,7 @@ test('TST-30: a published baqarah-3 fixture appears on the hub, in the random ex
   // history: both events, with the new source name and a filter chip
   await p.goto(BASE + 'history/'); await settle();
   const txt = await p.locator('#main').innerText();
-  assert.match(txt, /البقرة ٣/);
+  assert.match(txt, /الربعان ٥–٦/);
   assert.equal(await p.locator('.evline').count(), 2);
   assert.deepEqual(errors, []);
   await ctx.close();

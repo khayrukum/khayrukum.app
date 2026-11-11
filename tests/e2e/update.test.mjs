@@ -147,6 +147,6 @@ test('OFF-02a.5: a failed install of a re-deploy with the SAME content hash leav
   assert.deepEqual(s.caches, [cacheA], 'the cache of the worker that is still in control must not be deleted by the failed install');
   await ctx.setOffline(true);
   await p.goto(BASE + 'plan/').catch(() => {});
-  assert.match(await p.title(), /خطة تثبيت البقرة/, 'the controlling worker still serves pages offline');
+  assert.match(await p.title(), /خطة التثبيت/, 'the controlling worker still serves pages offline');
   await ctx.close();
 });

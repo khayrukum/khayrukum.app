@@ -37,13 +37,13 @@ test('HIS-08: «انسخ الملخص» lists the verse / bayt NUMBER of each it
   await p.click('#copy'); await p.waitForTimeout(150);
   const text = await p.evaluate(() => navigator.clipboard.readText());
   assert.match(text, /تحفة الأطفال · الرموز والحروف · بيت ١٠(\n|$)/, 'Tuhfa item names bayt 10:\n' + text);
-  assert.match(text, /البقرة ١ · الكلمة المتكررة · آية ٢٠، ٢٥(\n|$)/, 'Baqarah item names verses 20 and 25:\n' + text);
+  assert.match(text, /الربعان ١–٢ · الكلمة المتكررة · آية ٢٠، ٢٥(\n|$)/, 'Baqarah item names verses 20 and 25:\n' + text);
 });
 
 test('GEN-03: the history page shows no Western digits for a graded random-number question', async () => {
   const { p } = await page();
   await p.goto(BASE + 'random/'); await settle(p); if (await p.locator('#ctl:not([open]) > summary').count()) { await p.click('#ctl > summary'); await p.waitForTimeout(100); } /* the range settings are folded while a set is running */
-  await p.click('[data-src="baqarah-1"]'); await p.click('[data-src="baqarah-2"]'); await p.click('[data-src="baqarah-3"]');
+  await p.click('[data-src="baqarah-1"]'); await p.click('[data-src="baqarah-2"]'); await p.click('[data-src="baqarah-3"]'); await p.click('[data-src="baqarah-4"]');
   await p.click('[data-quick="tuhfa"][data-a="17"]'); await p.waitForTimeout(100);      // chapter 3 = bayt 17 only
   await p.click('#newSet'); await p.waitForTimeout(200);
   let found = false;
