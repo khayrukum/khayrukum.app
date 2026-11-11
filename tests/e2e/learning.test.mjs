@@ -83,7 +83,7 @@ test('«ما رقمها؟» drill inside an exam: ten per batch, a miss comes ba
   const { p } = await page();
   await p.goto(BASE + 'exam/?id=baqarah-2'); await settle(p);
   const score = await p.locator('#score').innerText();
-  await p.click('.rt[data-round="which-number"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  await p.click('.rt[data-round="which-number"]'); await p.click('[data-act="drillMore"]'); await p.waitForSelector('#qs article.drill');
   assert.match(await p.locator('#qs .qn').innerText(), /١٠/);
   const answer = async wrongFirst => {          // returns the verse number of the question just answered
     const btns = p.locator('#qs .choice');
@@ -112,7 +112,7 @@ test('«أوائل الحروف»: first letters only, tap reveals a word, a non
   const { p } = await page(); const t0 = Date.now();
   await p.goto(BASE + 'exam/?id=baqarah-1'); await settle(p);
   const score = await p.locator('#score').innerText();
-  await p.click('.rt[data-round="first-letters"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  await p.click('.rt[data-round="first-letters"]'); await p.click('[data-act="drillMore"]'); await p.waitForSelector('#qs article.drill');
   const letters = await p.locator('#qs button.fl').allInnerTexts();
   assert.ok(letters.length >= 3 && letters.every(x => [...x].length === 1), 'one letter per word');
   await p.locator('#qs button.fl').first().click(); await p.waitForTimeout(80);
@@ -133,7 +133,7 @@ test('«أوائل الحروف»: first letters only, tap reveals a word, a non
 test('«الإخفاء التدريجي»: verses in order, five per batch, a quarter more hidden per step until only the first word is left; grade only at the end', async () => {
   const { p } = await page();
   await p.goto(BASE + 'exam/?id=baqarah-2'); await settle(p);
-  await p.click('.rt[data-round="progressive-hide"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  await p.click('.rt[data-round="progressive-hide"]'); await p.click('[data-act="drillMore"]'); await p.waitForSelector('#qs article.drill');
   assert.equal(await p.locator('#qs .qtag').innerText(), 'آية ٤٤', 'starts at the first verse of the exam');
   const count = async () => [await p.locator('#qs .hw').count(), await p.locator('#qs .hw-open').count()];
   const [h0, o0] = await count(); assert.equal(h0, 0); const words = o0;
@@ -157,7 +157,7 @@ test('«رتّب الآيات»: four consecutive verses shown out of order; tap
   const { p } = await page(); const num = s => +s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
   await p.goto(BASE + 'exam/?id=baqarah-1'); await settle(p);
   const score = await p.locator('#score').innerText();
-  await p.click('.rt[data-round="order-verses"]'); await p.click('[data-act="drillMore"]'); await p.waitForTimeout(150);
+  await p.click('.rt[data-round="order-verses"]'); await p.click('[data-act="drillMore"]'); await p.waitForSelector('#qs article.drill');
   const startOf = async () => num((await p.locator('#qs .qtag').innerText()).match(/[٠-٩]+/)[0]);
   const s1 = await startOf();
   const shown = (await p.locator('#qs button.ord-i').evaluateAll(bs => bs.map(b => +b.dataset.ord)));
