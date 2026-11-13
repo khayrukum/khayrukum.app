@@ -126,6 +126,7 @@ test('canonical URLs, unknown and soon exams, #q= (IA-01/03/06)', async () => {
 test('plan: reps, week confirmation, mistakes (PL-03/07/09)', async () => {
   const { ctx, p } = await page();
   await p.goto(BASE + 'plan/'); await settle(p);
+  await p.click('#tab-0'); // a weekday with three repetitions (Friday has two), so the test does not depend on today
   await p.locator('.rep').nth(2).click();
   assert.equal(await p.textContent('#ringNum'), '٣');
   await p.fill('#mInput', 'آية ٥ <b>'); await p.click('#mForm button');
