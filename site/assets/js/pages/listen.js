@@ -92,6 +92,13 @@ function render() {
   </div></div>`;
   selCount(); sync(audio.state()); dlState();
 }
+// «من … إلى»: choosing one end moves the other with it when the range would be reversed (owner, 2026-11-13).
+function linkRange(e) {
+  const t = e.target; if (t.id !== 'rFrom' && t.id !== 'rTo') return;
+  const f = ui.$('#rFrom'), z = ui.$('#rTo');
+  if (+f.value > +z.value) (t === f ? z : f).value = t.value;
+}
+document.addEventListener('change', linkRange);
 const opts = v => Array.from({ length: 61 }, (_, i) => `<option value="${i + 1}"${i + 1 === v ? ' selected' : ''}>${n(i + 1)}</option>`).join('');
 function selCount() {
   const k = prefs.sel.length; const el = ui.$('#selCount'); if (!el) return;
