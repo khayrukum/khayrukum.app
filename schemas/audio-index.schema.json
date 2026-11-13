@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "audio-index",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "reciters",
+    "collections"
+  ],
+  "properties": {
+    "schema": {
+      "const": "audio-index"
+    },
+    "version": {
+      "type": "string"
+    },
+    "reciters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "credit"
+        ]
+      }
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "reciter",
+          "manifest",
+          "permission"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "poem",
+              "quran",
+              "lesson"
+            ]
+          },
+          "reciter": {
+            "type": "string"
+          },
+          "manifest": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "permission": {
+            "type": "object",
+            "required": [
+              "granted"
+            ],
+            "properties": {
+              "granted": {
+                "type": "boolean"
+              },
+              "date": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "scope": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "web",
+                    "apps",
+                    "offline",
+                    "segmenting",
+                    "speed"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "audio-index",
+  "version": "1.0.0",
+  "reciters": [
+    { "id": "ahmad-mahdi", "name": "الشيخ أحمد مهدي", "credit": "credit.audio" }
+  ],
+  "collections": [
+    { "id": "tuhfa", "type": "poem", "title": "تحفة الأطفال", "reciter": "ahmad-mahdi", "manifest": "tuhfa.json",
+      "permission": { "granted": false, "date": null, "scope": [] } }
+  ]
+}

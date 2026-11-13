@@ -1,0 +1,8 @@
+{
+  "schema": "audio-permission",
+  "version": "1.0.0",
+  "note": "LIC-20 / AUD-33: one record per collection. The signed document is kept outside the repository; `ref` points to it.",
+  "collections": {
+    "tuhfa": { "status": "pending", "granted": false, "date": null, "scope": [], "ref": null }
+  }
+}

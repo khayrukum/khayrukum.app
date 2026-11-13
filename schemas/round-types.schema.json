@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "round-types",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "types"
+  ],
+  "properties": {
+    "schema": {
+      "const": "round-types"
+    },
+    "version": {
+      "type": "string"
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "intro",
+          "gradable"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "object"
+          },
+          "intro": {
+            "type": "object"
+          },
+          "gradable": {
+            "type": "object",
+            "required": [
+              "exam",
+              "random"
+            ],
+            "properties": {
+              "exam": {
+                "type": "boolean"
+              },
+              "random": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

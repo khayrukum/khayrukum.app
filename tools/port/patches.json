@@ -1,0 +1,9 @@
+{
+  "tuhfa/quran/14": {
+    "set": {
+      "p": "ولا خوف عليهم (البقرة ٦٢)"
+    },
+    "old": "ولا خوف عليهم (البقرة ٣٨)",
+    "reason": "The typed words «ولا خوف عليهم» are those of 2:62; verse 38 reads «فلا خوف عليهم». The label now names the verse the words come from (found by the independent test, M2)."
+  }
+}

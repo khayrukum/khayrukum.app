@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "audio-permission",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "collections"
+  ],
+  "properties": {
+    "schema": {
+      "const": "audio-permission"
+    },
+    "version": {
+      "type": "string"
+    },
+    "collections": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "status",
+          "granted",
+          "date",
+          "scope",
+          "ref"
+        ],
+        "properties": {
+          "status": {
+            "enum": [
+              "pending",
+              "granted",
+              "refused"
+            ]
+          },
+          "granted": {
+            "type": "boolean"
+          },
+          "scope": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "web",
+                "apps",
+                "offline",
+                "segmenting",
+                "speed"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
