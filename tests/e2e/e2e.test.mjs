@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const DIST = path.join(ROOT, 'dist'), DISTA = path.join(ROOT, 'dist-audio');
-const PAGES = ['', 'plan/', 'exam/?id=baqarah-1', 'exam/?id=baqarah-2', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'settings/', 'about/', 'privacy/', '404.html'];
+const PAGES = ['', 'plan/', 'exam/?id=baqarah-1', 'exam/?id=baqarah-2', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'range/', 'settings/', 'about/', 'privacy/', '404.html'];
 let browser, srv, srvA, BASE, BASEA;
 
 before(async () => {
@@ -155,7 +155,7 @@ test('backup: export text → import into a clean profile; second import adds no
 });
 
 test('audio disabled build: no mp3, no play controls, listen shows «قريبًا» (TST-36)', async () => {
-  const mp3 = []; (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) walk(f); else if (f.endsWith('.mp3')) mp3.push(f); } })(DIST);
+  const mp3 = []; (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const f = path.join(d, e.name); if (e.isDirectory()) walk(f); else if (/\.(mp3|mp4|m4a|wav|ogg)$/i.test(f)) mp3.push(f); } })(DIST);
   assert.deepEqual(mp3, []);
   const { ctx, p } = await page(); const bad = [];
   p.on('response', r => { if (r.status() === 404 && !/build\.json$/.test(r.url())) bad.push(r.url()); });
@@ -164,8 +164,14 @@ test('audio disabled build: no mp3, no play controls, listen shows «قريبً�
   assert.equal(await p.locator('[data-bayt],[data-chapter],#allBtn').count(), 0);
   await p.goto(BASE + 'exam/?id=tuhfa'); await settle(p);
   assert.equal(await p.locator('[data-play]').count(), 0);
+  // RNG-12: without the recitation the range page says so and offers the next step (no dead end)
+  await p.goto(BASE + 'range/'); await settle(p);
+  assert.equal(await p.textContent('#none'), 'التلاوة غير متاحة في هذه النسخة بعد.');
+  assert.equal(await p.locator('#pp, #stageBtn, audio').count(), 0);
+  assert.deepEqual(await p.$$eval('#main a.btn', a => a.map(x => new URL(x.href).pathname + new URL(x.href).search)), ['/random/?due=1', '/random/', '/listen/', '/']);
   await p.goto(BASE); await settle(p);
   assert.match(await p.textContent('#main'), /الصوت قريبًا/);
+  assert.match(await p.locator('a.card[href$="range/"]').innerText(), /مشغّل المدى[\s\S]*التلاوة قريبًا/);
   assert.deepEqual(bad, []);
   await ctx.close();
 });

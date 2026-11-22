@@ -16,6 +16,7 @@ One step at a time; each step ships on its own.
 | 6 | خريطة الصفحة | «Which page? top, middle or bottom?» as multiple choice | app | none (page table) | **done** (Quran exams: page among four near pages + first verse / last verse / in between, from the Tanzil page table; both right = صحيح, one = متردد) |
 | 7 | الربط بالمعنى | A topic title per passage, and «what comes after the story of …?» | app | **waits for a verified source** of topic divisions (owner, 2026-11-11); not built from the exam summaries | on hold |
 | 8 | التسميع الصوتي | Recite aloud; the app follows and marks slips | app | speech recognition — separate project | later |
+| 9 | مشغّل المدى ووضع العرض | Hear any range (pages, rub's or verses) continuously with repeat, and follow the text full screen, the phrase being recited marked; the same view shows the bayt on the Tuhfa listening page | — (listening) | a recitation with verse timings: Minshawi, 10 part files so far; **the audio is not published** (OWNER-9) | **built** (`/range/`, `core/stage.js`; RNG-*, STG-* in the requirements); public site shows «التلاوة غير متاحة» until the owner decides |
 
 ## Self-grading
 

@@ -1,6 +1,7 @@
 # «خيركم من تعلّمه» (Khayrukum) — Website Requirements
 
 > v2.1 (2026-11-07): added §5.x multi-collection audio (Quran recitation and lessons from the same reciter).
+> v2.2 (2026-11-22): added «مشغّل المدى» `/range/` (§3.9, RNG), «وضع العرض» (§3.10, STG), Quran collections made of part files with verse timings (AUD-34/35), LIC-23 and OWNER-9.
 
 | | |
 |---|---|
@@ -91,6 +92,7 @@ Never in scope without an explicit owner decision: ads, tracking, third-party lo
 | `/random/` | «الاختبار العشوائي» | random.html |
 | `/history/` | «سجلي» | history.html |
 | `/listen/` | «استماع تحفة الأطفال» | tuhfa-listen.html (separate artifact today) |
+| `/range/` | «مشغّل المدى» | new (v2.2); the owner's single-file range player |
 | `/settings/` | «الإعدادات» | new |
 | `/about/` | «عن الموقع» | new |
 | `/privacy/` | «الخصوصية» | new; also the store privacy-policy URL in phase 2 |
@@ -122,6 +124,7 @@ Never in scope without an explicit owner decision: ads, tracking, third-party lo
    - the line «الاختبار القادم: <card>» for each exam with status `soon`, hidden when there is none.
 5. «التجويد»: «اختبار تحفة الأطفال», with «المتن كاملًا · ٦١ بيتًا · مع تلاوة كل بيت». The tail «مع تلاوة كل بيت» is replaced by «· الصوت قريبًا» while audio is disabled (AUD-40).
 6. «للاستماع والتكرار»: «استماع تحفة الأطفال», with «كل باب أو كل بيت على حدة، مع التكرار».
+   Then «مشغّل المدى», with «صفحات أو أرباع أو آيات تسمعها متتابعة مع التكرار، والنص أمامك»; the tail «· التلاوة قريبًا» is added while its recitation is not in the build (RNG-01, RNG-12).
 7. Footer (IA-04).
 
 ---
@@ -132,7 +135,7 @@ Never in scope without an explicit owner decision: ads, tracking, third-party lo
 - **GEN-01** MUST: All visible text is فصحى.
   - *AC:* the content lint passes (TST-12).
   - Today `random-data.json` contains colloquial text (e.g. «كمّل بعد الآية», «البيت ده عن إيه؟», «وإنت تقول أول اللي بعدها»). It is replaced by the فصحى wording of the exam pages.
-- **GEN-02** MUST: UI strings live in `assets/js/strings.ar.js` or in data files.
+- **GEN-02** MUST: UI strings live in `assets/js/core/strings.ar.js` or in data files. Strings that only one page uses may live in a sibling `strings.<group>.ar.js` (today `strings.pages.ar.js`: history, plan, settings, about, privacy), so that the other pages stay inside NFR-PERF-03; the lint treats these files alike.
   - Exception: static `<title>` and `<h1>` in HTML. TST-12 checks that they equal their entries in `strings.ar.js`.
 - **GEN-03** MUST: Numbers use Arabic-Indic digits with no grouping, through one formatter (`Intl.NumberFormat('ar-EG',{useGrouping:false})`). Decimals use «٫», e.g. «٠٫٥×». Percentages use «٪». Dates use Arabic names (`ar-EG`, Gregorian).
 - **GEN-04** MUST: Every page has `<html lang="ar" dir="rtl">`. Arrows follow the reading direction: «التالي ←» and «→ السابق».
@@ -374,6 +377,7 @@ Never in scope without an explicit owner decision: ads, tracking, third-party lo
 - **LIS-10** MUST: Media Session controls are supported (AUD-14).
 - **LIS-11** MUST: The page shows the download state: «حمّل الصوت كله (≈ <size> م.ب)», «أكمل التحميل (<k> من <n>)», or «الصوت محفوظ على الجهاز ✓», each linking to settings.
 - **LIS-12** MUST: While audio is disabled (AUD-40), the page shows «الاستماع قريبًا إن شاء الله» and the abyat list without play controls. The hub card stays linked.
+- **LIS-13** MUST: «⛶ وضع العرض» under the now-playing bar opens the full-screen reading view on the bayt being heard (STG-20…22).
 
 ### 3.7 Settings `/settings/` (SET)
 - **SET-01** MUST: Theme: «تلقائي», «فاتح» or «داكن». The choice persists and is applied before first paint.
@@ -411,6 +415,46 @@ Never in scope without an explicit owner decision: ads, tracking, third-party lo
   - nothing is sold or shared;
   - how to delete your data;
   - the contact address.
+
+### 3.9 Range player «مشغّل المدى» `/range/` (RNG) — v2.2, owner request 2026-11-22
+The member picks a range of the mushaf and hears it continuously, with repeat. The recitation is a `quran`
+audio collection made of part files with verse timings (AUD-34); today that is `minshawi`
+(الشيخ محمد صديق المنشاوي، المصحف المرتل).
+- **RNG-01** MUST: The page is linked from the hub (2.2 item 6). The header shows «مشغّل المدى», the usage line and the credit `credit.minshawi` = «تلاوة الشيخ محمد صديق المنشاوي · المصحف المرتل».
+- **RNG-02** MUST: Everything the page offers is computed from data: the collection manifest (AUD-34) and `meta.json` (pages, rub's, sura lengths). Adding part files to the manifest extends the page with no code change.
+- **RNG-03** MUST: Units: «بالصفحة» (Madinah mushaf pages), «بالربع» (hizb quarters), «بالآية» (a sura, then verses). Only units that the part files cover **completely** are offered; a unit kind with nothing to offer is disabled. A line states what is available («المتاح الآن: …»).
+- **RNG-04** MUST: «من» and «إلى» selects. Choosing one end moves the other when the range would be reversed, or would run across verses that are not covered. The range is therefore always ordered and unbroken. A summary line shows the number of units, the duration and the first and last verse.
+- **RNG-05** MUST: Cutting. A range is played as *clips* (AUD-35), one per stretch that is continuous inside one part file; consecutive units in the same file are played through without a seek (joined by position in the file, never by time distance). For the pause before a verse V with `boundary` and `start`: the pause ends at `start`, its half-length is h = start − boundary, and it begins at boundary − h.
+  - A range that **starts** at V begins at start − min(0.3 s, h): just before the first sound.
+  - A range that **ends** before V stops at (boundary − h) + min(0.3 s, h): just after the last sound.
+  - A range whose first verse opens a sura starts at that sura's basmala. The isti'adha that opens every part file and the closing formula after `end` are never played. A range that ends with the last verse of a part file stops at the item's `end`.
+- **RNG-06** MUST: A range may cross from one part file to the next: the next clip starts in the next file at its first verse. One media element, `src` changed as in AUD-03.
+- **RNG-07** MUST: Controls: play/pause; «كرّر» (on by default: after the last clip the range starts again; off: playback stops at the end and ▶ starts the range again); speed (٠٫٥× … ٢×, pitch preserved); the custom seek bar (AUD-12) over the **whole range**, also across files, with ±5 s; previous / next verse. A clip ends on time (AUD-35).
+- **RNG-08** MUST: The now-playing line reads «يُقرأ الآن: سورة <name> · آية <n>» (or «بسملة سورة <name>»), with «ص <page>» below it, following `verses[].start`. Paused: «متوقف عند: …».
+- **RNG-09** MUST: Fine-tune. «ضبط بداية المدى ونهايته»: − / + one second on the start and on the end of the current range. The offset is stored per boundary on the device (`range:prefs.tune`), applies to every range that starts or ends there, and can be reset. While playing, the moved edge is replayed at once.
+- **RNG-10** MUST: State is remembered in `range:prefs` (DATA-51): unit, both ends per unit, sura, repeat, speed, fine-tunes, and the position inside the current range, from which ▶ resumes after a reload.
+- **RNG-11** MUST: Background playback with Media Session (AUD-14): title = the verse being recited, artist «الشيخ محمد صديق المنشاوي», album «المصحف المرتل»; previous / next = previous / next verse.
+- **RNG-12** MUST: When the collection is not in the build (audio disabled, AUD-40, or its files were not provided), the page says «التلاوة غير متاحة في هذه النسخة بعد.», explains why, and links to «وِرد اليوم», the random exam, the listening page and the hub. No play control is shown. The hub card stays linked.
+- **RNG-13** SHOULD: «احفظ تلاوة هذا المدى للاستماع دون إنترنت (≈ <size> م.ب)» downloads the part files of the current range into the audio cache (OFF-06/09, verified by size and hash), and reads «تلاوة هذا المدى محفوظة على الجهاز ✓» once they are there. A part is also cached on its first online play, as for all audio.
+- **RNG-14** MUST: «⛶ وضع العرض» opens the full-screen reading view (STG-10…12).
+
+### 3.10 Full-screen reading view «وضع العرض» (STG) — v2.2, owner request 2026-11-22
+One view, `core/stage.js`, used by the range player and by the listening page. It opens "like a video" and shows the text being recited in large type, following the audio.
+- **STG-01** MUST: The view is a `role="dialog"` `aria-modal` layer over the page («وضع العرض»); the page behind is `inert`. It is opened by a tap and can be opened while nothing plays (it then shows the first verse of the range, or the last bayt heard, with ▶).
+- **STG-02** MUST: It shows the context (sura, or «تحفة الأطفال · الباب <n> · <name>»), the text, and below it the verse number and page («آية <n> · ص <p>») or «البيت <n>», plus a thin progress line.
+- **STG-03** MUST: Real full screen through the Fullscreen API where the browser allows it for elements; otherwise a CSS full-viewport layer (iPhone Safari). Portrait and landscape. Safe-area insets are respected.
+- **STG-04** MUST: Type is as large as fits (up to 4.5 rem) and is scaled down for longer text. Text never scrolls and is never clipped. Quran text is never below 1.375 rem with line-height 2 (NFR-TYP-02).
+- **STG-05** MUST: A verse too long for one screen at the smallest size is shown one screenful at a time, breaking between recited phrases where possible; the screen shown is the one that holds the phrase being recited, and «<i> / <n>» is shown. A bayt first lets its hemistichs wrap before going smaller.
+- **STG-06** MUST: Minimal controls: close, previous, play/pause, next, and the repeat indicator (a toggle, `aria-pressed`). While playing they fade after 3 s and return on any tap, key press or focus; a faded control cannot be activated by a stray tap. A tap on the text shows or hides them. They never fade while paused.
+- **STG-07** MUST: Escape, the close button and the browser's back button close the view (it pushes one history entry). Closing returns to the same page, scroll position and focus (the button that opened it); playback is not interrupted.
+- **STG-08** SHOULD: While playing with the view open, a screen wake lock is held where available, released on pause and close, and taken again when the page returns to view.
+- **STG-09** MUST: Keyboard: Space/Enter = play/pause, ArrowLeft = next, ArrowRight = previous (RTL), Escape = close; every control is a button with an Arabic label and a target of at least 44 px. Transitions are ≤ 200 ms, change no layout, and are off under `prefers-reduced-motion`.
+- **STG-10** MUST (Quran): The verse shown is the Uthmani text of the site's Tanzil-derived sura files (DATA-12), never typed; the basmala before a sura comes from the same files. The isti'adha is shown only as the label «الاستعاذة». The verse number is shown as «﴿n﴾».
+- **STG-11** MUST (Quran): The verse advances with `verses[].start` of the collection (AUD-34). The verse shown must be the one being recited.
+- **STG-12** MUST (Quran): The phrase being recited is softly marked (by colour only: no change of layout, nothing drawn over neighbouring lines) using the collection's cues. Marking may be approximate (the cues come from speech recognition); a verse with a single phrase is not marked.
+- **STG-20** MUST (Tuhfa): On `/listen/` the view shows the bayt being heard, from a single bayt, a selection, a chapter clip or the whole poem (AUD-15), as two hemistichs laid out as elsewhere (NFR-TYP-03), with «قيد المراجعة» where DATA-17 applies.
+- **STG-21** MUST (Tuhfa): Previous / next move to the neighbouring bayt: inside a selection its previous / next item; inside a chapter clip or the whole poem a seek to that bayt; otherwise the single bayt is played.
+- **STG-22** MUST: The view never creates a second media element (AUD-03).
 
 ---
 
@@ -486,7 +530,7 @@ Non-consecutive chains, such as «كل «وإذ» في الربعين بالتر
   It is generated from Tanzil metadata by `tools/import-tanzil.mjs`.
 - **DATA-12** `data/quran/002.json` is `{ "sura":2, "basmala":"…", "ayat":[…], "notice":"<Tanzil notice>" }`. The notice is included in every verbatim copy, as Tanzil requires.
   - The rub'-el-hizb sign is **not** included in the text (`rubElHizb:false`). The UI adds «۞» only where the design calls for it (PL-02).
-  - v1 ships surah 2 only.
+  - v1 shipped surah 2 only. v2.2 also ships surahs 1, 3, 4, 20 and 21 (`001.json` …), the suras the recitation collection covers (STG-10); the list is `SURAS` in `tools/import-tanzil.mjs`. For every sura but Al-Fatiha, the basmala Tanzil prefixes to verse 1 is stored apart (`basmala`, `basmalaPrefixed: true`). TST-11 checks every file.
 - **DATA-13** MUST: Rub' openings for the plan are references: `data/quran/rub-openings.json` = `{ "2": [{"rub":1,"ref":"2:1:1-1"}, …] }`.
 - **DATA-14** MUST: `import-tanzil.mjs` is the only writer of `data/quran/*`. TST-11 recomputes every verse from the original download.
 
@@ -598,6 +642,7 @@ Non-consecutive chains, such as «كل «وإذ» في الربعين بالتر
 | `random:current` | `{set:[qid], idx, grades:[g], session, startedAt, done, updatedAt}` |
 | `plan:baqarah` | `{pair, week:{reps[7], checks{}, clean, satBannerDismissed}, mistakes:[{id,text,deleted,updatedAt}], done:[pair], history:[{pair,clean,endedAt}], updatedAt}` |
 | `listen:prefs` | `{sel:[n], rate, loop, open:{}, updatedAt}` |
+| `range:prefs` | `{unit:'P'\|'Q'\|'A', P:[from,to], Q:[from,to], A:{sura,from,to}, loop, rate, tune:{<part>/<key>/<s\|e>: seconds}, pos:{k,p}, updatedAt}` (RNG-10) |
 | `ui:install`, `ui:inapp`, `ui:standaloneHint` | `{dismissedAt}` |
 
 - **DATA-52** MUST: All storage access goes through `store.js`.
@@ -723,6 +768,13 @@ The owner states that الشيخ أحمد مهدي will also provide **Quran rec
 - **AUD-31** MUST: Quran recitation items are addressable by `surah:ayah` (and optionally by page and rub'), so exams can attach "listen to this ayah" to any Quran question later. In v1 this button stays hidden unless a `quran` collection containing that ayah exists.
 - **AUD-32** SHOULD (later phase, not v1): a lessons page listing `lesson` collections (title, duration, chapters, speed, resume position per lesson, offline download per lesson).
 - **AUD-33** MUST: Credit and permission are tracked per collection (`permission: {granted: bool, date, scope: ["web","apps","offline","segmenting","speed"]}`); a collection with `granted:false` is never served or committed (the release check enforces this per collection, extending the audio gate).
+- **AUD-34** MUST (v2.2): A `quran` collection may consist of **part files** that each hold many verses. Its manifest has items of kind `part` (`src`, `bytes`, `dur`, `sha256`, `from`, `to` = first and last verse, `end` = where the recitation ends in the file) and `segments[<part id>] = { verses: [key, boundary, start(, q)], cues: [time, key, word] }` (schema `recitation-segments`):
+  - `key` is `sura:aya`, `basN` (the basmala before sura N) or `pre0` (the isti'adha that opens the file); times are seconds in the part file; `boundary` is the middle of the pause before the entry, `start` its first sound, `q` (`amb` | `nopause` | `fallback`) marks a less certain start.
+  - `word` is the 1-based word of the stored **Uthmani** verse (DATA-01) heard first in a speech chunk. The source timings count Simple-Clean words; `tools/audio/import-recitation.mjs` converts them (the same position when the word counts are equal, the DATA-25 alignment otherwise, scaled where that fails), so the site never needs Simple-Clean.
+  - The manifest is written only by `tools/audio/import-recitation.mjs` from `data/source/recitation/<id>-timings.json`; the validator (TST-10) checks order, gaps, overlaps between parts, times, cue words against the shipped text, and that the manifest equals what the tool writes.
+  - Verses are addressable by `sura:aya` through the index built by `core/range-logic.js` (extends AUD-31).
+- **AUD-35** MUST (v2.2): `audio.js` plays **clips**: an item with `start` and `end` plays only that stretch of its file. In a sequence, the next clip in the same file continues without touching `src`; a clip in another file changes `src` (AUD-03). `state().time`, `dur` and `seek` are relative to the clip. A clip ends on time: once less than 0.5 s of playing time is left, a one-shot timer is set for exactly that time and cleared on pause, seek, rate change and clip change; the check on `timeupdate` and on the poll remains as the fallback for throttled timers (background tabs).
+- **AUD-36** MUST (v2.2): The build handles audio **per collection**: with audio on, the files of each collection are copied from the audio folder and checked against its manifest; a collection none of whose files is present is left out of the build (manifest and index entry), and so is, in a `--strict` (release) build, a collection without a recorded grant. Audio files may be `.mp3`, `.mp4` or `.m4a`; the service worker serves all three from the audio cache with Range support (OFF-07) and their own media type.
 
 ## 6. Offline / PWA requirements
 
@@ -902,6 +954,7 @@ jumpier or less direct is a regression even if every functional test passes.
   - `release-check.mjs` passes only if `status=="granted"` **or** `audio.enabled==false`.
 - **LIC-21** MUST: The credit text is defined once, as `credit.audio` = «بصوت الشيخ أحمد مهدي» in `strings.ar.js` («تلاوة» is reserved for the Quran). It appears on `/listen/`, on the Tuhfa exam, on «عن الموقع» and in Media Session.
 - **LIC-22** MUST: The audio cutting and fading steps can be reproduced from the scripts in `tools/audio/`.
+- **LIC-23** MUST (v2.2): The recitation of الشيخ محمد صديق المنشاوي (collection `minshawi`) is **not committed and not published**. Its timings and manifest are data in the repository; its part files stay outside Git (`*.mp4` is git-ignored) and are used only in local builds (`--audio on --audio-dir local-audio`). `permission.json` records it as `pending`; whether and where it may be published is OWNER-9. The release check fails while audio is enabled and this collection has no recorded grant (AUD-33), and a `--strict` build leaves it out (AUD-36).
 - **LIC-30** MUST: The OFL license texts ship in `/assets/fonts/LICENSES/`. The hub hadith is attributed «رواه البخاري».
 - **LIC-31** MUST: Licensing follows D-5:
   - `LICENSE` (MIT) covers code;
@@ -990,6 +1043,8 @@ CI runs Playwright on Chromium (Pixel 7 profile), WebKit (iPhone 14 profile; rea
 | TST-32 | Unified history (4 events from 4 tools); per-type merge; retired qid shows «سؤال قديم»; HUB-02 ignores retired qids | Playwright | HIS-01/06/10, HUB-02 |
 | TST-35 | `check-audio.mjs` passes on the shipped files and fails on synthetic bad files (3 s silence, wrong duration, wrong offset) | node + ffmpeg | AUD-30, LIC-22 |
 | TST-36 | Build with `audio.enabled=false`: no `.mp3` in the artifact, no audio controls, no 404s | build + Playwright | AUD-40/41, LIS-12 |
+| TST-70 | Range logic on the shipped timings: covered pages / rub's / verses, «من … إلى» linking, cut points inside the pause, clips inside one file and across files, fine-tune, time line and loop wrap, verse and phrase at a time, cue → Uthmani word mapping, sura files byte-equal to Tanzil | node:test (`tests/unit/range.test.mjs`) | RNG-03…09, STG-11/12, AUD-34, DATA-12 |
+| TST-71 | «مشغّل المدى» and «وضع العرض» end to end on a copy of the site with synthetic tones (no recitation file needed): units, linking, persistence, clip start/end, crossing files, loop and stop, precise end, fine-tune, resume; the view opens, shows the site's text for the verse / bayt being heard, follows time and phrase, pages a long verse, fades controls, closes with Escape / back / leaving full screen and returns to the same place; axe; audio-off state | Playwright (`tests/e2e/range.test.mjs`, TST-36) | RNG-*, STG-*, AUD-35, LIS-13 |
 | TST-40 | Backup: export → import into a clean profile gives identical state; second import adds nothing; pasted-text path; invalid file rejected | Playwright | SET-04, DATA-60/61 |
 | TST-50 | Manual on real devices: iPhone (current and previous iOS major; Safari and home-screen app) and Android (Chrome and Samsung Internet). M-01 first tap plays. M-02 silent switch on still plays. M-03 lock-screen controls and artwork. M-04 selection continues with screen locked; listener confirms the gap ≤ 300 ms. M-05 airplane mode: cached bayt plays and seeks. M-06 download all survives a restart. M-07 install steps correct for the current iOS; HUB-08 shown. M-08 speeds 0.5× and 3× keep pitch. M-09 seek drag does not pan. M-10 link opened from WhatsApp. M-11 fonts and marks render correctly on 2:2 and 2:21. | manual | AUD-*, OFF-*, HUB-07/08, NFR-BRW-01, AUD-16 |
 | TST-60 | `release-check.mjs`: LIC-11 verified (or the owner accepted «قيد المراجعة»); LIC-20 granted (or audio disabled); Quran notice present; CI green | node | LIC-11/20, DEP-09 |
@@ -1009,6 +1064,7 @@ D-1…D-6 in section 0 stand unless the owner overturns them. These questions ar
 6. **OWNER-6.** Who answers info@khayrukum.app, and which inbox does it forward to? **Default: forwarded to the owner's personal inbox.**
 7. **OWNER-7.** Who owns the Cloudflare account, domain renewal and analytics? **Default: the owner's account, with auto-renew and 2FA on Cloudflare and GitHub.**
 8. **OWNER-8.** Confirm decisions D-1 to D-6. **Default: they stand.**
+9. **OWNER-9** (v2.2). May the recitation of الشيخ محمد صديق المنشاوي be published with the site, and where would its files be hosted (≈ 110 MB for the ten parts available today; GitHub Pages limits are in DEP-08)? Who holds the rights to this edition (the recording is from إذاعة القرآن الكريم، القاهرة), and is written permission needed as for LIC-20? **Default: not published; «مشغّل المدى» works in local builds only and shows RNG-12 on the public site.**
 
 ---
 

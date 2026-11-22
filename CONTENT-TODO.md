@@ -43,6 +43,18 @@ Audio is **off** in v1 and no audio file is in Git. To switch it on:
 Local testing with audio: copy the files to `local-audio/tuhfa/…` (git-ignored) and run
 `node tools/build.mjs --out dist-audio --audio on --audio-dir local-audio`.
 
+### 3b. Quran recitation for «مشغّل المدى» (LIC-23, OWNER-9)
+
+The Minshawi part files (`m01.mp4 … m35.mp4`, AAC) are **not in Git and not published**. Their timings are data:
+`data/source/recitation/minshawi-timings.json` → `site/data/audio/minshawi.json`.
+- Local use: copy the part files to `local-audio/minshawi/` (git-ignored) and build as above; a collection whose
+  files are absent is simply left out of the build, and `/range/` then says «التلاوة غير متاحة في هذه النسخة بعد.».
+- New or corrected timings: replace the timings file, then
+  `node tools/audio/import-recitation.mjs --id minshawi --audio-dir local-audio` (writes bytes, sha256 and the
+  converted cues) and `npm run validate`. A new sura also needs its text: add its number to `SURAS` in
+  `tools/import-tanzil.mjs` and run `npm run import:tanzil`.
+- Publishing waits for the owner's decision (OWNER-9): record a grant in `permission.json` and `index.json` only then.
+
 ## 4. Analytics token (DEP-07, NFR-PRV-03)
 
 Create a Cloudflare Web Analytics *manual* site for khayrukum.app and put its token in

@@ -116,7 +116,7 @@ test('offline after the first visit: every page, reloads and URL variants work; 
   const walk = (d, a = []) => { for (const f of fs.readdirSync(d)) { const x = path.join(d, f); fs.statSync(x).isDirectory() ? walk(x, a) : a.push(path.relative(DIST, x)); } return a; };
   const notPre = walk(DIST).filter(f => !list.includes(f) && !f.startsWith('assets/fonts/LICENSES/')); // licence texts are documents, not page resources
   assert.deepEqual(notPre.sort(), ['CNAME', 'robots.txt', 'sw.js'], 'everything a page can request is precached');
-  assert.equal(walk(DIST).filter(f => /\.(mp3|m4a|ogg|wav|opus|aac|flac)$/i.test(f)).length, 0, 'no audio file in dist (AUD-40)');
+  assert.equal(walk(DIST).filter(f => /\.(mp3|mp4|m4a|ogg|wav|opus|aac|flac)$/i.test(f)).length, 0, 'no audio file in dist (AUD-40)');
 
   const { ctx, p } = await launch(profile());
   const failed = []; p.on('requestfailed', r => failed.push(r.url())); p.on('response', r => { if (r.status() >= 400) failed.push(r.status() + ' ' + r.url()); });
@@ -127,7 +127,7 @@ test('offline after the first visit: every page, reloads and URL variants work; 
   assert.deepEqual(list.filter(u => !cached.includes(u)), [], 'every precache entry is in the app cache');
   await ctx.setOffline(true);
   const pages = { '': 'خيركم من تعلّمه', 'plan/': 'خطة التثبيت', 'exam/?id=baqarah-1': 'اختبار ١ · الربعان ١–٢', 'exam/?id=baqarah-2': 'اختبار ٢ · الربعان ٣–٤', 'exam/?id=tuhfa': 'اختبار تحفة الأطفال',
-    'random/': 'الاختبار العشوائي', 'history/': 'سجلي', 'listen/': 'استماع تحفة الأطفال', 'settings/': 'الإعدادات', 'about/': 'عن التطبيق', 'privacy/': 'سياسة الخصوصية', '404.html': 'الصفحة غير موجودة', 'no-such-page/': 'الصفحة غير موجودة',
+    'random/': 'الاختبار العشوائي', 'history/': 'سجلي', 'listen/': 'استماع تحفة الأطفال', 'range/': 'مشغّل المدى', 'settings/': 'الإعدادات', 'about/': 'عن التطبيق', 'privacy/': 'سياسة الخصوصية', '404.html': 'الصفحة غير موجودة', 'no-such-page/': 'الصفحة غير موجودة',
     '?source=pwa': 'خيركم من تعلّمه', 'exam/index.html?id=tuhfa&x=1': 'اختبار تحفة الأطفال' };
   for (const [u, h1] of Object.entries(pages)) {
     await p.goto(BASE + u); await p.waitForFunction(t => document.querySelector('h1')?.textContent === t, h1, { timeout: 8000 });

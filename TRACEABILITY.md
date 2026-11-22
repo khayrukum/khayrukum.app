@@ -208,6 +208,12 @@ Counted per requirement ID (ranges expanded); TST rows are listed separately at 
 | AUD-31 (§5.x) | `audio-cache.quranItem(sura, aya)` | — | partial — hook exists; no Quran button yet (none shown without a collection, as required) |
 | AUD-32 | — | — | deferred (later phase) |
 | AUD-33 | per-collection permission, `release-check.mjs` | — | done |
+| AUD-34 | `data/audio/minshawi.json`, `tools/audio/import-recitation.mjs`, `schemas/recitation-segments.schema.json`, `validate-data.mjs` | unit/range, TST-10 | done |
+| AUD-35 | clips in `core/audio.js` | e2e range (TST-71) | done; real AAC playback and background timers need real devices |
+| AUD-36 | per-collection audio in `tools/build.mjs`, `sw.template.js` | build, e2e TST-36 | done |
+| RNG-01…14 | `pages/range.js`, `core/range-logic.js`, `core/seekbar.js`, `site/range/` | unit/range (TST-70), e2e range (TST-71) | done; audio not published (LIC-23, OWNER-9) |
+| STG-01…22, LIS-13 | `core/stage.js`, `pages/range.js`, `pages/listen.js` | e2e range (TST-71) | done; iPhone fallback and wake lock need real devices |
+| LIC-23 | `.gitignore`, `permission.json`, `build.mjs --strict` | release-check | owner (OWNER-9) |
 | AUD-40 | `config.json audio.enabled=false`, build drops audio | e2e TST-36 | done |
 | AUD-41 | `.gitignore *.mp3`, release-check | release-check | done |
 

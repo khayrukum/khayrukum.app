@@ -37,7 +37,7 @@ npm run validate                 # TST-10/11: schemas, refs, word bounds, page f
 npm run lint                     # TST-12
 npm run test:unit                # TST-15/16
 npm run build                    # dist/ with sw.js (hash-verified precache), audio OFF by default
-npm run test:e2e                 # Playwright (needs dist/; audio tests need dist-audio/)
+npm run test:e2e                 # Playwright (needs dist/; audio tests need dist-audio/; range/stage tests use synthetic tones)
 node tools/release-check.mjs     # TST-60 release gate
 ```
 

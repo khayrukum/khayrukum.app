@@ -114,7 +114,7 @@ test('TST-24b: a proxy serves one stale file from build A → B does not install
   assert.deepEqual(s.caches, [cacheA], 'only A\'s cache remains');
   assert.equal(await versionSeen(p), '9.0.1', 'A keeps serving online');
   await ctx.setOffline(true);
-  for (const u of ['', 'plan/', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'settings/', 'about/', 'privacy/']) {
+  for (const u of ['', 'plan/', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'range/', 'settings/', 'about/', 'privacy/']) {
     await p.goto(BASE + u); await p.waitForSelector('#footer a');
     const okPage = await p.waitForFunction(() => document.querySelector('#main').innerText.length > 20 && !document.querySelector('#main .banner.warn'), null, { timeout: 8000 }).then(() => true, () => false);
     assert.ok(okPage, `${u} renders offline under A`);

@@ -10,7 +10,7 @@ import { createServer } from '../../tools/serve.mjs';
 const require = createRequire(import.meta.url);
 let axeSource = null; try { axeSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8'); } catch { /* not installed */ }
 const DIST = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../dist');
-const PAGES = ['', 'plan/', 'exam/?id=baqarah-1', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'settings/', 'about/', 'privacy/', '404.html'];
+const PAGES = ['', 'plan/', 'exam/?id=baqarah-1', 'exam/?id=tuhfa', 'random/', 'history/', 'listen/', 'range/', 'settings/', 'about/', 'privacy/', '404.html'];
 
 test('target size ≥ 24 × 24 px for every interactive element (NFR-A11Y-02)', async () => {
   const { chromium } = require('playwright');
