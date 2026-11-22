@@ -35,6 +35,8 @@ export async function quranItem(sura, aya) {
 }
 
 /** Cache-busted URL of an item (OFF-11 keys entries by `?v=<sha8>`). */
+/** Media type of an audio file by its extension (MP3 for the poem, AAC in MP4 for the Quran parts). */
+export const mediaType = src => (/\.(mp4|m4a)$/i.test(src) ? 'audio/mp4' : /\.wav$/i.test(src) ? 'audio/wav' : 'audio/mpeg');
 export const itemUrl = it => url(it.src) + (it.sha256 ? `?v=${it.sha256.slice(0, 8)}` : '');
 
 export async function isCached(it) {
@@ -68,7 +70,7 @@ export function cacheItem(it, { verifyHash = false, signal } = {}) {
     const buf = await r.arrayBuffer();
     if (it.bytes != null && buf.byteLength !== it.bytes) throw new Error('size mismatch');
     if (verifyHash && it.sha256 && (await sha256Hex(buf)) !== it.sha256) throw new Error('hash mismatch');
-    await c.put(u, new Response(buf, { status: 200, headers: { 'Content-Type': 'audio/mpeg', 'Content-Length': String(buf.byteLength), 'Accept-Ranges': 'bytes' } }));
+    await c.put(u, new Response(buf, { status: 200, headers: { 'Content-Type': mediaType(it.src), 'Content-Length': String(buf.byteLength), 'Accept-Ranges': 'bytes' } }));
     return true;
   })().finally(() => inflight.delete(u));
   inflight.set(u, p);

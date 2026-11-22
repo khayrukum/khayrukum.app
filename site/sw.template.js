@@ -71,7 +71,7 @@ async function rangeResponse(cached, rangeHeader) {
   else if (m && m[1] !== '') { s = +m[1]; e = m[2] === '' ? total - 1 : Math.min(+m[2], total - 1); }
   if (!m || s === undefined || s >= total || s > e) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${total}` } });
   return new Response(buf.slice(s, e + 1), { status: 206, statusText: 'Partial Content', headers: {
-    'Content-Range': `bytes ${s}-${e}/${total}`, 'Content-Length': String(e - s + 1), 'Accept-Ranges': 'bytes', 'Content-Type': 'audio/mpeg' } });
+    'Content-Range': `bytes ${s}-${e}/${total}`, 'Content-Length': String(e - s + 1), 'Accept-Ranges': 'bytes', 'Content-Type': cached.headers.get('Content-Type') || 'audio/mpeg' } });
 }
 
 self.addEventListener('fetch', event => {
@@ -81,7 +81,7 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
 
   // audio: served from khayr-audio-v1 (full or Range); never store a 206 (OFF-08)
-  if (/\.mp3$/i.test(url.pathname)) {
+  if (/\.(mp3|mp4|m4a)$/i.test(url.pathname)) {
     event.respondWith((async () => {
       const ac = await caches.open(AUDIO_CACHE);
       const hit = await ac.match(req.url);

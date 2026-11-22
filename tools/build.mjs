@@ -4,7 +4,8 @@
 //
 //   node tools/build.mjs [--out dist] [--audio on|off] [--audio-dir local-audio] [--version 1.0.0] [--strict]
 //
-// --audio-dir  where tuhfa/{bayt,chapter}/*.mp3 and tuhfa/full.mp3 live (default site/audio). Never committed.
+// --audio-dir  where the audio of each collection lives (default site/audio): tuhfa/{bayt,chapter}/*.mp3, tuhfa/full.mp3,
+//              minshawi/*.mp4. Never committed. A collection whose files are absent is left out of the build.
 // --strict     fail on warnings that a release must not have (missing Quran text, missing fonts).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -84,19 +85,32 @@ if (!fs.existsSync(path.join(SITE, 'assets/fonts/LICENSES')) || walk(path.join(S
 // ---------- audio (AUD-40/41) ----------
 const outCfg = { ...cfg, appVersion: version, audio: { ...cfg.audio, enabled: audioOn } };
 if (audioOn) {
-  const man = readJson(path.join(SITE, 'data/audio/tuhfa.json'));
-  let missingA = 0;
-  for (const it of man.items) {
-    const src = path.join(audioDir, it.src.replace(/^audio\//, ''));
-    if (!fs.existsSync(src)) { missingA++; continue; }
-    const buf = fs.readFileSync(src);
-    if (it.sha256 && sha256(buf) !== it.sha256) { fail(`${it.src}: sha256 differs from the manifest (run check-audio --write)`); process.exit(1); }
-    const dst = path.join(OUT, it.src); fs.mkdirSync(path.dirname(dst), { recursive: true }); fs.writeFileSync(dst, buf);
-  }
-  if (missingA) { fail(`audio enabled but ${missingA} files are missing under ${path.relative(ROOT, audioDir)}`); process.exit(1); }
+  // Per collection (AUD-33): its files are copied from the audio folder and checked against its manifest.
+  // A collection none of whose files are there is left out of this build (its pages say so); so is, in a
+  // --strict (release) build, a collection without a recorded grant: it is never served.
+  const aidx = readJson(path.join(SITE, 'data/audio/index.json'));
   const perm = readJson(path.join(SITE, 'data/audio/permission.json'));
-  if (perm.collections?.tuhfa?.status !== 'granted') warn('audio is ON but permission.json does not record a grant: this build must not be deployed (LIC-20). release-check.mjs will fail.');
-  ok(`audio enabled: ${man.items.length} files copied from ${path.relative(ROOT, audioDir)}`);
+  const kept = [];
+  for (const c of aidx.collections) {
+    const man = readJson(path.join(SITE, 'data/audio', c.manifest));
+    const granted = perm.collections?.[c.id]?.status === 'granted' && perm.collections[c.id].granted && c.permission.granted;
+    const local = it => path.join(audioDir, it.src.replace(/^audio\//, ''));
+    const have = man.items.filter(it => fs.existsSync(local(it)));
+    const drop = why => { warn(`audio collection «${c.id}» is left out of this build: ${why}`); fs.rmSync(path.join(OUT, 'data/audio', c.manifest), { force: true }); };
+    if (STRICT && !granted) { drop('no recorded grant in permission.json (AUD-33)'); continue; }
+    if (!have.length) { drop(`none of its files is under ${path.relative(ROOT, audioDir)}`); continue; }
+    if (have.length < man.items.length) { fail(`audio enabled but ${man.items.length - have.length} files of «${c.id}» are missing under ${path.relative(ROOT, audioDir)}`); process.exit(1); }
+    for (const it of man.items) {
+      const buf = fs.readFileSync(local(it));
+      if (it.sha256 && sha256(buf) !== it.sha256) { fail(`${it.src}: sha256 differs from the manifest (run check-audio --write; for a recitation, tools/audio/import-recitation.mjs)`); process.exit(1); }
+      const dst = path.join(OUT, it.src); fs.mkdirSync(path.dirname(dst), { recursive: true }); fs.writeFileSync(dst, buf);
+    }
+    if (!granted) warn(`audio collection «${c.id}» is in this build but permission.json does not record a grant: this build must not be deployed (LIC-20, LIC-23). release-check.mjs will fail.`);
+    ok(`audio collection «${c.id}»: ${man.items.length} files copied from ${path.relative(ROOT, audioDir)}`);
+    kept.push(c);
+  }
+  if (!kept.length) { fail(`audio enabled but no collection could be included (files under ${path.relative(ROOT, audioDir)}, grants in permission.json)`); process.exit(1); }
+  if (kept.length < aidx.collections.length) fs.writeFileSync(path.join(OUT, 'data/audio/index.json'), JSON.stringify({ ...aidx, collections: kept }, null, 2) + '\n');
 } else ok('audio disabled: no audio files, no audio manifest in the build (AUD-40)');
 fs.writeFileSync(path.join(OUT, 'config.json'), JSON.stringify(outCfg, null, 2) + '\n');
 

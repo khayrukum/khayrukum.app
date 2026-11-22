@@ -19,7 +19,7 @@ for (const c of aidx.collections) {
 }
 if (!cfg.audio.enabled) ok('audio disabled (LIC-20 fallback)');
 // AUD-41: no audio in Git unless granted
-const tracked = execSync('git ls-files', { cwd: ROOT }).toString().split('\n').filter(f => /\.(mp3|m4a|ogg|wav)$/i.test(f));
+const tracked = execSync('git ls-files', { cwd: ROOT }).toString().split('\n').filter(f => /\.(mp3|mp4|m4a|aac|ogg|opus|wav|flac)$/i.test(f));
 if (tracked.length && !Object.values(perm.collections).every(p => p.status === 'granted')) E(`audio files tracked in Git before permission: ${tracked.slice(0, 3).join(', ')}…`);
 
 // LIC-11: Tuhfa verification or accepted fallback
