@@ -1,5 +1,6 @@
 // Settings «/settings/» (SET-01…06).
 import { S } from '../core/strings.ar.js';
+import { P } from '../core/strings.pages.ar.js';
 import { esc, n, mb, isoDate, fullDate } from '../core/fmt.js';
 import { config, build } from '../core/base.js';
 import * as store from '../core/store.js';
@@ -9,7 +10,7 @@ import * as swc from '../core/sw-client.js';
 import { collection, cachedCount, totalBytes, downloadAll, deleteAll, AUDIO_CACHE } from '../core/audio-cache.js';
 import { makeBackup, parseBackup, applyImport } from '../core/backup.js';
 
-const T = S.settings;
+const T = P.settings;
 const main = ui.$('#main');
 let col = null, ctrl = null;
 

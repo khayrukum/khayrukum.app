@@ -7,11 +7,13 @@ import * as ui from '../core/ui.js';
 import * as audio from '../core/audio.js';
 import { collection, cachedCount, totalBytes } from '../core/audio-cache.js';
 import { loadTuhfa } from '../core/content.js';
+import { seekbar } from '../core/seekbar.js';
+import * as stage from '../core/stage.js';
 
 const L = S.listen;
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3]; // LIS-08
 const main = ui.$('#main');
-let T, col, prefs, selMode = false, dragging = null;
+let T, col, prefs, selMode = false, bar = null;
 
 const chapterOf = b => T.chapters.find(c => b >= c.from && b <= c.to);
 const savePrefs = () => { prefs.updatedAt = Date.now(); return store.set('listen:prefs', prefs); };
@@ -80,9 +82,10 @@ function render() {
         <div id="seek" class="track" role="slider" tabindex="0" aria-label="${esc(L.seek)}" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-valuetext="" aria-disabled="true"><i class="fill"></i><i class="knob"></i></div>
         <button type="button" class="skip" id="fwd5" aria-label="${esc(L.fwd5)}">${esc(L.fwd5t)}</button></div>
       <div class="times"><span id="tCur">${clock(0)}</span><span id="tDur">${clock(0)}</span></div></div>
-    <div class="side"><button class="btn" type="button" id="loop" aria-pressed="${!!prefs.loop}">${esc(L.loop)}</button><button class="btn" type="button" id="speedBtn" aria-expanded="false" aria-controls="speeds" aria-label="${esc(L.speedBtn)}">${esc(fmtRate(prefs.rate))}</button></div>
+    <div class="side"><button class="btn" type="button" id="loop" aria-pressed="${!!prefs.loop}">${esc(L.loop)}</button><button class="btn" type="button" id="speedBtn" aria-expanded="false" aria-controls="speeds" aria-label="${esc(L.speedBtn + ' ' + fmtRate(prefs.rate))}">${esc(fmtRate(prefs.rate))}</button></div>
   </div><div class="speeds" id="speeds" hidden><span>${esc(L.speed)}</span>${SPEEDS.map(r => `<button type="button" class="chip" data-rate="${r}" aria-pressed="${r === prefs.rate}">${esc(fmtRate(r))}</button>`).join('')}</div></div>
   <button type="button" class="allbtn" id="allBtn" aria-pressed="false"><span class="ic" aria-hidden="true">▶</span><span class="stack"><b>${esc(L.all)}</b><span class="muted small">${esc(L.allSub)}</span></span></button>
+  <button type="button" class="btn" id="stageBtn">${esc(L.stage)}</button>
   <p class="small" id="dl"></p>
   <div class="row"><button type="button" class="btn" id="selMode" aria-pressed="${selMode}">${esc(selMode ? L.selDone : L.selMode)}</button><span class="muted small">${esc(L.selHint)}</span></div>
   <div id="list" class="stack">${list()}</div>
@@ -126,7 +129,7 @@ function sync(s) {
     else { title = s.item.title + loopTxt; sub = s.item.chapter ? `${n(T.chapters[s.item.chapter - 1].from)}–${n(T.chapters[s.item.chapter - 1].to)}` : ''; }
   }
   ui.$('#nowT').textContent = title; ui.$('#nowS').textContent = sub;
-  if (!dragging) seekUi(s.time, s.dur);
+  bar?.paint(s.time, s.dur);
   ui.$('#seek').setAttribute('aria-disabled', String(!s.item));
   ui.$('#allBtn').setAttribute('aria-pressed', String(s.item?.key === 'full'));
   ui.$('#allBtn .ic').textContent = s.item?.key === 'full' && s.playing ? '⏸' : '▶';
@@ -134,36 +137,44 @@ function sync(s) {
   ui.$$('.chap').forEach(c => c.classList.toggle('on', +c.dataset.ch === ch));
   ui.$$('.byt').forEach(r => r.classList.toggle('on', +r.dataset.b === b));
   if (b) ui.setTuhfaContext(b);
+  if (stage.isOpen()) stageSync(s, b);
 }
-function seekUi(t, d) {
-  const sk = ui.$('#seek'); if (!sk) return;
-  const p = d ? Math.max(0, Math.min(1, t / d)) : 0;
-  sk.style.setProperty('--p', (p * 100).toFixed(2) + '%');
-  sk.setAttribute('aria-valuemax', String(Math.round(d || 0))); sk.setAttribute('aria-valuenow', String(Math.round(t || 0)));
-  sk.setAttribute('aria-valuetext', L.timeOf(clock(t), clock(d)));
-  ui.$('#tCur').textContent = clock(t); ui.$('#tDur').textContent = clock(d);
+// ---------- seek slider (AUD-12): the shared custom slider ----------
+function bindSeek() {
+  bar = seekbar(ui.$('#seek'), {
+    now: () => { const s = audio.state(); return { active: !!s.item, time: s.time, dur: s.dur }; },
+    seek: audio.seek, skip: audio.skip, text: (t, d) => L.timeOf(clock(t), clock(d)),
+    onPaint: (t, d) => { ui.$('#tCur').textContent = clock(t); ui.$('#tDur').textContent = clock(d); }
+  });
+  const s = audio.state(); bar.paint(s.time, s.dur);
 }
 
-// ---------- seek slider (AUD-12): custom, RTL, pointer capture, preview while dragging, seek on release ----------
-function bindSeek() {
-  const sk = ui.$('#seek');
-  const frac = x => { const r = sk.getBoundingClientRect(); return Math.max(0, Math.min(1, (r.right - x) / r.width)); }; // start = right edge
-  sk.addEventListener('pointerdown', e => {
-    const s = audio.state(); if (!s.item) return;
-    e.preventDefault(); sk.setPointerCapture(e.pointerId); dragging = { id: e.pointerId, t: frac(e.clientX) * s.dur };
-    seekUi(dragging.t, s.dur);
-  });
-  sk.addEventListener('pointermove', e => { if (!dragging || e.pointerId !== dragging.id) return; const d = audio.state().dur; dragging.t = frac(e.clientX) * d; seekUi(dragging.t, d); });
-  const end = e => { if (!dragging || e.pointerId !== dragging.id) return; const t = dragging.t; dragging = null; audio.seek(t); };
-  sk.addEventListener('pointerup', end); sk.addEventListener('pointercancel', () => { dragging = null; });
-  sk.addEventListener('keydown', e => {
-    const s = audio.state(); if (!s.item) return;
-    const m = { ArrowLeft: 5, ArrowRight: -5 }[e.key]; // RTL: left = forward
-    if (m != null) { e.preventDefault(); audio.skip(m); }
-    else if (e.key === 'Home') { e.preventDefault(); audio.seek(0); }
-    else if (e.key === 'End') { e.preventDefault(); audio.seek(s.dur); }
-  });
+// ---------- «وضع العرض» (STG-20…22): the bayt being heard, full screen ----------
+let stageBayt = 1;
+function stageSync(s, b) {
+  if (b) stageBayt = b;
+  const c = chapterOf(stageBayt);
+  stage.show({ id: 'b' + stageBayt, kind: 't', hems: T.abyat[stageBayt], note: T.review?.[stageBayt] && T.review[stageBayt] !== 'verified' ? S.reviewNote : '', ctx: L.stageCtx(n(c.n), c.name), num: L.stageNum(n(stageBayt)) });
+  stage.tick({ playing: s.playing, loop: s.loop, frac: s.dur ? s.time / s.dur : 0 });
 }
+/** Start of bayt b inside the clip that is playing (chapter clip or the whole poem), or null. */
+function baytStart(s, b) {
+  const seg = col.segments?.[b]; if (!seg || !s.item) return null;
+  if (s.item.chapter) return seg[0] === s.item.chapter - 1 ? seg[1] : null;
+  if (s.item.chapterOffsets) return s.item.chapterOffsets[seg[0]] + seg[1];
+  return null;
+}
+/** Previous / next bayt in «وضع العرض»: inside a selection, inside the clip that is playing, or as a single bayt. */
+function stageStep(dir) {
+  const s = audio.state();
+  if (s.seq) { if (dir > 0) audio.next(); else audio.prev(); return; }
+  const b = Math.max(1, Math.min(61, stageBayt + dir)); if (b === stageBayt) return;
+  const t = baytStart(s, b);
+  if (t != null) { audio.seek(t + 0.02); return; }
+  audio.setLoop(!!prefs.loop); audio.play(baytItem(b));
+}
+function stageToggle() { const s = audio.state(); if (s.item) audio.toggle(); else { audio.setLoop(!!prefs.loop); audio.play(baytItem(stageBayt)); } }
+function setLoop(on) { prefs.loop = on; audio.setLoop(on); ui.$('#loop')?.setAttribute('aria-pressed', String(on)); savePrefs(); audio.refreshMeta(); sync(audio.state()); }
 
 function playSelection() {
   const sel = prefs.sel.slice().sort((a, b) => a - b); if (!sel.length) return;
@@ -180,9 +191,10 @@ function bind() {
     if (b.id === 'pp') { audio.toggle(); return; }
     if (b.id === 'back5') { audio.skip(-5); return; }
     if (b.id === 'fwd5') { audio.skip(5); return; }
-    if (b.id === 'loop') { prefs.loop = !prefs.loop; audio.setLoop(prefs.loop); b.setAttribute('aria-pressed', String(prefs.loop)); savePrefs(); audio.refreshMeta(); sync(audio.state()); return; }
+    if (b.id === 'loop') { setLoop(!prefs.loop); return; }
+    if (b.id === 'stageBtn') { const cur = currentBayt(audio.state()); if (cur) stageBayt = cur; stage.open({ opener: b, onToggle: stageToggle, onPrev: () => stageStep(-1), onNext: () => stageStep(1), onLoop: () => setLoop(!prefs.loop) }); sync(audio.state()); return; }
     if (b.id === 'speedBtn') { const sp = ui.$('#speeds'); sp.hidden = !sp.hidden; b.setAttribute('aria-expanded', String(!sp.hidden)); return; }
-    if (d.rate) { prefs.rate = +d.rate; audio.setRate(prefs.rate); ui.$('#speedBtn').textContent = fmtRate(prefs.rate); ui.$$('[data-rate]').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.rate === prefs.rate))); savePrefs(); return; }
+    if (d.rate) { prefs.rate = +d.rate; audio.setRate(prefs.rate); ui.$('#speedBtn').textContent = fmtRate(prefs.rate); ui.$('#speedBtn').setAttribute('aria-label', L.speedBtn + ' ' + fmtRate(prefs.rate)); ui.$$('[data-rate]').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.rate === prefs.rate))); savePrefs(); return; }
     if (b.id === 'allBtn') { const s = audio.state(); if (s.item?.key === 'full') { audio.toggle(); return; } audio.setLoop(!!prefs.loop); audio.play(fullItem()); return; }
     if (d.chapter) { const s = audio.state(); const k = `chapter:${d.chapter}`; if (s.item?.key === k && !s.seq) { audio.toggle(); return; } audio.setLoop(!!prefs.loop); audio.play(chapterItem(+d.chapter)); return; }
     if (d.bayt) { const s = audio.state(); const k = `bayt:${d.bayt}`; if (s.item?.key === k && !s.seq) { audio.toggle(); return; } audio.setLoop(!!prefs.loop); audio.play(baytItem(+d.bayt)); return; }

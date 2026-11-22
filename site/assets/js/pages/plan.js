@@ -1,5 +1,6 @@
 // Plan «/plan/» (PL-01…15).
 import { S } from '../core/strings.ar.js';
+import { P as PG } from '../core/strings.pages.ar.js';
 import { esc, n } from '../core/fmt.js';
 import * as store from '../core/store.js';
 import * as ui from '../core/ui.js';
@@ -10,7 +11,7 @@ import * as P from '../core/plan-logic.js';
 const KEY = 'plan:baqarah';
 const main = ui.$('#main');
 let plan, rubs, openings = {}, corpus, s, sel = P.todayIdx(), confirming = false;
-const T = S.plan;
+const T = PG.plan;
 
 const rub = r => rubs.find(x => x.n === r);
 const phrase = r => (openings[r] ? refText(openings[r], corpus) : T.rubLabel(n(r)));

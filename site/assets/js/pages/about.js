@@ -1,10 +1,11 @@
 // «عن التطبيق» (ABT-01, LIC-01, LIC-11, LIC-21, LIC-30, D-5).
 import { S, CONTACT } from '../core/strings.ar.js';
+import { P } from '../core/strings.pages.ar.js';
 import { esc, n, fullDate } from '../core/fmt.js';
 import { getJson, config, build, href } from '../core/base.js';
 import * as ui from '../core/ui.js';
 
-const A = S.about;
+const A = P.about;
 
 (async () => {
   await ui.initPage({ notes: [] });
@@ -27,5 +28,5 @@ const A = S.about;
       ${item(A.licH, `<ul>${A.lic.map(x => `<li>${esc(x)}</li>`).join('')}</ul><p><a href="${esc(cfg.repo || '')}" rel="noopener">${esc(A.repo)}</a></p>`)}
     </section>
     <section class="panel"><h2>${esc(A.contactH)}</h2><p>${esc(A.contact)} <a href="mailto:${CONTACT}">${CONTACT}</a></p><p><a href="${href('privacy/')}">${esc(A.privacyLink)}</a></p></section>
-    <p class="muted small center">${esc(S.settings.version(b?.version || cfg.appVersion || '', fullDate(b?.date || Date.now())))}</p>`;
+    <p class="muted small center">${esc(P.settings.version(b?.version || cfg.appVersion || '', fullDate(b?.date || Date.now())))}</p>`;
 })();

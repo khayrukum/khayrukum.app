@@ -22,7 +22,7 @@ export const BACKUP_SCHEMA = {
     }
   }
 };
-const KV_KEY = /^(device|exam:[a-z0-9-]+|random:(prefs|current)|review:current|plan:[a-z0-9-]+|listen:prefs|ui:[a-zA-Z]+)$/;
+const KV_KEY = /^(device|exam:[a-z0-9-]+|random:(prefs|current)|review:current|plan:[a-z0-9-]+|listen:prefs|range:prefs|ui:[a-zA-Z]+)$/;
 
 
 // Shape of every stored value (NFR-PRV-05, DATA-61): a damaged or hand-edited backup is refused
@@ -39,6 +39,7 @@ const KV_SHAPE = {
   'random:current': v => arrOf(isStr)(v.set) && Array.isArray(v.grades) && v.grades.length === v.set.length && v.grades.every(g => g === null || GRADE(g)) && Number.isInteger(v.idx) && v.idx >= 0 && v.idx < Math.max(1, v.set.length) && opt(v.done, x => typeof x === 'boolean'),
   'review:current': v => KV_SHAPE['random:current'](v),
   plan: v => opt(v.pair, x => Number.isInteger(x) && x >= 1) && opt(v.week, w => isObj(w) && opt(w.reps, arrOf(isNum)) && opt(w.checks, isObj)) && opt(v.mistakes, arrOf(isObj)) && opt(v.done, arrOf(isNum)) && opt(v.history, arrOf(isObj)),
+  'range:prefs': v => opt(v.unit, x => ['P', 'Q', 'A'].includes(x)) && opt(v.P, arrOf(isNum)) && opt(v.Q, arrOf(isNum)) && opt(v.A, isObj) && opt(v.rate, x => isNum(x) && x > 0 && x <= 4) && opt(v.loop, x => typeof x === 'boolean') && opt(v.tune, t => isObj(t) && Object.values(t).every(isNum)) && opt(v.pos, x => x === null || isObj(x)),
   'listen:prefs': v => opt(v.sel, Array.isArray) && opt(v.rate, x => isNum(x) && x > 0 && x <= 4) && opt(v.loop, x => typeof x === 'boolean') && opt(v.open, isObj)
 };
 /** Errors for one kv entry (empty when the value is usable). Pure. */

@@ -47,3 +47,22 @@ export const inAppBrowser = () => /WhatsApp|Instagram|FBAN|FBAV|FB_IAB/i.test(na
 export async function persist() { try { return navigator.storage?.persist ? await navigator.storage.persist() : false; } catch { return false; } }
 export async function persisted() { try { return navigator.storage?.persisted ? await navigator.storage.persisted() : false; } catch { return false; } }
 export async function estimate() { try { return navigator.storage?.estimate ? await navigator.storage.estimate() : null; } catch { return null; } }
+
+// ----- full screen and screen wake lock (STG-03, STG-08) -----
+/** Real full screen where the browser has it for elements (not iPhone Safari); resolves to whether it was entered. */
+export async function enterFullscreen(el) {
+  const f = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!f) return false;
+  try { await f.call(el, { navigationUI: 'hide' }); return !!fullscreenElement(); } catch { return false; }
+}
+export const fullscreenElement = () => document.fullscreenElement || document.webkitFullscreenElement || null;
+export function exitFullscreen() { try { if (fullscreenElement()) (document.exitFullscreen || document.webkitExitFullscreen).call(document)?.catch?.(() => {}); } catch { /* ignore */ } }
+let lock = null, wantLock = false;
+/** Keep the screen on (true) or let it sleep again (false). The lock is taken again when the page returns to view. */
+export async function keepAwake(on) {
+  wantLock = on;
+  if (!on) { try { await lock?.release(); } catch { /* ignore */ } lock = null; return; }
+  if (lock || !navigator.wakeLock || document.visibilityState !== 'visible') return;
+  try { const l = await navigator.wakeLock.request('screen'); if (!wantLock) { l.release().catch(() => {}); return; } lock = l; l.addEventListener('release', () => { if (lock === l) lock = null; }); } catch { /* not allowed now */ }
+}
+document.addEventListener('visibilitychange', () => { if (wantLock && document.visibilityState === 'visible') keepAwake(true); });

@@ -261,6 +261,7 @@ details[open].panel > summary::after { content: "－"; }
 /* ---------- random ---------- */
 .rng { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
 .rng select { min-inline-size: 5rem; }
+.rng label { min-inline-size: 2.5rem; }
 .qtags { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center; }
 .qtag { font-size: 0.85rem; border-radius: 0.35rem; background: var(--accent-soft); color: var(--accent); padding-inline: 0.45rem; }
 .qtag.alt { background: var(--gold-soft); color: var(--gold); }
@@ -393,3 +394,37 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
 .choices.pos { grid-template-columns: repeat(3, 1fr); }
 .choices.pos .choice { font-size: 0.95rem; font-weight: 500; line-height: 1.4; padding: 0.3rem; }
 .choice.on { border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- «وضع العرض» (STG): full-screen reading view; text is sized by core/stage.js through --fs ---------- */
+.stage { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; gap: 0.5rem; background: var(--bg); color: var(--ink); touch-action: none; overscroll-behavior: contain; outline: 0;
+  padding-block: max(0.5rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px));
+  padding-inline: max(1rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)); }
+.st-top, .st-sub { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; color: var(--muted); font-size: 0.95rem; min-block-size: 2rem; }
+.st-top { min-block-size: 3rem; }
+.st-ctx { font-family: var(--f-display); color: var(--ink); }
+.st-body { flex: 1 1 0; min-block-size: 0; display: grid; place-items: center; overflow: hidden; }
+.st-text { inline-size: 100%; text-align: center; font: 400 var(--fs, 2rem) / 2 var(--f-quran); opacity: 0; }
+.st-text.in { opacity: 1; transition: opacity 0.18s; }
+.stage[data-kind="t"] .st-text { font-family: var(--f-bayt); line-height: 1.9; }
+.stage[data-kind="x"] .st-text { font-family: var(--f-body); color: var(--muted); }
+.st-text .bayt { font-size: inherit; gap: 0 1.5em; }
+.st-text .h { white-space: nowrap; }
+.st-text.wrap .h { white-space: normal; }
+.st-text .review { font-size: 0.8rem; }
+/* the phrase being recited: colour only — a background would spill over the lines above and below (tall Quran font) */
+.st-text .w { transition: color 0.2s; }
+.st-text .w.on { color: var(--accent); }
+.st-text .vnum { color: var(--gold); font-size: 0.75em; white-space: nowrap; }
+.st-bar { block-size: 0.2rem; border-radius: 0.1rem; background: var(--line-soft); overflow: hidden; }
+.st-bar > i { display: block; block-size: 100%; inline-size: var(--w, 0%); background: var(--accent); }
+.st-ctl { display: flex; justify-content: center; align-items: center; gap: 0.75rem; padding-block-start: 0.6rem; }
+.st-b { flex: none; inline-size: 3rem; block-size: 3rem; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); font-size: 1.1rem; }
+.st-b.pp { inline-size: 3.75rem; block-size: 3.75rem; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-size: 1.4rem; }
+.st-b[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.stage .fade { transition: opacity 0.2s; }
+.stage.idle .fade { opacity: 0; pointer-events: none; }
+@media (orientation: landscape) and (max-height: 32em) {
+  .st-bot { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.35rem 1rem; }
+  .st-bar { grid-area: 1 / 1 / 2 / -1; } .st-ctl { padding: 0; }
+  .st-b, .st-b.pp { inline-size: 2.75rem; block-size: 2.75rem; }
+}

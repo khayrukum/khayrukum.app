@@ -20,6 +20,7 @@ const card = (link, num, numCls, title, sub, key) =>
 async function render() {
   const [idx, cfg] = await Promise.all([loadIndex(), config()]);
   const audioOn = !!cfg.audio?.enabled;
+  const hasRange = !!(await collection('minshawi')); // RNG-01: the card is always there; the tail says when the recitation is not
   const exams = idx.exams;
   const quran = exams.filter(e => e.kind === 'quran');
   const tuhfa = exams.filter(e => e.kind === 'tuhfa');
@@ -49,6 +50,7 @@ async function render() {
   <section class="sec"><h2>${esc(S.hub.secTajweed)}</h2><ul class="list">${pub(tuhfa).map(tajweedCard).join('')}</ul>${soon(tuhfa).map(e => `<div class="soon">${esc(S.hub.next(e.card))}</div>`).join('')}</section>
   <section class="sec"><h2>${esc(S.hub.secListen)}</h2><ul class="list">
     ${card('listen/', '▶', '', S.hub.listen, S.hub.listenSub, 'listen')}
+    ${card('range/', '◉', ' g', S.hub.range, S.hub.rangeSub + (hasRange ? '' : S.hub.rangeSoonTail), 'range')}
   </ul></section>`;
   swc.onReady(() => { const r = ui.$('#ready'); if (r) r.hidden = false; });
   await Promise.all([progress(idx), hints(), audioStatus(audioOn)]);

@@ -1,10 +1,11 @@
 // «سياسة الخصوصية» (ABT-02).
 import { S, CONTACT } from '../core/strings.ar.js';
+import { P as PG } from '../core/strings.pages.ar.js';
 import { esc, n } from '../core/fmt.js';
 import { href } from '../core/base.js';
 import * as ui from '../core/ui.js';
 
-const P = S.privacy;
+const P = PG.privacy;
 
 (async () => {
   await ui.initPage({ notes: [] });

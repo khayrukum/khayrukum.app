@@ -14,7 +14,8 @@ const read = f => fs.readFileSync(path.join(SITE, f), 'utf8');
 // ---------- GEN-01: colloquial words ----------
 const COLLOQUIAL = ['إنت', 'انت', 'اللي', 'ده', 'دي', 'إيه', 'ايه', 'كمّل', 'كمل', 'يقرا', 'جت', 'التانية', 'التاني', 'عشان', 'بتاع', 'ازاي', 'إزاي', 'مش', 'كده', 'دلوقتي', 'هتقول', 'وإنت'];
 const wordRe = new RegExp(`(^|[\\s«(،:.!؟])(${COLLOQUIAL.join('|')})(?=$|[\\s»)،:.!؟])`, 'u');
-const textFiles = ['assets/js/core/strings.ar.js', 'data/round-types.json', 'data/plan/baqarah.json', 'data/exams/index.json', ...files.filter(f => f.endsWith('.html'))];
+const STRINGS = f => /^assets\/js\/core\/strings(\.[a-z]+)?\.ar\.js$/.test(f); // strings.ar.js and strings.<group>.ar.js
+const textFiles = [...files.filter(STRINGS), 'data/round-types.json', 'data/plan/baqarah.json', 'data/exams/index.json', ...files.filter(f => f.endsWith('.html'))];
 const strip = s => s.replace(/[ً-ْٰ]/g, '');
 for (const f of textFiles) read(f).split('\n').forEach((line, i) => { const m = wordRe.exec(strip(line)); if (m) E(`${f}:${i + 1}: colloquial word «${m[2]}» (GEN-01)`); });
 // exam content strings (never the corpus refs themselves)
@@ -57,7 +58,7 @@ for (const f of files.filter(f => f.endsWith('.html'))) {
 for (const f of files.filter(f => f.endsWith('.js') && f !== 'sw.template.js')) {
   const src = read(f);
   const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '').replace(/([^:])\/\/.*$/gm, '$1');
-  if (f !== 'assets/js/core/strings.ar.js') {
+  if (!STRINGS(f)) {
     if (/[ء-ي]/.test(code)) E(`${f}: Arabic text outside strings.ar.js (GEN-02)`);
     if (/khayrukum\.app/.test(code)) E(`${f}: site origin in JS (ARCH-01)`);
   }

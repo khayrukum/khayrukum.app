@@ -1,5 +1,6 @@
 // History «سجلي» «/history/» (HIS-01…11). One store for every tool.
 import { S } from '../core/strings.ar.js';
+import { P } from '../core/strings.pages.ar.js';
 import { esc, n, npct, time, fullDate, dayMonth } from '../core/fmt.js';
 import { href } from '../core/base.js';
 import * as store from '../core/store.js';
@@ -11,7 +12,7 @@ import { inlineHtml, refHtml } from '../core/render.js';
 import { parseRef } from '../core/refs.js';
 import { live, tiles, strengths, needsReview, byType, byDay } from '../core/stats.js';
 
-const H = S.history;
+const H = P.history;
 const main = ui.$('#main');
 let exams = new Map(), entries = [], corpus, rt, filter = 'all', confirmClear = false;
 
