@@ -52,7 +52,8 @@
               "chapter",
               "full",
               "ayah",
-              "lesson"
+              "lesson",
+              "part"
             ]
           },
           "src": {
@@ -76,6 +77,18 @@
               "string",
               "null"
             ]
+          },
+          "from": {
+            "type": "string",
+            "pattern": "^\\d+:\\d+$"
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^\\d+:\\d+$"
+          },
+          "end": {
+            "type": "number",
+            "minimum": 0
           }
         }
       }

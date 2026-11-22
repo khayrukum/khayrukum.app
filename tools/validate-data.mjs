@@ -7,6 +7,8 @@ import { validate } from '../site/assets/js/core/schema.js';
 import { parseRef, resolveRef, splitInline, expandChain } from '../site/assets/js/core/refs.js';
 import { hasType, isGradable } from '../site/assets/js/core/registry.js';
 import { BACKUP_SCHEMA } from '../site/assets/js/core/backup.js';
+import { wordCount } from '../site/assets/js/core/refs.js';
+import { convert, tanzilTexts } from './audio/recitation.mjs';
 
 let errors = 0;
 const E = m => { fail(m); errors++; };
@@ -34,12 +36,16 @@ const tuhfa = check('data/tuhfa/abyat.json', 'tuhfa-abyat');
 const audioIdx = check('data/audio/index.json', 'audio-index');
 const perm = check('data/audio/permission.json', 'audio-permission');
 const meta = check('data/quran/meta.json', 'quran-meta');
+const quranCollections = [];
 for (const c of audioIdx?.collections || []) {
   const m = check('data/audio/' + c.manifest, 'audio-collection');
   if (m && m.id !== c.id) E(`audio collection ${c.id}: manifest id ${m.id}`);
+  if (m && m.type !== c.type) E(`audio collection ${c.id}: type ${m.type} in the manifest, ${c.type} in index.json`);
+  if (!audioIdx.reciters.some(r => r.id === c.reciter)) E(`audio collection ${c.id}: unknown reciter ${c.reciter}`);
   const pr = perm?.collections?.[c.id];
   if (!pr) E(`permission.json has no record for collection ${c.id} (AUD-33)`);
   else if (pr.granted !== c.permission.granted) E(`collection ${c.id}: permission.granted differs between index.json and permission.json`);
+  if (m && m.type === 'quran' && m.items.some(it => it.kind === 'part')) quranCollections.push(m);
 }
 
 // ---------- round types vs registry (DATA-23, ARCH-02) ----------
@@ -66,24 +72,86 @@ if (tuhfa) {
 // ---------- Quran (TST-11) ----------
 const q2 = fs.existsSync(path.join(SITE, 'data/quran/002.json')) ? check('data/quran/002.json', 'quran-sura') : null;
 const qsrc = q2 ? check('data/quran/source.json', 'quran-source') : null;
+const quran = new Map(); // sura → its shipped file (every data/quran/NNN.json)
 if (q2 && qsrc) {
-  if (!q2.notice || q2.notice !== qsrc.notice) E('002.json: Tanzil notice missing or different from source.json (DATA-12)');
-  if (fs.existsSync(QURAN_SRC.uthmani)) {
-    const raw = fs.readFileSync(QURAN_SRC.uthmani);
-    if (sha256(raw) !== qsrc.sha256) E('data/source/quran-uthmani.txt sha256 differs from source.json');
-    const T = parseTanzil(raw.toString('utf8')).suras.get(2);
-    T.forEach((v, i) => { const mine = i === 0 && q2.basmalaPrefixed ? q2.basmala + ' ' + q2.ayat[0] : q2.ayat[i]; if (mine !== v) E(`2:${i + 1} is not byte-equal to the Tanzil download`); });
-    if (T.length !== q2.ayat.length) E('002.json verse count differs from Tanzil');
-    else ok(`Quran: ${T.length} verses of Al-Baqarah byte-equal to the Tanzil download (options ${JSON.stringify(qsrc.options)})`);
-  } else warn('data/source/quran-uthmani.txt absent: byte check skipped');
+  const T = fs.existsSync(QURAN_SRC.uthmani) ? parseTanzil(fs.readFileSync(QURAN_SRC.uthmani).toString('utf8')).suras : null;
+  if (T && sha256(fs.readFileSync(QURAN_SRC.uthmani)) !== qsrc.sha256) E('data/source/quran-uthmani.txt sha256 differs from source.json');
+  if (!T) warn('data/source/quran-uthmani.txt absent: byte check skipped');
+  for (const f of fs.readdirSync(path.join(SITE, 'data/quran')).filter(x => /^\d{3}\.json$/.test(x)).sort()) {
+    const q = f === '002.json' ? q2 : check('data/quran/' + f, 'quran-sura'); if (!q) continue;
+    const n = q.sura;
+    if (String(n).padStart(3, '0') + '.json' !== f) E(`${f}: sura is ${n}`);
+    if (!q.notice || q.notice !== qsrc.notice) E(`${f}: Tanzil notice missing or different from source.json (DATA-12)`);
+    quran.set(n, q);
+    if (!T) continue;
+    const src = T.get(n);
+    src.forEach((v, i) => { const mine = i === 0 && q.basmalaPrefixed ? q.basmala + ' ' + q.ayat[0] : q.ayat[i]; if (mine !== v) E(`${n}:${i + 1} is not byte-equal to the Tanzil download`); });
+    if (q.basmala !== T.get(1)[0]) E(`${f}: basmala is not Tanzil 1:1`);
+    if (src.length !== q.ayat.length) E(`${f} verse count differs from Tanzil`);
+    else ok(`Quran: ${src.length} verses of sura ${n}${n === 2 ? ' (Al-Baqarah)' : ''} byte-equal to the Tanzil download${n === 2 ? ` (options ${JSON.stringify(qsrc.options)})` : ''}`);
+  }
   if (meta?.provisional) E('meta.json is provisional while the Quran text is present: run tools/import-tanzil.mjs');
   if (meta && !meta.provisional && (meta.pages.length !== 604 || meta.rubs.length !== 240)) E('meta.json must have 604 pages and 240 rub\'');
   check('data/quran/rub-openings.json', 'rub-openings');
 } else warn('Quran text not imported (site/data/quran/002.json missing): Baqarah exams cannot be validated');
 
+// ---------- Quran recitation collections (AUD-34, RNG-02): part files with verse timings ----------
+for (const m of quranCollections) {
+  const where = `data/audio/${m.id}.json`;
+  validate(schema('recitation-segments'), m.segments || {}).slice(0, 10).forEach(x => E(`${where} segments: ${x}`));
+  const seen = new Map(); let nv = 0, nc = 0;
+  const ayas = s => meta?.suras?.[s - 1]?.ayas;
+  for (const it of m.items) {
+    if (it.kind !== 'part') { E(`${where}: ${it.id} is not a part item`); continue; }
+    const id = it.id.replace(/^part:/, ''), seg = m.segments?.[id], w = `${where} ${id}`;
+    if (!seg || !Array.isArray(seg.verses) || !Array.isArray(seg.cues)) { E(`${w}: no segments for this part`); continue; }
+    if (!(it.dur > 0) || !(it.end > 0) || it.end > it.dur + 0.01) E(`${w}: end ${it.end} must lie inside the file (dur ${it.dur})`);
+    // verses: in mushaf order without gaps from `from` to `to`; a basmala entry only right before verse 1 of its sura
+    const vs = seg.verses.filter(v => /^\d+:\d+$/.test(v[0])).map(v => v[0].split(':').map(Number));
+    if (!vs.length) { E(`${w}: no verses`); continue; }
+    if (vs[0].join(':') !== it.from || vs[vs.length - 1].join(':') !== it.to) E(`${w}: verses run ${vs[0].join(':')}–${vs[vs.length - 1].join(':')}, the item says ${it.from}–${it.to}`);
+    vs.forEach(([s, a], i) => {
+      if (!ayas(s) || a < 1 || a > ayas(s)) E(`${w}: ${s}:${a} is not a verse`);
+      if (i) { const [ps, pa] = vs[i - 1]; const want = pa < ayas(ps) ? [ps, pa + 1] : [ps + 1, 1]; if (want[0] !== s || want[1] !== a) E(`${w}: ${s}:${a} follows ${ps}:${pa} (gap or wrong order)`); }
+      if (seen.has(`${s}:${a}`)) E(`${w}: ${s}:${a} is also in part ${seen.get(`${s}:${a}`)}`); else seen.set(`${s}:${a}`, id);
+      if (!quran.has(s)) E(`${w}: sura ${s} has no text file in data/quran/ (run tools/import-tanzil.mjs with this sura; STG-10)`);
+    });
+    let prevB = -1; const keys = new Map();
+    seg.verses.forEach(([k, b, st], i) => {
+      if (keys.has(k)) E(`${w}: ${k} appears twice`); keys.set(k, i);
+      if (!(b > prevB)) E(`${w}: boundary of ${k} (${b}) is not after the one before it`);
+      if (st < b) E(`${w}: ${k} starts (${st}) before its boundary (${b})`);
+      if (st >= it.end) E(`${w}: ${k} starts after the end of the recitation`);
+      prevB = b;
+      const bm = /^bas(\d+)$/.exec(k);
+      if (bm && seg.verses[i + 1]?.[0] !== `${bm[1]}:1`) E(`${w}: ${k} is not followed by ${bm[1]}:1`);
+      if (k === 'pre0' && i !== 0) E(`${w}: pre0 must open the part`);
+    });
+    let prevT = -1;
+    for (const [t, k, word] of seg.cues) {
+      if (!keys.has(k)) { E(`${w}: cue at ${t} names ${k}, which is not in this part`); continue; }
+      if (t < prevT) E(`${w}: cue at ${t} is out of order`); prevT = t;
+      const i = keys.get(k), next = seg.verses[i + 1];
+      if (t < seg.verses[i][2] - 0.01 || (next && t >= next[2])) E(`${w}: cue at ${t} lies outside ${k}`);
+      const vm = /^(\d+):(\d+)$/.exec(k), text = vm && quran.get(+vm[1])?.ayat[+vm[2] - 1];
+      if (text && word > wordCount(text, 'q')) E(`${w}: cue at ${t}: word ${word} of ${k}, which has ${wordCount(text, 'q')} words`);
+      nc++;
+    }
+    nv += vs.length;
+  }
+  // the manifest is what the writer produces from the committed timings
+  const srcFile = m.source?.file && path.join(ROOT, m.source.file);
+  if (srcFile && fs.existsSync(srcFile) && fs.existsSync(QURAN_SRC.simple) && fs.existsSync(QURAN_SRC.uthmani)) {
+    const raw = fs.readFileSync(srcFile);
+    if (sha256(raw) !== m.source.sha256) E(`${where}: ${m.source.file} changed since the manifest was written (run tools/audio/import-recitation.mjs --id ${m.id})`);
+    else if (JSON.stringify(convert({ ...JSON.parse(raw.toString('utf8')), id: m.id }, tanzilTexts()).segments) !== JSON.stringify(m.segments)) E(`${where}: segments differ from what tools/audio/import-recitation.mjs writes`);
+  } else warn(`${where}: timing source absent, manifest not compared with it`);
+  ok(`${m.id}: ${m.items.length} part files, ${nv} verses, ${nc} cues valid`);
+}
+
 // ---------- exams (DATA-20…24, LIC-04) ----------
 const corpus = {
-  verse: (s, a) => (s === 2 && q2 ? q2.ayat[a - 1] : undefined),
+  verse: (s, a) => (s === 2 && q2 ? q2.ayat[a - 1] : undefined), // exams are about Al-Baqarah only
   bayt: b => tuhfa?.abyat[b]
 };
 const EXPECT = { 'baqarah-1': { total: 59, pages: 8, next: 13, 'topic-end': 7, 'repeated-word': 9, lookalikes: 9, 'mid-verse': 8, chain: 5 }, 'baqarah-2': { total: 61 }, tuhfa: { total: 86 } };

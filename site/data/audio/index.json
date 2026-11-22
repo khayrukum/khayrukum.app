@@ -1,11 +1,14 @@
 {
   "schema": "audio-index",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "reciters": [
-    { "id": "ahmad-mahdi", "name": "الشيخ أحمد مهدي", "credit": "credit.audio" }
+    { "id": "ahmad-mahdi", "name": "الشيخ أحمد مهدي", "credit": "credit.audio" },
+    { "id": "minshawi", "name": "الشيخ محمد صديق المنشاوي", "credit": "credit.minshawi" }
   ],
   "collections": [
     { "id": "tuhfa", "type": "poem", "title": "تحفة الأطفال", "reciter": "ahmad-mahdi", "manifest": "tuhfa.json",
+      "permission": { "granted": false, "date": null, "scope": [] } },
+    { "id": "minshawi", "type": "quran", "title": "المصحف المرتل", "reciter": "minshawi", "manifest": "minshawi.json",
       "permission": { "granted": false, "date": null, "scope": [] } }
   ]
 }

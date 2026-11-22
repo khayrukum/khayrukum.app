@@ -67,23 +67,37 @@ if (!detected.pauseMarks) { fail('The Uthmani file has no pause marks. Download 
 if (!U.notice) { fail('The Uthmani file has no Tanzil notice block (# comment lines). Use the unmodified download.'); process.exit(1); }
 
 const basmala = U.suras.get(1)[0];
-const s2 = U.suras.get(2).slice();
-if (s2.length !== 286) { fail('Al-Baqarah should have 286 verses'); process.exit(1); }
-let basmalaOut = null;
-if (s2[0].startsWith(basmala + ' ')) { basmalaOut = basmala; s2[0] = s2[0].slice(basmala.length + 1); }
-else warn('2:1 does not start with the basmala of 1:1; storing 2:1 unchanged and basmala as 1:1.');
+// Suras shipped as text: Al-Baqarah (exams, plan) and the suras the Quran recitation collections cover
+// («مشغّل المدى» and «وضع العرض», RNG-01/STG-10). Add a number here and run the tool; nothing is typed by hand.
+const SURAS = [1, 2, 3, 4, 20, 21];
+const COUNTS = { 1: 7, 2: 286, 3: 200, 4: 176, 20: 135, 21: 112 };
+/** One sura as stored: the basmala Tanzil prefixes to verse 1 is kept apart (never for Al-Fatiha, whose verse 1 it is). */
+function suraText(n) {
+  const ayat = U.suras.get(n).slice();
+  if (COUNTS[n] && ayat.length !== COUNTS[n]) { fail(`sura ${n} should have ${COUNTS[n]} verses, found ${ayat.length}`); process.exit(1); }
+  let prefixed = false;
+  if (n !== 1 && ayat[0].startsWith(basmala + ' ')) { prefixed = true; ayat[0] = ayat[0].slice(basmala.length + 1); }
+  else if (n !== 1 && n !== 9) warn(`${n}:1 does not start with the basmala of 1:1; storing ${n}:1 unchanged and basmala as 1:1.`);
+  return { ayat, prefixed };
+}
+const s2 = suraText(2).ayat;
+const prevSrc = tryJson(path.join(OUT, 'source.json'));
 
 writeJson(path.join(OUT, 'source.json'), {
   schema: 'quran-source', version: '1.1',
   source: 'Tanzil Quran Text', edition: 'Uthmani', url: 'https://tanzil.net',
-  retrieved: process.env.TANZIL_RETRIEVED || today,
+  // the date of the download: kept while the file is the same one
+  retrieved: process.env.TANZIL_RETRIEVED || (prevSrc?.sha256 === sha256(rawU) && prevSrc.retrieved) || today,
   file: 'data/source/quran-uthmani.txt', sha256: sha256(rawU),
   simpleClean: { file: 'data/source/quran-simple-clean.txt', sha256: sha256(fs.readFileSync(QURAN_SRC.simple)), shipped: false },
   metadata: { file: 'data/source/quran-data.js', sha256: sha256(fs.readFileSync(QURAN_SRC.meta)) },
   options: detected, notice: U.notice
 });
-writeJson(path.join(OUT, '002.json'), { schema: 'quran-sura', version: '1.1', sura: 2, basmala: basmalaOut || basmala, basmalaPrefixed: !!basmalaOut, ayat: s2, notice: U.notice });
-ok(`002.json: ${s2.length} verses (Uthmani, byte-exact)`);
+for (const n of SURAS) {
+  const t = suraText(n);
+  writeJson(path.join(OUT, String(n).padStart(3, '0') + '.json'), { schema: 'quran-sura', version: '1.1', sura: n, basmala, basmalaPrefixed: t.prefixed, ayat: t.ayat, notice: U.notice });
+  ok(`${String(n).padStart(3, '0')}.json: ${t.ayat.length} verses (Uthmani, byte-exact)`);
+}
 
 // ---------- metadata ----------
 const ctx = { QuranData: {} }; vm.createContext(ctx);
