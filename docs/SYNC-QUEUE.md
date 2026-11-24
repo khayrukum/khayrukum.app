@@ -34,6 +34,6 @@ Listening page («الاستماع والتكرار» on the Claude pages = `/ra
 
 | Date | Item | Commit |
 |---|---|---|
-| 2026-11-24 | Parts 60 and 61 of the recitation (An-Nazi'at … An-Nas): timings, cues, sura files 79–114 | this batch |
-| 2026-11-24 | Alignment tools kept in the repo (`tools/audio/align/`) | this batch |
-| 2026-11-24 | `meta.json` no longer carries the sentinel 115th sura row | this batch |
+| 2026-11-24 | Parts 60 and 61 of the recitation (An-Nazi'at … An-Nas): timings, cues, sura files 79–114 | 7ce34c4 |
+| 2026-11-24 | Alignment tools kept in the repo (`tools/audio/align/`) | 7ce34c4 |
+| 2026-11-24 | `meta.json` no longer carries the sentinel 115th sura row | 7ce34c4 |
