@@ -17,9 +17,12 @@ const idx = R.buildIndex(col);
 const near = (a, b, eps = 0.011) => assert.ok(Math.abs(a - b) <= eps, `${a} ≈ ${b}`);
 const E = k => idx.byKey.get(k);
 
-test('index: 10 parts, every covered verse once; basmala and isti\'adha entries are not verses', () => {
-  assert.equal(idx.parts.length, 10);
-  assert.equal(idx.byKey.size, 7 + 286 + 200 + 6 + 7 + 112);
+// verses of An-Nazi'at … An-Nas (parts 60 and 61)
+const JUZ30 = meta.suras.filter(s => s.n >= 79).reduce((a, s) => a + s.ayas, 0);
+
+test('index: 12 parts, every covered verse once; basmala and isti\'adha entries are not verses', () => {
+  assert.equal(idx.parts.length, 12);
+  assert.equal(idx.byKey.size, 7 + 286 + 200 + 6 + 7 + 112 + JUZ30);
   assert.ok(idx.has(4, 6) && !idx.has(4, 7) && idx.has(20, 129) && !idx.has(20, 128));
   assert.equal(idx.parts[0].entries[0].pre, true);
   assert.equal(idx.parts[5].entries.find(e => e.bas).bas, 3);
@@ -27,21 +30,22 @@ test('index: 10 parts, every covered verse once; basmala and isti\'adha entries 
 
 test('pages: only pages the parts cover completely are offered (RNG-03)', () => {
   const P = R.coveredUnits(meta, idx, 'P');
-  assert.deepEqual(P.map(p => p.n), [...Array.from({ length: 77 }, (_, i) => i + 1), ...Array.from({ length: 10 }, (_, i) => 322 + i)]);
+  assert.deepEqual(P.map(p => p.n), [...Array.from({ length: 77 }, (_, i) => i + 1), ...Array.from({ length: 10 }, (_, i) => 322 + i), ...Array.from({ length: 21 }, (_, i) => 584 + i)]);
   assert.deepEqual([P[0].from, P[0].to], [[1, 1], [1, 7]]);
   assert.deepEqual([P[76].from, P[76].to], [[4, 1], [4, 6]], 'page 77 is An-Nisa 1–6, the last covered page of the first run');
   assert.ok(!P.some(p => p.n === 321), 'page 321 starts at Ta-Ha 126, which is not covered');
   assert.equal(new Set(P.slice(0, 77).map(p => p.run)).size, 1); assert.notEqual(P[76].run, P[77].run, 'a gap starts a new run');
-  assert.equal(P.reduce((a, p) => a + p.count, 0), 7 + 286 + 200 + 6 + 112);
+  assert.equal(P.reduce((a, p) => a + p.count, 0), 7 + 286 + 200 + 6 + 112 + JUZ30 - 15, 'An-Nazi\'at 1–15 is on page 583, which starts in An-Naba');
+  assert.deepEqual([P[P.length - 1].n, P[P.length - 1].to], [604, [114, 6]], 'the last page ends with An-Nas');
 });
 
 test('rub\'s and verses (RNG-03)', () => {
   const Q = R.coveredUnits(meta, idx, 'Q');
-  assert.deepEqual(Q.map(q => q.n), [...Array.from({ length: 30 }, (_, i) => i + 1), 129, 130, 131, 132]);
+  assert.deepEqual(Q.map(q => q.n), [...Array.from({ length: 30 }, (_, i) => i + 1), 129, 130, 131, 132, 234, 235, 236, 237, 238, 239, 240]);
   assert.deepEqual([Q[1].from, Q[1].to], [[2, 26], [2, 43]]);
   assert.deepEqual(Q[29].to, [3, 200], 'rub\' 30 ends with Al Imran');
   const A = R.coveredSuras(meta, idx);
-  assert.deepEqual(A.map(s => [s.sura, s.ayas[0].n, s.ayas[s.ayas.length - 1].n]), [[1, 1, 7], [2, 1, 286], [3, 1, 200], [4, 1, 6], [20, 129, 135], [21, 1, 112]]);
+  assert.deepEqual(A.map(s => [s.sura, s.ayas[0].n, s.ayas[s.ayas.length - 1].n]), [[1, 1, 7], [2, 1, 286], [3, 1, 200], [4, 1, 6], [20, 129, 135], [21, 1, 112], ...meta.suras.filter(s => s.n >= 79).map(s => [s.n, 1, s.ayas])]);
 });
 
 test('«من … إلى» stays ordered and inside one unbroken run (RNG-04)', () => {

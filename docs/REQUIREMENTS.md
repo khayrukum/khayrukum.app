@@ -530,7 +530,7 @@ Non-consecutive chains, such as «كل «وإذ» في الربعين بالتر
   It is generated from Tanzil metadata by `tools/import-tanzil.mjs`.
 - **DATA-12** `data/quran/002.json` is `{ "sura":2, "basmala":"…", "ayat":[…], "notice":"<Tanzil notice>" }`. The notice is included in every verbatim copy, as Tanzil requires.
   - The rub'-el-hizb sign is **not** included in the text (`rubElHizb:false`). The UI adds «۞» only where the design calls for it (PL-02).
-  - v1 shipped surah 2 only. v2.2 also ships surahs 1, 3, 4, 20 and 21 (`001.json` …), the suras the recitation collection covers (STG-10); the list is `SURAS` in `tools/import-tanzil.mjs`. For every sura but Al-Fatiha, the basmala Tanzil prefixes to verse 1 is stored apart (`basmala`, `basmalaPrefixed: true`). TST-11 checks every file.
+  - v1 shipped surah 2 only. v2.2 also ships surahs 1, 3, 4, 20, 21 and 79–114 (`001.json` …), the suras the recitation collection covers (STG-10); the list is `SURAS` in `tools/import-tanzil.mjs`. For every sura but Al-Fatiha, the basmala Tanzil prefixes to verse 1 is stored apart (`basmala`, `basmalaPrefixed: true`). TST-11 checks every file.
 - **DATA-13** MUST: Rub' openings for the plan are references: `data/quran/rub-openings.json` = `{ "2": [{"rub":1,"ref":"2:1:1-1"}, …] }`.
 - **DATA-14** MUST: `import-tanzil.mjs` is the only writer of `data/quran/*`. TST-11 recomputes every verse from the original download.
 
@@ -1064,7 +1064,7 @@ D-1…D-6 in section 0 stand unless the owner overturns them. These questions ar
 6. **OWNER-6.** Who answers info@khayrukum.app, and which inbox does it forward to? **Default: forwarded to the owner's personal inbox.**
 7. **OWNER-7.** Who owns the Cloudflare account, domain renewal and analytics? **Default: the owner's account, with auto-renew and 2FA on Cloudflare and GitHub.**
 8. **OWNER-8.** Confirm decisions D-1 to D-6. **Default: they stand.**
-9. **OWNER-9** (v2.2). May the recitation of الشيخ محمد صديق المنشاوي be published with the site, and where would its files be hosted (≈ 110 MB for the ten parts available today; GitHub Pages limits are in DEP-08)? Who holds the rights to this edition (the recording is from إذاعة القرآن الكريم، القاهرة), and is written permission needed as for LIC-20? **Default: not published; «مشغّل المدى» works in local builds only and shows RNG-12 on the public site.**
+9. **OWNER-9** (v2.2). May the recitation of الشيخ محمد صديق المنشاوي be published with the site, and where would its files be hosted (≈ 133 MB for the twelve parts available today; GitHub Pages limits are in DEP-08)? Who holds the rights to this edition (the recording is from إذاعة القرآن الكريم، القاهرة), and is written permission needed as for LIC-20? **Default: not published; «مشغّل المدى» works in local builds only and shows RNG-12 on the public site.**
 
 ---
 

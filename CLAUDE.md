@@ -15,3 +15,5 @@ Standing requirements from the owner — they apply to every change:
 6. Mutashabihat and topic drills wait for a verified source (owner decision, 2026-11-11).
 7. The GitHub account has been suspended by spam detection three times: batch changes and push / deploy once
    per piece of work, not after every edit.
+8. The owner tries changes on the Claude pages first. They are collected in `docs/SYNC-QUEUE.md` and ported to
+   the site in one batch every two days (owner decision, 2026-11-24).

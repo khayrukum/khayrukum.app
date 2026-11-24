@@ -69,7 +69,7 @@ if (!U.notice) { fail('The Uthmani file has no Tanzil notice block (# comment li
 const basmala = U.suras.get(1)[0];
 // Suras shipped as text: Al-Baqarah (exams, plan) and the suras the Quran recitation collections cover
 // («مشغّل المدى» and «وضع العرض», RNG-01/STG-10). Add a number here and run the tool; nothing is typed by hand.
-const SURAS = [1, 2, 3, 4, 20, 21];
+const SURAS = [1, 2, 3, 4, 20, 21, ...Array.from({ length: 36 }, (_, i) => 79 + i)];
 const COUNTS = { 1: 7, 2: 286, 3: 200, 4: 176, 20: 135, 21: 112 };
 /** One sura as stored: the basmala Tanzil prefixes to verse 1 is kept apart (never for Al-Fatiha, whose verse 1 it is). */
 function suraText(n) {
@@ -103,7 +103,8 @@ for (const n of SURAS) {
 const ctx = { QuranData: {} }; vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(QURAN_SRC.meta, 'utf8') + '\n;globalThis.__Q = QuranData;', ctx);
 const Q = ctx.__Q;
-const suras = Q.Sura.filter(x => x && x.length).map((x, i) => ({ n: i + 1, start: x[0], ayas: x[1], name: x[4] }));
+// quran-data.js ends its Sura table with a sentinel row (115) that is not a sura
+const suras = Q.Sura.filter(x => x && x.length > 4).map((x, i) => ({ n: i + 1, start: x[0], ayas: x[1], name: x[4] })).slice(0, 114);
 const pages = Q.Page.filter(x => x && x.length).map(([s, a]) => [s, a]);
 const rubs = Q.HizbQaurter.filter(x => x && x.length).map(([s, a], i) => ({ n: i + 1, sura: s, aya: a }));
 if (pages.length < 604) { fail(`expected 604 page starts, found ${pages.length}`); process.exit(1); }
