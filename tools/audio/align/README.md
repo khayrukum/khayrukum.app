@@ -23,7 +23,8 @@ For each part file `pNN.mp3`:
      (the closing supplication follows)
    - part 08: 3:93 starts at 403.1 s (boundary 402.3)
    - parts 05 and 06: end of recitation taken from the pause after the last word (1735.77 s, 1800.07 s)
-5. `fixcues.py`: keeps the cues inside their verses and gives every verse a cue at its start.
+5. `recue.py`: a cue first carried the index of the first *recognised* word of its chunk; this moves it back to the
+   chunk's real first word (and onto a mushaf pause mark when it lands one word beside one). Then `fixcues.py`: keeps the cues inside their verses and gives every verse a cue at its start.
 6. Check: time per letter of every verse against the median of its part (outliers below 0.45× or above 2.2×).
    Only «الم» of Al-Baqarah and Al Imran are outliers (long madd).
 

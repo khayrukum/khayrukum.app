@@ -37,3 +37,4 @@ Listening page («الاستماع والتكرار» on the Claude pages = `/ra
 | 2026-11-24 | Parts 60 and 61 of the recitation (An-Nazi'at … An-Nas): timings, cues, sura files 79–114 | 7ce34c4 |
 | 2026-11-24 | Alignment tools kept in the repo (`tools/audio/align/`) | 7ce34c4 |
 | 2026-11-24 | `meta.json` no longer carries the sentinel 115th sura row | 7ce34c4 |
+| 2026-11-25 | Phrase cues start at the real first word of each chunk (175 of 1981 moved; reported on Al-Anbiya 18) | committed, pushed with the next batch |
