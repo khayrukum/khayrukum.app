@@ -10,7 +10,7 @@
   "note": "Written by tools/audio/import-recitation.mjs; do not edit by hand. items: one per part file (kind \"part\"), `from`/`to` = first/last verse, `end` = where the recitation ends in the file (before the closing formula). segments: part id → { verses: [key, boundary, start(, q)] in recitation order, cues: [time, key, word] }. Times are seconds in the part file. boundary = middle of the pause before the verse (ranges are cut there); start = first sound of the verse; q (amb | nopause | fallback) marks a less certain start. key = \"sura:aya\", \"basN\" (the basmala before sura N) or \"pre0\" (the isti'adha that opens the file). word = 1-based word of the stored Uthmani verse (DATA-01) heard first in that speech chunk; approximate (speech recognition).",
   "source": {
     "file": "data/source/recitation/minshawi-timings.json",
-    "sha256": "c28e754562e37934ea728bfa64f9f8f1afeafbacf793a8cf9230e7141b375157"
+    "sha256": "98c23bad13c333409ec94d2178e5e8c5a68933b73dc05a736367f4067c1b485c"
   },
   "items": [
     {
@@ -167,7 +167,8 @@
       "sha256": "cebfed0985e47ac0d53e18f54e6613061c1d7ef20378ed168b70637e89d73a74",
       "from": "88:1",
       "to": "114:6",
-      "end": 1838.5
+      "end": 1838.5,
+      "extras": [{"id":"dua-khatm","start":1843.5,"end":2018.6}]
     }
   ],
   "segments": {

@@ -89,6 +89,19 @@
           "end": {
             "type": "number",
             "minimum": 0
+          },
+          "extras": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "start", "end"],
+              "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+                "start": { "type": "number", "minimum": 0 },
+                "end": { "type": "number", "minimum": 0 }
+              }
+            }
           }
         }
       }

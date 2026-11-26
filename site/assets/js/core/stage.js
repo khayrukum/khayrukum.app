@@ -12,7 +12,7 @@ import * as platform from './platform.js';
 
 const T = S.stage;
 const MIN = { q: 1.375, t: 1.1, x: 1.1 }; // rem — Quran never below NFR-TYP-02
-const MAX = 4.5, STEP = 0.9, IDLE_MS = 3000;
+const MAX = 10, STEP = 0.93, IDLE_MS = 3000; // STG-23: as large as the screen allows
 let root = null, cb = null, view = null, pages = [], page = -1, phrase = -1, playing = false, idleTimer = null, wasIdle = false, wasFull = false, pushed = false, ro = null;
 const $ = sel => root.querySelector(sel);
 export const isOpen = () => !!root;

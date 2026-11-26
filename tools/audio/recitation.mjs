@@ -43,7 +43,9 @@ const r2 = x => Math.round(x * 100) / 100;
 export function convert(src, texts) {
   const items = [], segments = {};
   for (const p of src.parts) {
-    items.push({ id: 'part:' + p.id, kind: 'part', name: p.name, src: `audio/${src.id || 'recitation'}/${p.file}`, dur: p.duration, from: p.from, to: p.to, end: p.end });
+    const item = { id: 'part:' + p.id, kind: 'part', name: p.name, src: `audio/${src.id || 'recitation'}/${p.file}`, dur: p.duration, from: p.from, to: p.to, end: p.end };
+    if (p.extras?.length) item.extras = p.extras.map(x => ({ id: x.id, start: r2(x.start), end: r2(x.end) })); // AUD-37: passages that are not verses
+    items.push(item);
     const verses = Object.entries(p.verses).map(([k, v]) => (v.q && v.q !== 'ok' ? [k, r2(v.boundary), r2(v.start), v.q] : [k, r2(v.boundary), r2(v.start)]));
     const cues = p.cues.map(([t, k, w]) => {
       const m = /^(\d+):(\d+)$/.exec(k);

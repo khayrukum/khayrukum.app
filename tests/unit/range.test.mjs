@@ -51,10 +51,43 @@ test('rub\'s and verses (RNG-03)', () => {
 test('«من … إلى» stays ordered and inside one unbroken run (RNG-04)', () => {
   const P = R.coveredUnits(meta, idx, 'P');
   assert.deepEqual(R.linkEnds(P, 5, 2, 'from'), [5, 5], 'from moved past to: to follows');
-  assert.deepEqual(R.linkEnds(P, 5, 2, 'to'), [2, 2], 'to moved before from: from follows');
+  assert.deepEqual(R.linkEnds(P, 5, 2, 'to'), [5, 2], '«إلى» chosen before «من» makes a closed loop (RNG-16)');
   assert.deepEqual(R.linkEnds(P, 70, 80, 'from'), [70, 76], 'to is pulled back to the end of the run of «from»');
   assert.deepEqual(R.linkEnds(P, 70, 80, 'to'), [77, 80], 'from is pushed to the start of the run of «to»');
   assert.deepEqual(R.linkEnds(P, 3, 9, 'to'), [3, 9]);
+});
+
+test('whole suras, the closed loop and the closing supplication (RNG-15…17, AUD-37)', () => {
+  const S = R.coveredWholeSuras(meta, idx);
+  assert.deepEqual(S.map(x => x.n), [1, 2, 3, 21, ...Array.from({ length: 36 }, (_, i) => 79 + i)], 'An-Nisa and Ta-Ha are only partly covered');
+  assert.deepEqual([S[0].from, S[0].to, S[1].to], [[1, 1], [1, 7], [2, 286]]);
+  assert.deepEqual([S[0].run, S[2].run, S[3].run, S[4].run, S[S.length - 1].run], [1, 1, 2, 3, 3], 'runs break where a sura is missing');
+  // the supplication follows An-Nas in the same part file: it continues the run of the last sura and of page 604
+  const X = R.extraUnits(idx, S); const P = R.coveredUnits(meta, idx, 'P');
+  assert.deepEqual(X.map(x => [x.n, x.extra.id, x.run]), [['x:dua-khatm', 'dua-khatm', 3]]);
+  assert.equal(R.extraUnits(idx, P)[0].run, P[P.length - 1].run);
+  assert.notEqual(R.extraUnits(idx, P.slice(0, 5))[0].run, P[4].run, 'not after a list that ends elsewhere');
+  const L = [...S, ...X];
+  // selections: forward = one stretch; an extra is always its own stretch; b < a goes round the end of the list
+  assert.deepEqual(R.selection(L, 0, 2), [[0, 2]]);
+  assert.deepEqual(R.selection(L, 38, 40), [[38, 39], [40, 40]]);
+  assert.deepEqual(R.selection(L, 39, 0), [[39, 39], [0, 0]], 'a loop passes over the supplication');
+  assert.deepEqual(R.selection(L, 40, 0), [[40, 40], [0, 0]], 'unless it starts on it');
+  assert.deepEqual([R.selCount(L, 0, 2), R.selCount(L, 39, 0), R.selCount(L, 3, 3), R.selCount(L, 38, 1)], [3, 2, 1, 4]);
+  assert.deepEqual(R.selection(L, 2, 4), [[2, 2], [3, 3], [4, 4]], 'never joined across a gap in the coverage');
+  // An-Nas → Al-Fatiha without the supplication: the last sura, then the first
+  const loop = R.buildRange(meta, idx, S, S.length - 1, 0);
+  assert.deepEqual(loop.map(c => [c.part.id, c.first.key, c.last.key]), [['m61', '114:1', '114:6'], ['m01', '1:1', '1:7']]);
+  assert.equal(loop[0].entries[0].bas, 114, 'a sura starts with its basmala');
+  near(loop[0].end, idx.parts[11].end, 0.01); assert.ok(loop[0].end < 1843.5, 'the recitation stops before the supplication');
+  // the supplication on its own, with fine-tune and inside the file
+  const [d] = R.buildRange(meta, idx, L, 40, 40);
+  assert.deepEqual([d.part.id, d.start, d.end, d.entries.length, d.first.extra], ['m61', 1843.5, 2018.6, 1, true]);
+  const [d2] = R.buildRange(meta, idx, L, 40, 40, { [d.startKey]: 2, [d.endKey]: 9 });
+  assert.equal(d2.start, 1845.5); assert.ok(d2.end <= idx.parts[11].it.dur);
+  assert.equal(R.entryAt(d, 1900), d.first);
+  // Al-Baqarah whole: six part files in order, nothing skipped
+  assert.deepEqual(R.buildRange(meta, idx, S, 1, 1).map(c => c.part.id), ['m01', 'm02', 'm03a', 'm04', 'm05', 'm06']);
 });
 
 test('cut inside the pause: start just before the first sound, end just after the last (owner rule 2026-11-22)', () => {
@@ -169,7 +202,7 @@ test('cue word: Simple-Clean index → Uthmani word; the same when counts match,
 
 test('the shipped sura files are byte-equal to Tanzil and carry its notice (LIC-01/02, STG-10)', () => {
   const T = tanzilTexts(); const src = rd('site/data/quran/source.json');
-  for (const [n, count] of [[1, 7], [3, 200], [4, 176], [20, 135], [21, 112]]) {
+  for (const [n, count] of [[1, 7], [3, 200], [4, 176], [20, 135], [21, 112], [79, 46], [112, 4], [114, 6]]) {
     const q = rd(`site/data/quran/${String(n).padStart(3, '0')}.json`);
     assert.equal(q.ayat.length, count); assert.equal(q.notice, src.notice);
     q.ayat.forEach((v, i) => assert.equal(v, T.uthmani(n, i + 1), `${n}:${i + 1}`));

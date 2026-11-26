@@ -106,6 +106,8 @@ for (const m of quranCollections) {
     const id = it.id.replace(/^part:/, ''), seg = m.segments?.[id], w = `${where} ${id}`;
     if (!seg || !Array.isArray(seg.verses) || !Array.isArray(seg.cues)) { E(`${w}: no segments for this part`); continue; }
     if (!(it.dur > 0) || !(it.end > 0) || it.end > it.dur + 0.01) E(`${w}: end ${it.end} must lie inside the file (dur ${it.dur})`);
+    // AUD-37: an extra is a passage after the recitation of the part (it is not Quran text and has no verses)
+    for (const x of it.extras || []) if (!(x.start >= it.end) || !(x.end > x.start + 1) || x.end > it.dur + 0.01) E(`${w}: extra ${x.id} must lie after the recitation and inside the file`);
     // verses: in mushaf order without gaps from `from` to `to`; a basmala entry only right before verse 1 of its sura
     const vs = seg.verses.filter(v => /^\d+:\d+$/.test(v[0])).map(v => v[0].split(':').map(Number));
     if (!vs.length) { E(`${w}: no verses`); continue; }

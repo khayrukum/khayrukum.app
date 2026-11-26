@@ -1,4 +1,4 @@
-// «مشغّل المدى» «/range/» (RNG-01…12): pick a range by page, rub' or verse and hear it continuously in the
+// «مشغّل المدى» «/range/» (RNG-01…19): pick a range by page, rub', sura or verse and hear it continuously in the
 // recitation of a Quran collection made of part files (AUD-34/35), with «وضع العرض» (STG-10…12).
 import { S } from '../core/strings.ar.js';
 import { esc, n, clock, rate as fmtRate, mb, dec } from '../core/fmt.js';
@@ -34,15 +34,16 @@ function list() {
 function picked() {
   const l = list(); const cur = prefs.unit === 'A' ? [prefs.A.from, prefs.A.to] : prefs[prefs.unit];
   const at = v => Math.max(0, l.findIndex(x => x.n === v));
-  return { l, a: at(cur[0]), b: Math.max(at(cur[0]), at(cur[1])) };
+  return { l, a: at(cur[0]), b: at(cur[1]) }; // b < a is a closed loop (RNG-16)
 }
 function setPicked(a, b) { const l = list(); if (prefs.unit === 'A') { prefs.A.from = l[a].n; prefs.A.to = l[b].n; } else prefs[prefs.unit] = [l[a].n, l[b].n]; }
-const rangeKey = () => { const { l, a, b } = picked(); return `${prefs.unit}:${l[a].from.join(':')}-${l[b].to.join(':')}`; };
+const idOf = (x, end) => (x.extra ? x.n : x[end].join(':'));
+const rangeKey = () => { const { l, a, b } = picked(); return `${prefs.unit}:${idOf(l[a], 'from')}-${idOf(l[b], 'to')}`; };
 
-const label = e => (e.pre ? L.istiadha : e.bas ? L.basmala(suraName(e.bas)) : L.label(suraName(e.sura), n(e.aya)));
+const label = e => (e.extra ? L.extra[e.id] : e.pre ? L.istiadha : e.bas ? L.basmala(suraName(e.bas)) : L.label(suraName(e.sura), n(e.aya)));
 function rebuild() {
   const { l, a, b } = picked();
-  clips = R.buildClips(meta, idx, l[a].from, l[b].to, prefs.tune);
+  clips = R.buildRange(meta, idx, l, a, b, prefs.tune);
   items = clips.map((c, i) => ({ key: 'range:' + i, it: c.part.it, start: c.start, end: c.end, title: label(c.first), artist: L.artist, album: L.album }));
   flat = R.flatEntries(clips); total = R.totalDur(clips); views.clear();
   for (const s of new Set(flat.map(x => x.e.sura || x.e.bas).filter(Boolean))) if (!texts.has(s)) loadQuran(s).then(q => { texts.set(s, q); views.clear(); sync(audio.state()); }).catch(() => {});
@@ -62,7 +63,7 @@ function play(p = 0) {
   audio.setRate(prefs.rate); audio.setLoop(!!prefs.loop);
   audio.playSequence(items, { start: at.i, from: at.t - clips[at.i].start }); // AUD-05: inside the tap
 }
-function toggle() { const s = audio.state(); if (mine(s)) audio.toggle(); else play(resume); }
+function toggle() { const s = audio.state(); if (mine(s)) audio.toggle(); else { remember(); play(resume); } }
 function seekTo(p) {
   const s = audio.state(); p = Math.max(0, Math.min(p, Math.max(0, total - 0.1)));
   if (!mine(s)) { resume = p; sync(s); return; }
@@ -85,7 +86,7 @@ function setLoop(on) { prefs.loop = on; audio.setLoop(on); savePrefs(); audio.re
 function apply(p = 0) {
   const s = audio.state(); const was = mine(s), playing = was && s.playing;
   rebuild(); resume = typeof p === 'function' ? p() : p; p = resume; prefs.pos = null;
-  if (playing) play(p); else if (was) audio.stop();
+  if (playing) { play(p); rememberSoon(); } else if (was) audio.stop();
   summary(); tuneUi(); dlState(); sync(audio.state());
 }
 
@@ -94,7 +95,8 @@ function viewOf(e) {
   if (views.has(e.key)) return views.get(e.key);
   let v;
   const q = texts.get(e.sura || e.bas);
-  if (e.pre) v = { id: e.key, kind: 'x', label: L.istiadha, ctx: '', num: '', times: [0] };
+  if (e.extra) v = { id: e.key, kind: 'x', label: L.extra[e.id], ctx: L.album, num: '', times: [0] }; // RNG-17: its text is not from the mushaf
+  else if (e.pre) v = { id: e.key, kind: 'x', label: L.istiadha, ctx: '', num: '', times: [0] };
   else if (!q) return { id: e.key + '?', kind: 'x', label: '', ctx: L.suraName(suraName(e.sura || e.bas)), num: '', times: [0] }; // the text is on its way (local data)
   else {
     let w = 0; const words = tokens(e.bas ? q.basmala : q.ayat[e.aya - 1]).map(t => (isMarkToken(t) ? { t, w: 0 } : { t, w: ++w }));
@@ -113,7 +115,7 @@ function openStage(opener) {
 function head() {
   ui.$('#head').innerHTML = `<h1 id="title">${esc(S.titles.range)}</h1><span class="muted small">${esc(L.usage)}</span>${col ? `<span class="muted small">${esc(S.credit.minshawi)}</span>` : ''}`;
 }
-const optLabel = x => (prefs.unit === 'A' ? L.optA(n(x.n)) : L[prefs.unit === 'P' ? 'optP' : 'optQ'](n(x.n), suraName(x.from[0]), n(x.from[1])));
+const optLabel = x => (x.extra ? L.extra[x.extra.id] : prefs.unit === 'S' ? L.optS(suraName(x.n)) : prefs.unit === 'A' ? L.optA(n(x.n)) : L[prefs.unit === 'P' ? 'optP' : 'optQ'](n(x.n), suraName(x.from[0]), n(x.from[1])));
 function fill() {
   const { l, a, b } = picked();
   const opts = sel => l.map((x, i) => `<option value="${i}"${i === sel ? ' selected' : ''}>${esc(optLabel(x))}</option>`).join('');
@@ -123,9 +125,49 @@ function fill() {
 }
 function summary() {
   const { l, a, b } = picked();
-  const v = x => L.verse(suraName(x[0]), n(x[1]));
-  ui.$('#sum').textContent = `${L.sum[prefs.unit](n(b - a + 1), clock(total))} · ${L.span(v(l[a].from), v(l[b].to))}`;
+  const v = (x, end) => (x.extra ? L.extra[x.extra.id] : L.verse(suraName(x[end][0]), n(x[end][1])));
+  ui.$('#sum').textContent = `${L.sum[prefs.unit](n(R.selCount(l, a, b)), clock(total))} · ${L.span(v(l[a], 'from'), v(l[b], 'to'))}${b < a ? ' · ' + L.wrap : ''}`;
+  shiftUi(); recentUi();
 }
+// ---------- quick selection (RNG-18, RNG-19) ----------
+const shortOf = (u, x, sura) => (x.extra ? L.extra[x.extra.id] : u === 'P' ? L.page(n(x.n)) : u === 'Q' ? L.rub(n(x.n)) : u === 'S' ? suraName(x.n) : L.verse(suraName(sura), n(x.n)));
+/** The selection as a record that survives new parts being added: unit + the `n` of both ends (+ the sura for verses). */
+function selRecord() { const cur = prefs.unit === 'A' ? [prefs.A.from, prefs.A.to] : prefs[prefs.unit]; return { u: prefs.unit, a: cur[0], b: cur[1], ...(prefs.unit === 'A' ? { s: prefs.A.sura } : {}) }; }
+const sameSel = (x, y) => x.u === y.u && x.a === y.a && x.b === y.b && x.s === y.s;
+function recLabel(r) {
+  const l = r.u === 'A' ? null : lists[r.u]; const su = r.u === 'A' ? lists.A.find(x => x.sura === r.s) : null;
+  const A = r.u === 'A' ? su?.ayas.find(x => x.n === r.a) : l.find(x => x.n === r.a), B = r.u === 'A' ? su?.ayas.find(x => x.n === r.b) : l.find(x => x.n === r.b);
+  if (!A || !B) return null;
+  return r.a === r.b ? shortOf(r.u, A, r.s) : L.span(shortOf(r.u, A, r.s), shortOf(r.u, B, r.s));
+}
+/** A range that is played goes to the front of «آخر ما استمعت إليه» (8 kept). */
+function remember() {
+  const r = selRecord(); if (prefs.recent[0] && sameSel(prefs.recent[0], r)) return;
+  prefs.recent = [r, ...prefs.recent.filter(x => !sameSel(x, r))].slice(0, 8); savePrefs(); recentUi();
+}
+/** A range chosen while something is playing counts once it has been heard for a moment (not every step of choosing). */
+let remT = 0;
+function rememberSoon() { clearTimeout(remT); remT = setTimeout(() => { const s = audio.state(); if (mine(s) && s.playing) remember(); }, 2500); }
+function recentUi() {
+  const box = ui.$('#recent'); if (!box) return; const cur = selRecord();
+  const chips = prefs.recent.map((r, i) => ({ r, i, t: recLabel(r) })).filter(x => x.t);
+  box.hidden = !chips.length;
+  ui.$('#recentChips').innerHTML = chips.map(x => `<button type="button" class="chip" data-recent="${x.i}" aria-pressed="${sameSel(x.r, cur)}">${esc(x.t)}</button>`).join('');
+}
+function useRecent(i) {
+  const r = prefs.recent[i]; if (!r || !recLabel(r)) return;
+  prefs.unit = r.u; if (r.u === 'A') { prefs.A = { sura: r.s, from: r.a, to: r.b }; ui.$('#rSura').value = String(r.s); } else prefs[r.u] = [r.a, r.b];
+  fill(); apply(0); savePrefs(); clearTimeout(remT); remember(); if (!(mine(audio.state()) && audio.state().playing)) play(0);
+}
+/** «المدى السابق / التالي»: the same number of items, just before or after, inside the same run. */
+function shifted(dir) {
+  const { l, a, b } = picked(); if (b < a) return null;
+  const len = b - a + 1; let lo = a, hi = b; while (lo > 0 && l[lo - 1].run === l[a].run) lo--; while (hi < l.length - 1 && l[hi + 1].run === l[b].run) hi++;
+  if (dir < 0 ? a === lo : b === hi) return null;
+  return dir < 0 ? [Math.max(lo, a - len), Math.max(lo, a - len) + len - 1] : [Math.min(hi, b + len) - len + 1, Math.min(hi, b + len)];
+}
+function shiftUi() { const p = ui.$('#shPrev'), q = ui.$('#shNext'); if (!p) return; p.disabled = !shifted(-1); q.disabled = !shifted(1); }
+function shift(dir) { const x = shifted(dir); if (!x) return; setPicked(x[0], x[1]); fill(); apply(0); savePrefs(); }
 function coverage() {
   return L.covered(lists.A.map(su => {
     if (su.ayas.length === meta.suras[su.sura - 1].ayas) return su.name;
@@ -141,11 +183,13 @@ function render() {
     return;
   }
   main.innerHTML = `
+  <section class="panel" id="recent" hidden aria-label="${esc(L.recent)}"><span class="muted small">${esc(L.recent)}</span><div class="chips scroll" id="recentChips"></div></section>
   <section class="panel" aria-label="${esc(S.titles.range)}">
-    <div class="chips" role="group" aria-label="${esc(L.unit)}">${['P', 'Q', 'A'].map(u => `<button type="button" class="chip" data-unit="${u}" aria-pressed="false">${esc(L.units[u])}</button>`).join('')}</div>
+    <div class="chips" role="group" aria-label="${esc(L.unit)}">${['P', 'Q', 'S', 'A'].map(u => `<button type="button" class="chip" data-unit="${u}" aria-pressed="false">${esc(L.units[u])}</button>`).join('')}</div>
     <div class="rng" id="suraBox" hidden><label for="rSura">${esc(L.sura)}</label><select id="rSura" class="grow">${lists.A.map(su => `<option value="${su.sura}"${su.sura === prefs.A.sura ? ' selected' : ''}>${esc(su.name)}</option>`).join('')}</select></div>
     <div class="rng"><label for="rFrom">${esc(L.from)}</label><select id="rFrom" class="grow"></select></div>
     <div class="rng"><label for="rTo">${esc(L.to)}</label><select id="rTo" class="grow"></select></div>
+    <div class="row"><button type="button" class="btn grow" id="shPrev">${esc(L.shPrev)}</button><button type="button" class="btn grow" id="shNext">${esc(L.shNext)}</button></div>
     <span class="muted small" id="sum"></span>
   </section>
   <div class="nowbar"><div class="now">
@@ -217,6 +261,9 @@ function bind() {
   main.addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return; const d = b.dataset;
     if (b.id === 'pp') return toggle();
+    if (d.recent) return useRecent(+d.recent);
+    if (b.id === 'shPrev') return shift(-1);
+    if (b.id === 'shNext') return shift(1);
     if (b.id === 'back5') return seekTo(pos(audio.state()) - 5);
     if (b.id === 'fwd5') return seekTo(pos(audio.state()) + 5);
     if (b.id === 'prevV') return step(-1);
@@ -255,15 +302,17 @@ function bind() {
     const saved = (await store.get('range:prefs')) || {};
     if (col) {
       idx = R.buildIndex(col);
-      lists = { P: R.coveredUnits(meta, idx, 'P'), Q: R.coveredUnits(meta, idx, 'Q'), A: R.coveredSuras(meta, idx) };
+      lists = { P: R.coveredUnits(meta, idx, 'P'), Q: R.coveredUnits(meta, idx, 'Q'), S: R.coveredWholeSuras(meta, idx), A: R.coveredSuras(meta, idx) };
+      for (const u of ['P', 'S']) if (lists[u].length) lists[u] = [...lists[u], ...R.extraUnits(idx, lists[u])]; // RNG-17
       if (!lists.A.length) col = null;
     }
     head();
     if (!col) { render(); return; }
     const su = lists.A[0];
-    prefs = Object.assign({ unit: lists.P.length ? 'P' : 'A', P: [lists.P[0]?.n, lists.P[0]?.n], Q: [lists.Q[0]?.n, lists.Q[0]?.n], A: { sura: su.sura, from: su.ayas[0].n, to: su.ayas[su.ayas.length - 1].n }, loop: true, rate: 1, tune: {}, pos: null }, saved);
+    prefs = Object.assign({ S: [lists.S[0]?.n, lists.S[0]?.n], recent: [], unit: lists.P.length ? 'P' : 'A', P: [lists.P[0]?.n, lists.P[0]?.n], Q: [lists.Q[0]?.n, lists.Q[0]?.n], A: { sura: su.sura, from: su.ayas[0].n, to: su.ayas[su.ayas.length - 1].n }, loop: true, rate: 1, tune: {}, pos: null }, saved);
     if (!lists[prefs.unit]?.length) prefs.unit = 'A';
-    const { a, b } = picked(); setPicked(...R.linkEnds(list(), a, b, 'from'));
+    if (!Array.isArray(prefs.recent)) prefs.recent = [];
+    const { a, b } = picked(); setPicked(...R.linkEnds(list(), a, b, 'to'));
     rebuild();
     if (prefs.pos && prefs.pos.k === rangeKey()) resume = Math.min(prefs.pos.p || 0, Math.max(0, total - 0.1));
     render(); bind();

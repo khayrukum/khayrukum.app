@@ -25,6 +25,8 @@ export function buildIndex(col) {
   for (const it of (col.items || []).filter(x => x.kind === 'part')) {
     const id = it.id.replace(/^part:/, ''); const seg = col.segments?.[id]; if (!seg) continue;
     const part = { id, it, n: parts.length, end: it.end ?? it.dur, entries: [], cues: new Map() };
+    // AUD-37: passages of the part file that are not verses (a closing supplication): entries of their own
+    part.extras = (it.extras || []).map(x => ({ key: 'x:' + x.id, id: x.id, part: part.n, s: x.start, end: x.end, extra: true }));
     seg.verses.forEach(([key, b, s, q], i) => {
       const m = VERSE.exec(key); const e = { key, part: part.n, i, b, s, q: q || 'ok' };
       if (m) { e.sura = +m[1]; e.aya = +m[2]; if (!byKey.has(key)) byKey.set(key, e); }
@@ -83,7 +85,7 @@ export function coveredSuras(meta, idx) {
 export function linkEnds(list, a, b, moved) {
   const n = list.length; if (!n) return [0, 0];
   a = Math.max(0, Math.min(n - 1, a)); b = Math.max(0, Math.min(n - 1, b));
-  if (moved === 'to') { if (a > b) a = b; while (list[a].run !== list[b].run) a++; }
+  if (moved === 'to') { if (b < a) return [a, b]; while (list[a].run !== list[b].run) a++; } // RNG-16: «إلى» before «من» is a closed loop
   else { if (b < a) b = a; while (list[b].run !== list[a].run) b--; }
   return [a, b];
 }
@@ -130,6 +132,58 @@ export function buildClips(meta, idx, from, to, tune = {}) {
 }
 
 // ---------- the range as one time line ----------
+/** Suras covered from their first verse to their last (RNG-15): [{ n, from, to, count, run }]. */
+export function coveredWholeSuras(meta, idx) {
+  const out = []; let run = 0, prev = -1;
+  for (const su of meta.suras) {
+    let all = true; for (let a = 1; a <= su.ayas; a++) if (!idx.has(su.n, a)) { all = false; break; }
+    if (!all) continue;
+    if (su.n !== prev + 1) run++;
+    prev = su.n; out.push({ n: su.n, from: [su.n, 1], to: [su.n, su.ayas], count: su.ayas, run });
+  }
+  return out;
+}
+/**
+ * The extras of the collection as items for the end of a list (RNG-17): [{ n: key, extra, run }].
+ * An extra continues the run of the list's last item when that item ends where the extra's part file ends.
+ */
+export function extraUnits(idx, list) {
+  const out = []; const last = list[list.length - 1]; let run = last ? last.run : 0;
+  for (const part of idx.parts) for (const x of part.extras || []) {
+    const joins = last && !out.length && part.it.to === last.to.join(':');
+    if (!joins) run++;
+    out.push({ n: x.key, extra: x, run });
+  }
+  return out;
+}
+/** How many items a selection holds; `b < a` is a closed loop to the end of the list and round from its start (RNG-16). */
+export const selCount = (list, a, b) => selection(list, a, b).reduce((k, [i, j]) => k + j - i + 1, 0);
+/**
+ * A selection as stretches of items that follow each other without a gap: [[i, j]] (inclusive indices).
+ * A closed loop passes over the extras at the end of the list (An-Nas → Al-Fatiha has no supplication in between)
+ * unless the loop starts or ends on one.
+ */
+export function selection(list, a, b) {
+  const ix = []; const n = list.length; if (!n) return [];
+  if (b >= a) for (let i = a; i <= b; i++) ix.push(i); else { for (let i = a; i < n; i++) ix.push(i); for (let i = 0; i <= b; i++) ix.push(i); ix.splice(0, ix.length, ...ix.filter(i => !list[i].extra || i === a || i === b)); }
+  const out = [];
+  for (const i of ix) {
+    const g = out[out.length - 1];
+    if (g && g[1] === i - 1 && list[i].run === list[g[1]].run && !list[i].extra && !list[g[1]].extra) g[1] = i; else out.push([i, i]);
+  }
+  return out;
+}
+function extraClip(idx, x, tune) {
+  const part = idx.parts[x.part]; const startKey = `${part.id}/${x.key}/s`, endKey = `${part.id}/${x.key}/e`;
+  const max = part.it.dur || x.end;
+  let start = x.s + (tune[startKey] || 0), end = x.end + (tune[endKey] || 0);
+  end = Math.min(max, Math.max(end, x.s + 0.5)); start = Math.max(0, Math.min(start, end - 0.5));
+  return { part, start, end, entries: [x], first: x, last: x, startKey, endKey };
+}
+/** Clips of a selection of list items `a…b` (see `selection`): verses through `buildClips`, extras as one clip each. */
+export function buildRange(meta, idx, list, a, b, tune = {}) {
+  return selection(list, a, b).flatMap(([i, j]) => (list[i].extra ? [extraClip(idx, list[i].extra, tune)] : buildClips(meta, idx, list[i].from, list[j].to, tune)));
+}
 export const clipDur = c => Math.max(0, c.end - c.start);
 export const totalDur = clips => clips.reduce((a, c) => a + clipDur(c), 0);
 /** Position in the range (s) of time `t` (seconds in the part file) while clip i plays. */

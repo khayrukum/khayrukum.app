@@ -80,6 +80,8 @@ p { margin: 0; }
 .chip.bad[aria-pressed="true"] { background: var(--bad); border-color: var(--bad); color: var(--surface); }
 .chip .sub { font-size: 0.8rem; opacity: 0.85; }
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chips.scroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-block-end: 0.15rem; }
+.chips.scroll .chip { flex: none; white-space: nowrap; }
 .linkbtn { background: none; border: 0; color: var(--accent); text-decoration: underline; padding: 0.4rem 0.2rem; min-block-size: 2.75rem; }
 
 /* ---------- panels, banners, toasts ---------- */
@@ -400,10 +402,12 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
   padding-block: max(0.5rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px));
   padding-inline: max(1rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)); }
 .st-top, .st-sub { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; color: var(--muted); font-size: 0.95rem; min-block-size: 2rem; }
-.st-top { min-block-size: 3rem; }
+.st-top { min-block-size: 2rem; padding-inline-end: 3.25rem; }
+/* STG-24: the controls float over the text, so the text has the whole screen while they are hidden */
+.st-top .st-b { position: absolute; inset-block-start: max(0.25rem, env(safe-area-inset-top, 0px)); inset-inline-end: 0.5rem; z-index: 2; }
 .st-ctx { font-family: var(--f-display); color: var(--ink); }
 .st-body { flex: 1 1 0; min-block-size: 0; display: grid; place-items: center; overflow: hidden; }
-.st-text { inline-size: 100%; text-align: center; font: 400 var(--fs, 2rem) / 2 var(--f-quran); opacity: 0; }
+.st-text { inline-size: 100%; text-align: center; font: 400 var(--fs, 2rem) / 1.75 var(--f-quran); opacity: 0; }
 .st-text.in { opacity: 1; transition: opacity 0.18s; }
 .stage[data-kind="t"] .st-text { font-family: var(--f-bayt); line-height: 1.9; }
 .stage[data-kind="x"] .st-text { font-family: var(--f-body); color: var(--muted); }
@@ -417,14 +421,13 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
 .st-text .vnum { color: var(--gold); font-size: 0.75em; white-space: nowrap; }
 .st-bar { block-size: 0.2rem; border-radius: 0.1rem; background: var(--line-soft); overflow: hidden; }
 .st-bar > i { display: block; block-size: 100%; inline-size: var(--w, 0%); background: var(--accent); }
-.st-ctl { display: flex; justify-content: center; align-items: center; gap: 0.75rem; padding-block-start: 0.6rem; }
+.st-ctl { position: absolute; inset-inline: 0.75rem; inset-block-end: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 3.25rem); z-index: 2; display: flex; justify-content: center; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: 1rem; background: var(--bg); box-shadow: 0 0.1rem 1rem rgb(0 0 0 / 0.25); }
 .st-b { flex: none; inline-size: 3rem; block-size: 3rem; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); font-size: 1.1rem; }
 .st-b.pp { inline-size: 3.75rem; block-size: 3.75rem; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-size: 1.4rem; }
 .st-b[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 .stage .fade { transition: opacity 0.2s; }
 .stage.idle .fade { opacity: 0; pointer-events: none; }
 @media (orientation: landscape) and (max-height: 32em) {
-  .st-bot { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 0.35rem 1rem; }
-  .st-bar { grid-area: 1 / 1 / 2 / -1; } .st-ctl { padding: 0; }
+  .st-ctl { padding: 0.35rem; }
   .st-b, .st-b.pp { inline-size: 2.75rem; block-size: 2.75rem; }
 }

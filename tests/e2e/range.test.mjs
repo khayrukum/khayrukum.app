@@ -61,7 +61,9 @@ test('RNG-01/03/04: the hub links to the page; only covered units are offered; �
   await p.selectOption('#rFrom', '2');
   assert.equal(await p.inputValue('#rTo'), '2', 'choosing «من» after «إلى» moves «إلى» with it');
   await p.selectOption('#rTo', '3'); await p.selectOption('#rTo', '1');
-  assert.equal(await p.inputValue('#rFrom'), '1', 'choosing «إلى» before «من» moves «من» with it');
+  assert.equal(await p.inputValue('#rFrom'), '2', 'choosing «إلى» before «من» keeps «من»: a closed loop (RNG-16)');
+  assert.match(await p.textContent('#sum'), /^عدد الصفحات: ٤ · .* · البقرة ٦ ← البقرة ٥ · ↻ يدور من آخر القائمة إلى أولها$/);
+  await p.selectOption('#rFrom', '1'); await p.selectOption('#rTo', '1');
   await p.click('[data-unit="Q"]');
   assert.deepEqual(await p.$$eval('#rFrom option', o => o.map(x => x.textContent)), ['الربع ١ · الفاتحة ١']);
   await p.click('[data-unit="A"]');
@@ -79,6 +81,49 @@ test('RNG-01/03/04: the hub links to the page; only covered units are offered; �
   assert.deepEqual([await p.inputValue('#rSura'), await p.inputValue('#rFrom'), await p.inputValue('#rTo'), await p.textContent('#speedBtn'), await p.getAttribute('#loop', 'aria-pressed')], ['2', '2', '4', '١٫٥×', 'false']);
   assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true, 'no horizontal scroll at 390 px');
   assert.deepEqual(await p.evaluate(() => window.__csp), []); assert.deepEqual(p.errors, []);
+});
+
+test('RNG-15/16/18/19: by sura; a closed loop plays to the end of the list and round from its start; last ranges and «المدى التالي»', async () => {
+  const { p } = await page();
+  await p.goto(BASE + 'range/'); await settle(p);
+  assert.equal(await p.locator('#recent').isHidden(), true, 'nothing played yet');
+  // by sura: only Al-Fatiha is complete in the fixture
+  await p.click('[data-unit="S"]');
+  assert.deepEqual(await p.$$eval('#rFrom option', o => o.map(x => x.textContent)), ['سورة الفاتحة']);
+  assert.match(await p.textContent('#sum'), /^عدد السور: ١ · .* · الفاتحة ١ ← الفاتحة ٧$/);
+  assert.deepEqual([await p.isDisabled('#shPrev'), await p.isDisabled('#shNext')], [true, true]);
+  // closed loop by page: page 4, then round to page 1
+  await p.click('[data-unit="P"]');
+  await p.selectOption('#rFrom', '3'); await p.selectOption('#rTo', '0');
+  assert.match(await p.textContent('#sum'), /^عدد الصفحات: ٢ · .* · البقرة ١٧ ← الفاتحة ٧ · ↻ يدور من آخر القائمة إلى أولها$/);
+  await p.click('#pp'); await playing(p); await nowT(p, /البقرة · آية ١٧/);
+  assert.match(await au(p, a => a.currentSrc), /f2\./);
+  await au(p, (a, t) => { a.currentTime = t; }, start(19) - 1.2); // just before the end of 2:24
+  await nowT(p, /الفاتحة · آية ١/);
+  assert.match(await au(p, a => a.currentSrc), /f1\./, 'after the last page comes the first');
+  assert.deepEqual(await p.$$eval('#recentChips .chip', c => c.map(x => x.textContent + '|' + x.getAttribute('aria-pressed'))), ['ص ٤ ← ص ١|true']);
+  // «المدى التالي»: the same length, just after; and it is remembered because it is playing
+  await p.selectOption('#rFrom', '0'); await p.selectOption('#rTo', '1');
+  assert.deepEqual([await p.isDisabled('#shPrev'), await p.isDisabled('#shNext')], [true, false]);
+  await p.click('#shNext');
+  assert.deepEqual([await p.inputValue('#rFrom'), await p.inputValue('#rTo')], ['2', '3']);
+  assert.equal(await p.isDisabled('#shNext'), true, 'the end of the covered pages');
+  await playing(p); await nowT(p, /البقرة · آية ٦/);
+  const chips = () => p.$$eval('#recentChips .chip', c => c.map(x => x.textContent));
+  // a range chosen during playback is remembered once it has played for a moment; the steps of choosing are not
+  await p.waitForFunction(() => document.querySelectorAll('#recentChips .chip').length === 2, null, { timeout: 8000 });
+  assert.deepEqual(await chips(), ['ص ٣ ← ص ٤', 'ص ٤ ← ص ١']);
+  await p.click('#pp'); await p.waitForFunction(() => document.querySelector('audio').paused);
+  // a chip selects its range and plays it; the list survives a reload
+  await p.click('#recentChips .chip:nth-child(2)'); await playing(p); await nowT(p, /البقرة · آية ١٧/);
+  assert.deepEqual([await p.inputValue('#rFrom'), await p.inputValue('#rTo')], ['3', '0']);
+  assert.deepEqual(await chips(), ['ص ٤ ← ص ١', 'ص ٣ ← ص ٤']);
+  await p.click('#pp'); await p.waitForTimeout(400);
+  await p.reload(); await settle(p);
+  assert.deepEqual(await chips(), ['ص ٤ ← ص ١', 'ص ٣ ← ص ٤']);
+  assert.deepEqual([await p.inputValue('#rFrom'), await p.inputValue('#rTo')], ['3', '0'], 'the loop is restored as it was');
+  assert.equal(await p.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth), true, 'no horizontal scroll at 390 px');
+  assert.deepEqual(p.errors, []);
 });
 
 test('RNG-05…08: a range plays as clips cut inside the pauses, crosses to the next part file, loops, and stops at the end without «كرّر»; one media element; play() inside the tap (AUD-03/05/35)', async () => {
@@ -225,7 +270,7 @@ test('STG (Quran): opens over the page, shows the verse being recited from the s
 });
 
 test('STG-05: landscape and small screens — a verse too long for one screen is shown a screenful at a time, never below the Quran minimum size, never clipped; real full screen where the browser has it', async () => {
-  const { p } = await page({ viewport: { width: 480, height: 300 } }, { fullscreen: true });
+  const { p } = await page({ viewport: { width: 360, height: 250 } }, { fullscreen: true }); // small enough that 2:25 needs more than one screen
   await p.goto(BASE + 'range/'); await settle(p);
   await p.click('[data-unit="A"]'); await p.selectOption('#rSura', '2'); await p.selectOption('#rFrom', '24'); // 2:25
   await p.click('#stageBtn'); await p.waitForSelector('#stText.in');

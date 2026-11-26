@@ -211,6 +211,9 @@ Counted per requirement ID (ranges expanded); TST rows are listed separately at 
 | AUD-34 | `data/audio/minshawi.json`, `tools/audio/import-recitation.mjs`, `schemas/recitation-segments.schema.json`, `validate-data.mjs` | unit/range, TST-10 | done |
 | AUD-35 | clips in `core/audio.js` | e2e range (TST-71) | done; real AAC playback and background timers need real devices |
 | AUD-36 | per-collection audio in `tools/build.mjs`, `sw.template.js` | build, e2e TST-36 | done |
+| AUD-37 | `extras` on part items: `tools/audio/recitation.mjs`, schema, validator, `range-logic.js` | unit TST-72 | done |
+| RNG-15…19 | `core/range-logic.js` (`coveredWholeSuras`, `selection`, `buildRange`, `extraUnits`), `pages/range.js` | unit + e2e TST-72 | done |
+| STG-23/24 | `core/stage.js` (MAX), `app.css` (floating controls) | e2e TST-71 (STG-05 on a smaller screen) | done |
 | RNG-01…14 | `pages/range.js`, `core/range-logic.js`, `core/seekbar.js`, `site/range/` | unit/range (TST-70), e2e range (TST-71) | done; audio not published (LIC-23, OWNER-9) |
 | STG-01…22, LIS-13 | `core/stage.js`, `pages/range.js`, `pages/listen.js` | e2e range (TST-71) | done; iPhone fallback and wake lock need real devices |
 | LIC-23 | `.gitignore`, `permission.json`, `build.mjs --strict` | release-check | owner (OWNER-9) |
