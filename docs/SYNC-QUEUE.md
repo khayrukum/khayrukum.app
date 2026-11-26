@@ -23,10 +23,10 @@ items to *Done* with the commit hash.
 | 2026-11-24 | Alignment tools kept in the repo (`tools/audio/align/`) | 7ce34c4 |
 | 2026-11-24 | `meta.json` no longer carries the sentinel 115th sura row | 7ce34c4 |
 | 2026-11-25 | Phrase cues start at the real first word of each chunk (175 of 1981 moved; reported on Al-Anbiya 18) | 3a94a7e |
-| 2026-11-26 | Unit «بالسورة» (RNG-15) | BATCH |
-| 2026-11-26 | Closed loop «من» after «إلى» (RNG-16) | BATCH |
-| 2026-11-26 | «دعاء ختم القرآن» as an item of its own (RNG-17, AUD-37) | BATCH |
-| 2026-11-26 | «آخر ما استمعت إليه», «المدى السابق / التالي» (RNG-18/19); the last selection was already restored (RNG-10) | BATCH |
-| 2026-11-26 | Reading view: largest type that fits, floating controls (STG-23/24) | BATCH |
+| 2026-11-26 | Unit «بالسورة» (RNG-15) | a55386d |
+| 2026-11-26 | Closed loop «من» after «إلى» (RNG-16) | a55386d |
+| 2026-11-26 | «دعاء ختم القرآن» as an item of its own (RNG-17, AUD-37) | a55386d |
+| 2026-11-26 | «آخر ما استمعت إليه», «المدى السابق / التالي» (RNG-18/19); the last selection was already restored (RNG-10) | a55386d |
+| 2026-11-26 | Reading view: largest type that fits, floating controls (STG-23/24) | a55386d |
 | 2026-11-26 | Checked, no change needed on the site: title during a basmala (already the sura it opens); «التالي» while paused (the site seeks 0.1 s before the verse and shows it); the player follows the element's own play / pause events (`core/audio.js`) | — |
 | 2026-11-26 | Claude pages only (nothing to port): Uthmani text in the exams, Tuhfa exam inside the hub | — |
