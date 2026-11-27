@@ -15,6 +15,15 @@ items to *Done* with the commit hash.
    Owner decision needed: merge them on the site or keep two pages.
 2. **Reviewed text of «دعاء ختم القرآن»** for the reading view (RNG-17 shows the title only).
 
+3. **Reading view controls** (2026-11-27): smaller, semi-transparent floating controls; a tap on the screen
+   toggles them (tap while visible hides them at once, also when paused).
+4. **التفسير الميسر under the verse** (2026-11-27): small type under the verse in the reading view, a «التفسير»
+   toggle (remembered), scrolls inside its own box (max about a third of the screen), verse fitted in the space left;
+   hidden for the basmala, Tuhfa and the dua. Text: King Fahd Complex «التفسير الميسر», taken from
+   `spa5k/tafsir_api` (`tafsir/ar-tafsir-muyassar/`, source quran.com); the sura introduction before «[التفسير]»
+   in each first verse is dropped. Before porting: decide the licence note, and note that 7 entries quote Quran
+   words inside ﴿ ﴾ that are not from Tanzil (standing rule 4).
+
 ## Done
 
 | Date | Item | Commit |
