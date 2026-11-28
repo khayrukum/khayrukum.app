@@ -45,7 +45,7 @@ const au = (p, fn, arg) => p.evaluate(`(${fn})(document.querySelector('audio'), 
 const playing = p => p.waitForFunction(() => { const a = document.querySelector('audio'); return a && !a.paused && a.readyState >= 2; }, null, { timeout: 15000 });
 const prefs = p => p.evaluate(() => new Promise(res => { const r = indexedDB.open('khayrukum'); r.onsuccess = () => { const g = r.result.transaction('kv').objectStore('kv').get('range:prefs'); g.onsuccess = () => { r.result.close(); res(g.result); }; }; }));
 const start = i => LEAD + VERSE * i; // start of the i-th entry of a fixture part
-const stageText = p => p.$$eval('#stText .w:not(.vnum):not([hidden])', w => w.map(x => x.textContent).join(' '));
+const stageText = p => p.$$eval('#stText .w:not(.vnum):not([hidden])', w => w.map(x => x.textContent.replace(/\u00A0/g, '')).join(' '));
 const nowT = (p, re) => p.waitForFunction(s => new RegExp(s).test(document.querySelector('#nowT').textContent), re.source, { timeout: 15000 });
 
 test('RNG-01/03/04: the hub links to the page; only covered units are offered; «من … إلى» stays ordered; the choice survives a reload', async () => {
@@ -269,32 +269,81 @@ test('STG (Quran): opens over the page, shows the verse being recited from the s
   assert.deepEqual(await p.evaluate(() => window.__csp), []); assert.deepEqual(p.errors, []);
 });
 
-test('STG-05: landscape and small screens — a verse too long for one screen is shown a screenful at a time, never below the Quran minimum size, never clipped; real full screen where the browser has it', async () => {
+test('STG-27/29: landscape and small screens — a verse too long for one screen is shown whole, never below the Quran minimum size, scrolls and keeps the phrase being recited in view; a pause mark stays with its word; real full screen where the browser has it', async () => {
   const { p } = await page({ viewport: { width: 360, height: 250 } }, { fullscreen: true }); // small enough that 2:25 needs more than one screen
   await p.goto(BASE + 'range/'); await settle(p);
   await p.click('[data-unit="A"]'); await p.selectOption('#rSura', '2'); await p.selectOption('#rFrom', '24'); // 2:25
   await p.click('#stageBtn'); await p.waitForSelector('#stText.in');
   await p.waitForFunction(() => !!document.fullscreenElement, null, { timeout: 5000 }).catch(() => {});
   const fs1 = await p.evaluate(() => document.fullscreenElement?.id || null);
-  const state = () => p.evaluate(() => { const b = document.querySelector('#stBody'), t = document.querySelector('#stText'); return { ok: t.scrollHeight <= b.clientHeight + 1 && t.scrollWidth <= b.clientWidth + 1, px: parseFloat(getComputedStyle(t).fontSize), page: document.querySelector('#stPage').textContent, shown: [...t.querySelectorAll('.w:not([hidden]):not(.vnum)')].map(x => x.textContent), h: innerHeight }; });
+  const state = () => p.evaluate(() => {
+    const b = document.querySelector('#stBody'), t = document.querySelector('#stText'), br = b.getBoundingClientRect();
+    const on = [...t.querySelectorAll('.w.on')].map(x => x.getBoundingClientRect());
+    return { scroll: b.classList.contains('scroll'), wide: t.scrollWidth <= b.clientWidth + 1, over: b.scrollHeight > b.clientHeight, top: b.scrollTop, px: parseFloat(getComputedStyle(t).fontSize),
+      shown: [...t.querySelectorAll('.w:not(.vnum)')].map(x => x.textContent.replace(/\u00A0/g, '')), on: on.length, onIn: on.length > 0 && on[0].top >= br.top - 1 && on[0].top < br.bottom,
+      split: [...t.querySelectorAll('.w.mk')].filter(m => Math.abs(m.getBoundingClientRect().top - m.previousElementSibling.getBoundingClientRect().top) > m.getBoundingClientRect().height / 2).length, marks: t.querySelectorAll('.w.mk').length };
+  });
   const a = await state();
-  const all = Q2.ayat[24].split(' ');
-  assert.ok(a.ok, 'the screenful fits'); assert.ok(a.px >= 22 - 0.01, `Quran type stays ≥ 1.375 rem (${a.px}px)`);
-  assert.match(a.page, /^١ \/ [٢٣٤٥]$/, 'more than one screen: ' + a.page);
-  assert.deepEqual(a.shown, all.slice(0, a.shown.length), 'the first screen is the start of the verse');
-  // the second half of the verse is on a later screen once the recitation gets there
+  assert.ok(a.scroll && a.over && a.wide, 'the verse scrolls, nothing is cut sideways'); assert.ok(a.px >= 22 - 0.01, `Quran type stays ≥ 1.375 rem (${a.px}px)`);
+  assert.equal(a.top, 0, 'it opens at the start of the verse');
+  assert.equal(a.shown.join(' '), Q2.ayat[24], 'the whole verse is there');
+  assert.ok(a.marks > 0 && a.split === 0, 'every pause mark is on the line of its word');
+  assert.equal(await p.locator('#stText').evaluate(t => /<span class="w mk[^>]*>&nbsp;/.test(t.innerHTML)), true, 'a no-break space ties the mark to the word');
+  // the second half of the verse comes into view once the recitation gets there
   await p.click('[data-st="toggle"]'); await playing(p);
   await au(p, (x, t) => { x.currentTime = t; }, start(19) + VERSE / 2 + 0.2);
-  await p.waitForFunction(() => !document.querySelector('#stPage').textContent.startsWith('١ '), null, { timeout: 5000 });
+  await p.waitForFunction(() => document.querySelector('#stBody').scrollTop > 20, null, { timeout: 5000 });
+  await p.waitForTimeout(700);
   const b = await state();
-  assert.ok(b.ok); assert.ok(b.shown.length > 0 && b.shown.every(w => all.includes(w)));
-  assert.equal(b.shown.includes(all[Math.floor(all.length / 2)]), true, 'the screen shown holds the phrase being recited');
-  assert.ok(await p.locator('#stText .w.on:not([hidden])').count() > 0);
+  assert.ok(b.on > 0 && b.onIn, 'the phrase being recited is on the screen');
   if (fs1) { // real full screen: leaving it (the browser's Esc) closes the view
     assert.equal(fs1, 'stage');
     await p.evaluate(() => document.exitFullscreen()); await p.waitForSelector('#stage', { state: 'detached' });
   } else { await p.keyboard.press('Escape'); await p.waitForSelector('#stage', { state: 'detached' }); }
   assert.deepEqual(p.errors, []);
+});
+
+test('STG-25/26/28, RNG-20: a tap hides the controls at once (also when paused); a sideways swipe moves to the next / previous verse; «تسميع» blurs what has not been recited yet and is remembered; the player comes into view after «إلى»', async () => {
+  const { p } = await page({ viewport: { width: 390, height: 600 } });
+  await p.goto(BASE + 'range/'); await settle(p);
+  // RNG-20
+  await p.evaluate(() => window.scrollTo(0, 0));
+  const vis = () => p.evaluate(() => { const r = document.querySelector('#pp').parentElement.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; });
+  if (!(await vis())) { await p.selectOption('#rTo', { index: 1 }); await p.waitForFunction(() => { const r = document.querySelector('#pp').parentElement.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }, null, { timeout: 5000 }); await p.selectOption('#rTo', { index: 0 }); }
+  await p.click('#stageBtn'); await p.waitForSelector('#stText.in');
+  const st = p.locator('#stage'); const idle = () => st.evaluate(e => e.classList.contains('idle'));
+  // STG-25: paused — a tap hides, a tap shows
+  assert.equal(await idle(), false);
+  await p.mouse.click(195, 300); assert.equal(await idle(), true, 'hidden at once while paused');
+  assert.equal(await p.evaluate(() => getComputedStyle(document.querySelector('.st-ctl')).pointerEvents), 'none');
+  await p.mouse.click(195, 300); assert.equal(await idle(), false);
+  // STG-26: swipe to the right = next verse, to the left = previous
+  const swipe = async (x0, x1) => { await p.mouse.move(x0, 300); await p.mouse.down(); await p.mouse.move((x0 + x1) / 2, 302, { steps: 3 }); await p.mouse.move(x1, 304, { steps: 3 }); await p.mouse.up(); };
+  await swipe(120, 280); await p.waitForFunction(() => document.querySelector('#stNum').textContent.startsWith('آية ٢'), null, { timeout: 5000 });
+  assert.equal(await idle(), false, 'a swipe is not a tap');
+  await swipe(280, 120); await p.waitForFunction(() => document.querySelector('#stNum').textContent.startsWith('آية ١'), null, { timeout: 5000 });
+  // STG-28: «تسميع»
+  const memo = p.locator('[data-st="memo"]');
+  assert.deepEqual([await memo.innerText(), await memo.getAttribute('aria-pressed')], ['تسميع', 'false']);
+  assert.equal(await p.locator('#stText .w.hid').count(), 0);
+  await memo.click(); assert.equal(await memo.getAttribute('aria-pressed'), 'true');
+  const total = await p.locator('#stText .w:not(.vnum)').count();
+  assert.equal(await p.locator('#stText .w.hid').count(), total, 'the whole verse is blurred before it is recited');
+  await p.waitForTimeout(350); assert.equal(await p.evaluate(() => getComputedStyle(document.querySelector('#stText .w.hid')).color), 'rgba(0, 0, 0, 0)');
+  await p.click('[data-st="toggle"]'); await playing(p);
+  await au(p, (a, t) => { a.currentTime = t; }, start(4) + VERSE / 2 + 0.2); // verse 5, second phrase
+  await p.waitForFunction(() => document.querySelector('#stNum').textContent.startsWith('آية ٥') && document.querySelectorAll('#stText .w.on').length > 0 && document.querySelectorAll('#stText .w:not(.hid):not(.vnum)').length > 0, null, { timeout: 5000 });
+  const words = Q1.ayat[4].split(' ');
+  assert.deepEqual(await p.$$eval('#stText .w:not(.hid):not(.vnum)', w => w.map(x => x.textContent)), words.slice(0, Math.floor(words.length / 2)), 'what was recited is clear');
+  assert.deepEqual(await p.$$eval('#stText .w.hid', w => w.map(x => x.textContent)), words.slice(Math.floor(words.length / 2)), 'the phrase being recited and the rest stay blurred');
+  await p.click('[data-st="next"]'); await p.waitForFunction(() => document.querySelector('#stNum').textContent.startsWith('آية ٦'), null, { timeout: 5000 });
+  assert.equal(await p.locator('#stText .w:not(.hid):not(.vnum)').count(), 0, 'a new verse arrives blurred');
+  await p.keyboard.press('Escape'); await p.waitForSelector('#stage', { state: 'detached' });
+  await p.reload(); await settle(p); await p.click('#stageBtn'); await p.waitForSelector('#stText.in');
+  assert.equal(await p.getAttribute('[data-st="memo"]', 'aria-pressed'), 'true', 'remembered on the device');
+  const small = await p.$$eval('#stage button', b => b.map(x => x.getBoundingClientRect()).filter(r => r.width < 44 || r.height < 44).length);
+  assert.equal(small, 0, 'targets ≥ 44 px');
+  assert.deepEqual(await p.evaluate(() => window.__csp), []); assert.deepEqual(p.errors, []);
 });
 
 test('STG (Tuhfa): the listening page opens the same view on the bayt being heard — two hemistichs, bayt and chapter, previous / next bayt, close returns', async () => {

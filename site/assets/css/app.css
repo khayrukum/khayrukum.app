@@ -402,7 +402,11 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
   padding-block: max(0.5rem, env(safe-area-inset-top, 0px)) max(0.75rem, env(safe-area-inset-bottom, 0px));
   padding-inline: max(1rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px)); }
 .st-top, .st-sub { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; color: var(--muted); font-size: 0.95rem; min-block-size: 2rem; }
-.st-top { min-block-size: 2rem; padding-inline-end: 3.25rem; }
+.st-top { min-block-size: 2rem; padding-inline-end: 8.75rem; }
+.st-top .st-ctx { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.st-memo { position: absolute; inset-block-start: max(0.25rem, env(safe-area-inset-top, 0px)); inset-inline-end: 3.9rem; z-index: 2; min-block-size: 3rem; min-inline-size: 3rem; padding-inline: 0.9rem; border-radius: 1.5rem; border: 1px solid var(--line); background: var(--surface); font-size: 0.9rem; }
+.st-memo[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); background: var(--accent); }
+.st-memo[hidden] { display: none; }
 /* STG-24: the controls float over the text, so the text has the whole screen while they are hidden */
 .st-top .st-b { position: absolute; inset-block-start: max(0.25rem, env(safe-area-inset-top, 0px)); inset-inline-end: 0.5rem; z-index: 2; }
 .st-ctx { font-family: var(--f-display); color: var(--ink); }
@@ -418,6 +422,10 @@ button.ord-i { cursor: pointer; min-block-size: 3rem; }
 /* the phrase being recited: colour only — a background would spill over the lines above and below (tall Quran font) */
 .st-text .w { transition: color 0.2s; }
 .st-text .w.on { color: var(--accent); }
+.st-text .w.hid { color: transparent; text-shadow: 0 0 0.38em color-mix(in srgb, var(--ink) 75%, transparent); }
+.st-text .w.on.hid { text-shadow: 0 0 0.38em var(--accent); }
+.st-body.scroll { display: block; overflow-y: auto; touch-action: pan-y; overscroll-behavior: contain; -webkit-mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); mask-image: linear-gradient(transparent, #000 9%, #000 91%, transparent); }
+.st-body.scroll .st-text { padding-block: 0.9em 1.4em; }
 .st-text .vnum { color: var(--gold); font-size: 0.75em; white-space: nowrap; }
 .st-bar { block-size: 0.2rem; border-radius: 0.1rem; background: var(--line-soft); overflow: hidden; }
 .st-bar > i { display: block; block-size: 100%; inline-size: var(--w, 0%); background: var(--accent); }

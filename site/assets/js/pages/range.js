@@ -158,6 +158,13 @@ function useRecent(i) {
   const r = prefs.recent[i]; if (!r || !recLabel(r)) return;
   prefs.unit = r.u; if (r.u === 'A') { prefs.A = { sura: r.s, from: r.a, to: r.b }; ui.$('#rSura').value = String(r.s); } else prefs[r.u] = [r.a, r.b];
   fill(); apply(0); savePrefs(); clearTimeout(remT); remember(); if (!(mine(audio.state()) && audio.state().playing)) play(0);
+  toPlayer();
+}
+/** RNG-20: once the range is chosen («إلى», or a recent range), the player comes into view by itself. */
+function toPlayer() {
+  const el = ui.$('#pp')?.parentElement; if (!el) return; const r = el.getBoundingClientRect();
+  if (r.top >= 0 && r.bottom <= innerHeight) return;
+  el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: r.height > innerHeight ? 'start' : 'center' });
 }
 /** «المدى السابق / التالي»: the same number of items, just before or after, inside the same run. */
 function shifted(dir) {
@@ -291,7 +298,7 @@ function bind() {
     // RNG-04: the end the reader did not touch moves so that the range stays ordered and without a gap
     const [a, b] = R.linkEnds(list(), +ui.$('#rFrom').value, +ui.$('#rTo').value, t.id === 'rFrom' ? 'from' : 'to');
     ui.$('#rFrom').value = String(a); ui.$('#rTo').value = String(b);
-    setPicked(a, b); apply(); savePrefs();
+    setPicked(a, b); apply(); savePrefs(); if (t.id === 'rTo') toPlayer();
   });
 }
 

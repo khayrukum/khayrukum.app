@@ -4,16 +4,19 @@
 //   open({ opener, onToggle, onPrev, onNext, onLoop, onClose })
 //   show({ id, kind: 'q'|'t'|'x', ctx, num, words:[{ t, w }], spans:[[from,to]], vnum, hems:[a,b], note, label })
 //   tick({ playing, loop, frac, phrase })      close()      isOpen()
-// Text never scrolls and is never cut: the type shrinks to fit, and a verse too long for the smallest size is
-// shown a screenful at a time, following the recitation (STG-05).
+// Text is never cut: the type shrinks to fit, and a verse too long for one screen is shown whole at a comfortable
+// size and scrolls, keeping the phrase being recited in the middle (STG-27).
 import { S } from './strings.ar.js';
-import { esc, n } from './fmt.js';
+import { esc } from './fmt.js';
 import * as platform from './platform.js';
+import * as store from './store.js';
 
 const T = S.stage;
 const MIN = { q: 1.375, t: 1.1, x: 1.1 }; // rem — Quran never below NFR-TYP-02
 const MAX = 10, STEP = 0.93, IDLE_MS = 3000; // STG-23: as large as the screen allows
-let root = null, cb = null, view = null, pages = [], page = -1, phrase = -1, playing = false, idleTimer = null, wasIdle = false, wasFull = false, pushed = false, ro = null;
+let memo = false, hold = 0, down = null, swiped = false;
+const ready = store.get('stage:prefs').then(v => { memo = !!v?.memo; }).catch(() => {});
+let root = null, cb = null, view = null, phrase = -1, playing = false, idleTimer = null, wasIdle = false, wasFull = false, pushed = false, ro = null;
 const $ = sel => root.querySelector(sel);
 export const isOpen = () => !!root;
 
@@ -21,9 +24,9 @@ function build() {
   const el = document.createElement('div');
   el.className = 'stage'; el.id = 'stage'; el.tabIndex = -1;
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', T.title);
-  el.innerHTML = `<div class="st-top"><span class="st-ctx" id="stCtx"></span><button type="button" class="st-b fade" data-st="close" aria-label="${esc(T.close)}">✕</button></div>
+  el.innerHTML = `<div class="st-top"><span class="st-ctx" id="stCtx"></span><button type="button" class="st-memo fade" data-st="memo" aria-pressed="false" hidden>${esc(T.memo)}</button><button type="button" class="st-b fade" data-st="close" aria-label="${esc(T.close)}">✕</button></div>
   <div class="st-body" id="stBody"><div class="st-text" id="stText" lang="ar"></div></div>
-  <div class="st-bot"><div class="st-sub"><span id="stNum"></span><span id="stPage"></span></div>
+  <div class="st-bot"><div class="st-sub"><span id="stNum"></span></div>
     <div class="st-bar" aria-hidden="true"><i></i></div>
     <div class="st-ctl fade"><button type="button" class="st-b" data-st="prev" aria-label="${esc(T.prev)}">→</button><button type="button" class="st-b pp" data-st="toggle" aria-label="${esc(T.play)}">▶</button><button type="button" class="st-b" data-st="next" aria-label="${esc(T.next)}">←</button><button type="button" class="st-b" data-st="loop" aria-pressed="false" aria-label="${esc(T.loop)}">↻</button></div></div>`;
   return el;
@@ -32,10 +35,14 @@ function build() {
 /** Open the view. Must run inside the tap that asked for it (full screen needs a user gesture). */
 export function open(handlers) {
   if (root) return;
-  cb = handlers; view = null; pages = []; page = phrase = -1; playing = false;
+  cb = handlers; view = null; phrase = -1; playing = false; hold = 0; down = null; swiped = false;
   root = build(); document.body.appendChild(root);
   const app = document.getElementById('app'); if (app) app.inert = true;
-  root.addEventListener('pointerdown', () => { wasIdle = root.classList.contains('idle'); }, true);
+  root.addEventListener('pointerdown', e => { wasIdle = root.classList.contains('idle'); down = e.isPrimary ? { x: e.clientX, y: e.clientY, t: Date.now() } : null; }, true);
+  root.addEventListener('pointerup', onUp, true);
+  root.addEventListener('pointercancel', () => { down = null; }, true);
+  const body = root.querySelector('#stBody'); const held = () => { hold = Date.now() + 4000; };
+  body.addEventListener('touchmove', held, { passive: true }); body.addEventListener('wheel', held, { passive: true });
   root.addEventListener('click', onClick);
   root.addEventListener('keydown', onKey);
   root.addEventListener('focusin', wake);
@@ -46,6 +53,7 @@ export function open(handlers) {
   try { history.pushState({ ...(history.state || {}), stage: 1 }, ''); pushed = true; } catch { pushed = false; }
   wasFull = false; platform.enterFullscreen(root).then(ok => { wasFull = ok; });
   root.focus({ preventScroll: true });
+  ready.then(() => { if (!root || !memo) return; $('[data-st=memo]').setAttribute('aria-pressed', 'true'); const k = phrase; phrase = -1; mark(Math.max(0, k)); });
   wake();
 }
 
@@ -70,11 +78,22 @@ function teardown() {
 const onPop = () => { pushed = false; teardown(); };
 const onFs = () => { if (root && wasFull && !platform.fullscreenElement()) { wasFull = false; close(); } }; // Esc in real full screen
 
+/** STG-26: a sideways swipe moves to the next (finger to the right, as turning a mushaf page) or previous verse / bayt. */
+function onUp(e) {
+  const d = down; down = null; if (!d || !cb) return;
+  const dx = e.clientX - d.x, dy = e.clientY - d.y;
+  if (Math.abs(dx) < 45 || Math.abs(dx) < 1.6 * Math.abs(dy) || Date.now() - d.t > 900) return;
+  swiped = true; setTimeout(() => { swiped = false; }, 350); // the click that may follow is part of the swipe
+  const idle = wasIdle; if (dx > 0) cb.onNext(); else cb.onPrev();
+  if (idle) sleep();
+}
 function onClick(e) {
+  if (swiped) { swiped = false; return; }
   const b = e.target.closest('[data-st]');
-  if (!b) { if (wasIdle) wake(); else if (playing) sleep(); return; } // a tap on the text shows the controls, or hides them again
+  if (!b) { if (wasIdle) wake(); else sleep(); return; } // STG-25: a tap on the text shows the controls, or hides them at once
   wake();
   const a = b.dataset.st;
+  if (a === 'memo') { memo = !memo; store.set('stage:prefs', { memo, updatedAt: Date.now() }).catch(() => {}); b.setAttribute('aria-pressed', String(memo)); const k = phrase; phrase = -1; mark(Math.max(0, k)); return; }
   if (a === 'close') close(); else if (a === 'toggle') cb.onToggle(); else if (a === 'prev') cb.onPrev(); else if (a === 'next') cb.onNext(); else if (a === 'loop') cb.onLoop();
 }
 function onKey(e) {
@@ -87,18 +106,20 @@ function onKey(e) {
 }
 /** Controls fade while playing and come back on any tap, key or focus (STG-06). */
 function wake() { if (!root) return; root.classList.remove('idle'); clearTimeout(idleTimer); if (playing) idleTimer = setTimeout(sleep, IDLE_MS); }
-function sleep() { if (root && playing) root.classList.add('idle'); }
+function sleep() { if (!root) return; clearTimeout(idleTimer); root.classList.add('idle'); }
 
 // ---------- content ----------
-const wordHtml = x => `<span class="${x.w ? 'w' : 'w mk'}"${x.w ? ` data-w="${x.w}"` : ''}>${esc(x.t)}</span>`;
+const wordHtml = x => `<span class="${x.w ? 'w' : 'w mk'}${memo ? ' hid' : ''}"${x.w ? ` data-w="${x.w}"` : ''}>${x.w ? '' : '\u00A0'}${esc(x.t)}</span>`; // STG-29: a pause mark carries a no-break space, so it never leaves its word
+
 /** Show a verse, a bayt or a label. The same `id` again changes nothing. */
 export function show(v) {
   if (!root || (view && view.id === v.id)) return;
-  view = v; phrase = -1; page = -1;
+  view = v; phrase = -1; hold = 0;
+  const mb = $('[data-st=memo]'); mb.hidden = v.kind !== 'q'; mb.setAttribute('aria-pressed', String(memo));
   root.dataset.kind = v.kind;
   $('#stCtx').textContent = v.ctx || ''; $('#stNum').textContent = v.num || '';
   const tx = $('#stText');
-  if (v.kind === 'q') tx.innerHTML = v.words.map(wordHtml).join(' ') + (v.vnum ? `\u00A0<span class="w vnum" data-w="${v.words.reduce((m, x) => Math.max(m, x.w || 0), 0)}v">${esc(v.vnum)}</span>` : '');
+  if (v.kind === 'q') tx.innerHTML = v.words.map((x, i) => (i && x.w ? ' ' : '') + wordHtml(x)).join('') + (v.vnum ? `\u00A0<span class="w vnum" data-w="${v.words.reduce((m, x) => Math.max(m, x.w || 0), 0)}v">${esc(v.vnum)}</span>` : '');
   else if (v.kind === 't') tx.innerHTML = `<span class="bayt both"><span class="h">${esc(v.hems[0])}</span><span class="h">${esc(v.hems[1])}${v.note ? `<span class="review">${esc(v.note)}</span>` : ''}</span></span>`;
   else tx.innerHTML = `<span class="st-label">${esc(v.label || '')}</span>`;
   relayout();
@@ -118,50 +139,41 @@ function shrink(min) {
 }
 function relayout() {
   if (!root || !view) return;
-  const tx = $('#stText'); const kind = view.kind; const min = MIN[kind];
-  tx.classList.remove('wrap');
-  const ws = kind === 'q' ? [...tx.querySelectorAll('.w')] : [];
-  ws.forEach(w => { w.hidden = false; });
-  pages = [];
+  const tx = $('#stText'); const body = $('#stBody'); const kind = view.kind; const min = MIN[kind];
+  tx.classList.remove('wrap'); body.classList.remove('scroll'); body.scrollTop = 0;
   if (shrink(min)) { /* the whole text fits on one screen */ }
   else if (kind === 't') { tx.classList.add('wrap'); if (!shrink(min)) shrink(0.8); } // let a hemistich wrap before going smaller
-  else if (kind === 'q') pages = paginate(ws, min);
-  else shrink(0.8);
-  const keep = phrase; page = -1; phrase = -1; mark(Math.max(0, keep));
-}
-/** A verse too long for one screen at the smallest size: screens that break between phrases where possible (STG-05). */
-function paginate(ws, min) {
-  setSize(min);
-  const count = view.words.reduce((m, x) => Math.max(m, x.w || 0), 0);
-  const num = w => parseInt(w.dataset.w || '0', 10) || 0; // a mark belongs to the word before it
-  let last = 0; const of = ws.map(w => { const k = num(w); if (k) last = k; return k || last || 1; });
-  const showRange = (a, b) => ws.forEach((w, i) => { w.hidden = of[i] < a || of[i] > b; });
-  const ok = (a, b) => { showRange(a, b); return fits(); };
-  const out = []; let a = 1;
-  const ends = (view.spans?.length ? view.spans.map(s => s[1]) : [count]);
-  while (a <= count) {
-    let b = 0;
-    for (const e of ends) { if (e < a) continue; if (ok(a, e)) b = e; else break; }
-    if (!b) { let lo = a, hi = (ends.find(e => e >= a) || count); while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (ok(a, mid)) lo = mid; else hi = mid - 1; } b = lo; } // one long phrase: break between words
-    out.push([a, b]); a = b + 1;
+  else if (kind === 'q') { // STG-27: shown whole at a comfortable size; it scrolls and follows the recitation
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    setSize(Math.max(min, Math.min(3.1, Math.sqrt(body.clientWidth * body.clientHeight) / 12 / rem)));
+    body.classList.add('scroll');
   }
-  if (out.length < 2) { ws.forEach(w => { w.hidden = false; }); let f = min; while (f > 0.7 && !fits()) { f *= STEP; setSize(f); } return []; }
-  return out;
+  else shrink(0.8);
+  const keep = phrase; phrase = -1; mark(Math.max(0, keep));
 }
-/** Softly mark the phrase being recited, and turn to its screen. */
+/** Keep the phrase being recited in the middle of a scrolling verse, unless the reader has just scrolled it. */
+function follow() {
+  const body = $('#stBody'); if (!body.classList.contains('scroll') || Date.now() < hold) return;
+  const on = body.querySelectorAll('.w.on'); const first = on[0] || (phrase <= 0 ? body.querySelector('.w') : null); if (!first) return;
+  const br = body.getBoundingClientRect(), H = body.clientHeight;
+  const a = first.getBoundingClientRect().top - br.top + body.scrollTop, b = (on[on.length - 1] || first).getBoundingClientRect().bottom - br.top + body.scrollTop;
+  const top = Math.max(0, Math.min(body.scrollHeight - H, b - a > H * 0.8 ? a - H * 0.12 : (a + b) / 2 - H / 2));
+  if (Math.abs(top - body.scrollTop) > 4) body.scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+}
+/** Softly mark the phrase being recited and bring it into view; with «تسميع» on, what has not been recited yet stays blurred (STG-28). */
 function mark(k) {
   if (!root || !view) return;
-  if (view.kind !== 'q') { $('#stPage').textContent = ''; return; }
+  if (view.kind !== 'q') return;
   const span = view.spans?.[k] || view.spans?.[0]; if (!span) return;
   if (k === phrase) return; phrase = k;
   const tx = $('#stText'); const ws = [...tx.querySelectorAll('.w')];
   let last = 0;
-  ws.forEach(w => { const n = parseInt(w.dataset.w || '0', 10) || 0; if (n) last = n; const at = n || last; w.classList.toggle('on', !!view.spans && view.spans.length > 1 && at >= span[0] && at <= span[1] && !w.classList.contains('vnum')); });
-  if (pages.length) {
-    const p = Math.max(0, pages.findIndex(([a, b]) => span[0] >= a && span[0] <= b));
-    if (p !== page) { page = p; let l2 = 0; ws.forEach(w => { const n = parseInt(w.dataset.w || '0', 10) || 0; if (n) l2 = n; const at = n || l2 || 1; w.hidden = at < pages[p][0] || at > pages[p][1]; }); }
-    $('#stPage').textContent = T.pageOf(n(p + 1), n(pages.length));
-  } else $('#stPage').textContent = '';
+  ws.forEach(w => {
+    const n = parseInt(w.dataset.w || '0', 10) || 0; if (n) last = n; const at = n || last; const vn = w.classList.contains('vnum');
+    w.classList.toggle('on', !!view.spans && view.spans.length > 1 && at >= span[0] && at <= span[1] && !vn);
+    w.classList.toggle('hid', memo && !vn && at >= span[0]);
+  });
+  follow();
 }
 
 /** Playback state from the owning page, a few times a second. frac = progress 0…1; phrase = index into spans. */

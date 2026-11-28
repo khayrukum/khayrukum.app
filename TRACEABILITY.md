@@ -214,6 +214,8 @@ Counted per requirement ID (ranges expanded); TST rows are listed separately at 
 | AUD-37 | `extras` on part items: `tools/audio/recitation.mjs`, schema, validator, `range-logic.js` | unit TST-72 | done |
 | RNG-15…19 | `core/range-logic.js` (`coveredWholeSuras`, `selection`, `buildRange`, `extraUnits`), `pages/range.js` | unit + e2e TST-72 | done |
 | STG-23/24 | `core/stage.js` (MAX), `app.css` (floating controls) | e2e TST-71 (STG-05 on a smaller screen) | done |
+| STG-25…29 | `core/stage.js` (`onClick`, `onUp`, `relayout`, `follow`, `mark`, «تسميع» through `store.js`), `app.css` (`.st-body.scroll`, `.w.hid`, `.st-memo`) | e2e TST-73 | done (v2.4; STG-05 paging removed) |
+| RNG-20 | `pages/range.js` (`toPlayer`) | e2e TST-73 | done |
 | RNG-01…14 | `pages/range.js`, `core/range-logic.js`, `core/seekbar.js`, `site/range/` | unit/range (TST-70), e2e range (TST-71) | done; audio not published (LIC-23, OWNER-9) |
 | STG-01…22, LIS-13 | `core/stage.js`, `pages/range.js`, `pages/listen.js` | e2e range (TST-71) | done; iPhone fallback and wake lock need real devices |
 | LIC-23 | `.gitignore`, `permission.json`, `build.mjs --strict` | release-check | owner (OWNER-9) |
