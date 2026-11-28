@@ -38,6 +38,19 @@ items to *Done* with the commit hash.
    load is retried up to five times from the last position, and only a refused play (NotAllowedError) stops the
    player. Port to `core/audio.js` when the recitation is published (OWNER-9).
 
+9. **Position right after a file change** (2026-11-28, comprehensive review on the Claude pages): Safari can keep
+   reporting the old position for a moment after the source changes; the page took it for the new file, so a
+   shorter next file ended at once (Tuhfa chapters 3, 5, 8, 10 skipped when playing all chapters, the reading view
+   flashed a wrong bayt / verse). Now the position counts as the start of the segment until the new file's
+   metadata is loaded; one pending seek instead of stacked listeners; the speed is re-applied after each file
+   change (`defaultPlaybackRate`). Check `core/audio.js` and `pages/range.js` for the same and add an e2e test that
+   emulates the stale position.
+10. **Car / lock-screen ⏭ ⏮** (2026-11-28): Media Session `nexttrack` / `previoustrack` move to the next / previous
+    verse or bayt. Port with the reading-view jump logic.
+11. **Recitation files** (2026-11-28): equal loudness for every part (−18 LUFS) and «صدق الله العظيم» cut from the
+    end of each part except the last (the closing supplication follows it). Re-encode when OWNER-9 is decided;
+    part ends in `minshawi-timings.json` then move to the new file ends.
+
 ## Done
 
 | Date | Item | Commit |
