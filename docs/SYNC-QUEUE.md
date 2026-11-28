@@ -29,6 +29,15 @@ items to *Done* with the commit hash.
    audio-only MP4 files could not pass claude.ai's review for public sharing and the public link stopped opening.
    Nothing to port (the site publishes no audio yet); remember it when OWNER-9 is decided.
 
+6. **Next / previous during a pending jump** (2026-11-28, fixed on the Claude pages; reported on Android with a
+   slow connection): a second press before the audio reached the target counted from the old verse, so «التالي»
+   looked stuck and «السابق» went one verse too far. Check `pages/range.js` for the same and fix it.
+7. **End of part 07** (2026-11-28): the end of the recitation in `m07` is 1682.7 s, not 1687.38 — the old value
+   let «صدق الله العظيم» play after آل عمران 78. Fix `data/source/recitation/minshawi-timings.json` and re-import.
+8. **Slow connections** (2026-11-28, on the Claude pages): the next part file is fetched about 45 s ahead, a failed
+   load is retried up to five times from the last position, and only a refused play (NotAllowedError) stops the
+   player. Port to `core/audio.js` when the recitation is published (OWNER-9).
+
 ## Done
 
 | Date | Item | Commit |
