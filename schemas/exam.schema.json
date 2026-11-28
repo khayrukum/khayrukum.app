@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "exam",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "id",
+    "rounds",
+    "questions",
+    "retired"
+  ],
+  "properties": {
+    "schema": {
+      "const": "exam"
+    },
+    "version": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "ported": {
+      "type": "object"
+    },
+    "summary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "outline",
+              "pageStarts",
+              "lookalikes",
+              "codes",
+              "chapters"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array"
+          },
+          "pages": {
+            "type": "array"
+          },
+          "playable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "rounds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "roundText": {
+      "type": "object"
+    },
+    "plainQuotes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/question"
+      }
+    },
+    "retired": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "item": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^(\\d+:\\d+(-\\d+|:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?|t:\\d+(:[12](:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?)?)$"
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(\\d+:\\d+(-\\d+|:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?|t:\\d+(:[12](:(\\d+-\\d+|-\\d+|\\d+-|\\d+))?)?)$"
+          },
+          "minItems": 2
+        },
+        "join": {
+          "enum": [
+            "dots"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "dots": {
+          "enum": [
+            "before",
+            "after",
+            "both"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "showRef": {
+          "type": "boolean"
+        },
+        "outOfRange": {
+          "enum": [
+            "bridge",
+            "lookalike",
+            "context"
+          ]
+        },
+        "chain": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/item"
+          }
+        },
+        "sep": {
+          "type": "string"
+        },
+        "chainFrom": {
+          "type": "string"
+        },
+        "chainTo": {
+          "type": "string"
+        },
+        "words": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "override": {
+          "type": "object"
+        },
+        "page": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "prompt",
+        "answer"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+/[a-z-]+/\\d{2,}$"
+        },
+        "type": {
+          "type": "string"
+        },
+        "ask": {
+          "type": "string"
+        },
+        "page": {
+          "type": "object",
+          "required": [
+            "from",
+            "to",
+            "dir"
+          ],
+          "properties": {
+            "from": {
+              "type": "integer"
+            },
+            "to": {
+              "type": "integer"
+            },
+            "dir": {
+              "enum": [
+                "forward",
+                "back"
+              ]
+            }
+          }
+        },
+        "prompt": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/item"
+          }
+        },
+        "answer": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/item"
+          },
+          "minItems": 1
+        },
+        "tip": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

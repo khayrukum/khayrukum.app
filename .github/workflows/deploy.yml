@@ -1,0 +1,42 @@
+# Deploys dist/ to GitHub Pages (DEP-01). Runs only after every check passes.
+# Audio stays OFF (AUD-40/41) until permission.json records a grant and the files are provided to CI
+# from private storage (see README «Releasing»).
+name: deploy
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: { group: pages, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: node tools/validate-data.mjs
+      - run: node tools/port/align.mjs --check
+      - run: node tools/content-lint.mjs
+      - run: node --test tests/unit/*.test.mjs
+      - run: node tools/check-audio.mjs
+      - name: Release gate (TST-60)
+        run: node tools/release-check.mjs
+        env:
+          OWNER_ACCEPTS_REVIEW: ${{ vars.OWNER_ACCEPTS_REVIEW }}
+      - run: SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) node tools/build.mjs --strict --version "${GITHUB_REF_NAME#v}"
+      - run: node --test --test-concurrency=1 tests/e2e/*.test.mjs
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: { name: github-pages, url: '${{ steps.d.outputs.page_url }}' }
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4

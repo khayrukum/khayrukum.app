@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "quran-sura",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "sura",
+    "basmala",
+    "ayat",
+    "notice"
+  ],
+  "properties": {
+    "schema": {
+      "const": "quran-sura"
+    },
+    "version": {
+      "type": "string"
+    },
+    "sura": {
+      "type": "integer"
+    },
+    "basmala": {
+      "type": "string"
+    },
+    "basmalaPrefixed": {
+      "type": "boolean"
+    },
+    "ayat": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notice": {
+      "type": "string",
+      "minLength": 10
+    }
+  }
+}

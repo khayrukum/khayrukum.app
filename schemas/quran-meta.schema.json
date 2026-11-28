@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "quran-meta",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "mushaf",
+    "suras",
+    "pages",
+    "rubs"
+  ],
+  "properties": {
+    "schema": {
+      "const": "quran-meta"
+    },
+    "version": {
+      "type": "string"
+    },
+    "provisional": {
+      "type": "boolean"
+    },
+    "mushaf": {
+      "type": "string"
+    },
+    "suras": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "n",
+          "ayas"
+        ]
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "rubs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "n",
+          "sura",
+          "aya"
+        ]
+      }
+    }
+  }
+}

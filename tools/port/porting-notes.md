@@ -1,0 +1,42 @@
+## Changes that apply to every ported question
+
+- **Text source.** The baseline showed hand-typed, unvocalized Quran text. Every Quran phrase is now a reference
+  (`2:a:w1-w2`) rendered from the unmodified Tanzil Uthmani text (LIC-02); every Tuhfa phrase is a reference into
+  `abyat.json`. The word spans were found on Tanzil Simple-Clean and mapped to Uthmani tokens (DATA-25); see
+  `alignment-table.tsv` (508 matches, 6 overrides, 0 mismatches).
+- **Full verses** (`[n, AY[n]]` in the baseline) became `{"ref":"2:n"}`; full abyat became `{"ref":"t:n"}`.
+- **Parenthetical notes** in baseline answers («ولهم عذاب عظيم (الكافرين)», «قالوا ادع (ما هي)») became the item `note`.
+- **Gapped answers** («إنكم ظلمتم أنفسكم … فاقتلوا أنفسكم») became `refs` with `join:"dots"`.
+- **Cues written with a slash** («إنه/إنك», «فتاب عليه / فتاب عليكم», «شفاعة / عدل», «الكتاب / الصلاة»…) were split
+  into one reference per part, separated by «/».
+- **Quoted phrases** «…» of two or more words in asks, tips, notes and summaries became inline tokens (DATA-02).
+  Single words were tokenized only when exactly one hinted verse/bayt contains them; otherwise they stay plain text.
+- **Chains** became explicit ordered lists (§4.2). Entries with a verse number («نجيناكم (٤٩)») use `showRef`.
+- **Summaries** («قبل أن تبدأ») were transcribed into `tools/port/drafts/*.summary.json` and ported the same way.
+  Look-alike labels are now built from the refs («٩ / ١٢ / ١٣» instead of «٩، ١٢ / ١٣»).
+- **فصحى.** The exam pages were already in فصحى. `random-data.json` (colloquial round names such as «كمّل بعد الآية»,
+  «البيت ده عن إيه؟») is not ported: the random exam now reads the exam files directly (RND-11), so its wording is the
+  exam wording («أكمل بعد الآية», «عمّ يتحدث هذا البيت؟»).
+- **Round names** now come from `data/round-types.json` (DATA-23); the baseline round ids map as
+  sum→summary, pages→pages, next→next, topics→topic-end, words→repeated-word, twins→lookalikes, mid→mid-verse,
+  chain→chain, rand→random-number; Tuhfa abwab→chapters, half→complete-hemistich, next→next-bayt, which→bayt-topic,
+  codes→codes, quran→quran-to-tuhfa.
+
+## Human overrides (`align-overrides.json`)
+
+| Question | Baseline phrase | Ref | Reason |
+|---|---|---|---|
+| `baqarah-1/summary/1.1` | «أولئك هم المفلحون» | `2:5:-3` | The quote dropped the conjunction; the verse ends «وأولئك هم المفلحون». |
+| `baqarah-2/lookalikes/02` | «شئتما رغدا» (from «حيث شئتم/شئتما رغدا») | `2:35:9-11` | The cue merges two verses; with Adam the order is «رغدا حيث شئتما». |
+| `tuhfa/quran-to-tuhfa/02` | «ومن يقول» | `2:8:3-4` | Not contiguous in 2:8; the example of the rule is «من يقول». |
+| `tuhfa/codes/03`, summary codes | «ينمو» | `t:10:2:3` | The code word is joined to «ب» in the bayt: «بِيَنْمُو». |
+| `tuhfa/codes/04` | «اللام والراء» | `t:12:2:2-3` | The bayt spells «وَالرَّا»; the answer now quotes the bayt. |
+
+## Wording changes
+
+- `baqarah-1/pages/08`: the ask is generated from the `page` template (DATA-21):
+  «بالعكس: هذه أول صفحة ٧، فما الآية التي قبلها؟» → «بالعكس: هذه أول صفحة ٧، فما آخر صفحة ٦؟». Same answer (2:37).
+- `baqarah-2/pages/01` keeps its explicit ask («ربطًا بالاختبار السابق…») because it bridges two rub', not two pages.
+- `tuhfa/quran-to-tuhfa/10`: the answer «الكتاب: قمرية (ابغ حجك وخف عقيمه)» is `{"text":"الكتاب","note":"قمرية · «[[t:25:2:2-5]]»"}` as in §4.2.
+
+No question was split or merged. Counts: baqarah-1 59, baqarah-2 61, tuhfa 86 (DATA-24).

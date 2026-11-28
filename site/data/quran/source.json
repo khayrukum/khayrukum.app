@@ -1,0 +1,27 @@
+{
+  "schema": "quran-source",
+  "version": "1.1",
+  "source": "Tanzil Quran Text",
+  "edition": "Uthmani",
+  "url": "https://tanzil.net",
+  "retrieved": "2026-11-07",
+  "file": "data/source/quran-uthmani.txt",
+  "sha256": "7f30c647331a61100ebf24a80507dc0fcdd9f2df97f1312b5b2dfcb982a7f326",
+  "simpleClean": {
+    "file": "data/source/quran-simple-clean.txt",
+    "sha256": "1862ee63c70fbfc6285e0bb0b9587b89beb5b7891109a4d543d9d2cf8283e8c8",
+    "shipped": false
+  },
+  "metadata": {
+    "file": "data/source/quran-data.js",
+    "sha256": "9e9930c592aaa34b5c7a79ff4e99ffdc782263a266090bfe2c49e4ed4bac4ca4"
+  },
+  "options": {
+    "pauseMarks": true,
+    "sajdah": true,
+    "rubElHizb": true,
+    "superscriptAlefTatweel": true,
+    "basmala": "separate"
+  },
+  "notice": "PLEASE DO NOT REMOVE OR CHANGE THIS COPYRIGHT BLOCK\n====================================================================\n\n Tanzil Quran Text (Uthmani, Version 1.1)\n Copyright (C) 2007-2026 Tanzil Project\n License: Creative Commons Attribution 3.0\n\n This copy of the Quran text is carefully produced, highly \n verified and continuously monitored by a group of specialists \n at Tanzil Project.\n\n TERMS OF USE:\n\n - Permission is granted to copy and distribute verbatim copies \n   of this text, but CHANGING IT IS NOT ALLOWED.\n\n - This Quran text can be used in any website or application, \n   provided that its source (Tanzil Project) is clearly indicated, \n   and a link is made to tanzil.net to enable users to keep\n   track of changes.\n\n - This copyright notice shall be included in all verbatim copies \n   of the text, and shall be reproduced appropriately in all files \n   derived from or containing substantial portion of this text.\n\n Please check updates at: http://tanzil.net/updates/\n\n===================================================================="
+}

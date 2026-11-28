@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "tuhfa-abyat",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "title",
+    "author",
+    "source",
+    "chapters",
+    "abyat",
+    "review"
+  ],
+  "properties": {
+    "schema": {
+      "const": "tuhfa-abyat"
+    },
+    "version": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "file",
+        "verifiedAgainst"
+      ]
+    },
+    "chapters": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "n",
+          "name",
+          "short",
+          "from",
+          "to"
+        ]
+      }
+    },
+    "abyat": {
+      "type": "object",
+      "patternProperties": {
+        "^\\d+$": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "review": {
+      "type": "object",
+      "patternProperties": {
+        "^\\d+$": {
+          "anyOf": [
+            {
+              "enum": [
+                "pending",
+                "verified"
+              ]
+            },
+            {
+              "type": "object"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

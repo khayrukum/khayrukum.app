@@ -1,0 +1,555 @@
+{
+  "schema": "exam",
+  "version": "1.0.0",
+  "id": "baqarah-1",
+  "ported": {"from":"exam-1.html","tool":"tools/port/align.mjs","status":"complete"},
+  "summary": [
+    {
+      "kind": "outline",
+      "title": "الربع الأول (١–٢٥): أصناف الناس",
+      "items": [
+        {
+          "range": "2:1-5",
+          "text": "المؤمنون: الإيمان بالغيب، والصلاة، والإنفاق، واليقين بالآخرة. وختامها «[[q:2:5:-3]]»"
+        },
+        {"range":"2:6-7","text":"الكافرون: الختم على القلوب. وختامها «[[q:2:7:-3]]»"},
+        {"range":"2:8-16","text":"المنافقون: الخداع، والفساد، والاستهزاء، وفيها «[[q:2:10:7-9]]»"},
+        {"range":"2:17-20","text":"مثلان للمنافقين: الناري «[[q:2:17:4-5]]» والمائي «[[q:2:19:1-2]]»"},
+        {"range":"2:21-24","text":"أول نداء في المصحف «[[q:2:21:1-4]]»، والتحدي «[[q:2:23:9-12]]»"},
+        {"range":"2:25","text":"بشارة المؤمنين بالجنة"}
+      ]
+    },
+    {
+      "kind": "outline",
+      "title": "الربع الثاني (٢٦–٤٣)",
+      "items": [
+        {"range":"2:26-27","text":"ضرب المثل «[[q:2:26:9-11]]»، وصفات الفاسقين"},
+        {"range":"2:28-29","text":"«[[q:2:28:1-3]]»، وخلق الأرض والسماء"},
+        {
+          "range": "2:30-39",
+          "text": "قصة آدم: الخلافة، تعليم الأسماء، سجود الملائكة، الجنة والشجرة، الهبوط والتوبة"
+        },
+        {"range":"2:40-43","text":"أول نداء لبني إسرائيل"}
+      ]
+    },
+    {
+      "kind": "pageStarts",
+      "items": [
+        {"page":3,"ref":"2:6:1-3"},
+        {"page":4,"ref":"2:17:1-2"},
+        {"page":5,"ref":"2:25:1-3"},
+        {"page":6,"ref":"2:30:1-3"},
+        {"page":7,"ref":"2:38:1-2"}
+      ]
+    },
+    {
+      "kind": "lookalikes",
+      "items": [
+        {"refs":["2:9","2:12","2:13"],"text":"«يشعرون» مرتين، وبعدهما «[[q:2:13:-1]]»"},
+        {"refs":["2:36","2:38"],"text":"«[[q:2:36:8-9]]» بالواو، وبعدها «[[q:2:38:1-2]]» من غير واو"},
+        {"refs":["2:25","2:39"],"text":"الجنة «[[q:2:25:-3]]»، والنار «[[q:2:39:-3]]»"},
+        {"refs":["2:40","2:41"],"text":"«[[q:2:40:-2]]»، وبعدها «[[q:2:41:-2]]»"},
+        {"refs":["2:23","2:31"],"text":"«[[q:2:23:-3]]» في الموضعين"},
+        {"refs":["2:30","2:34"],"text":"«[[q:2:30:1-4]]»، وبعدها «[[q:2:34:1-3]]»"}
+      ]
+    }
+  ],
+  "rounds": ["summary","pages","next","topic-end","repeated-word","lookalikes","mid-verse","chain","random-number", "which-number", "first-letters", "progressive-hide", "order-verses", "page-map"],
+  "roundText": {},
+  "plainQuotes": [],
+  "questions": [
+    {
+      "id": "baqarah-1/pages/01",
+      "type": "pages",
+      "page": {"from":2,"to":3,"dir":"forward"},
+      "prompt": [{"ref":"2:5:-3","dots":"before"}],
+      "answer": [{"ref":"2:6"}]
+    },
+    {
+      "id": "baqarah-1/pages/02",
+      "type": "pages",
+      "page": {"from":3,"to":4,"dir":"forward"},
+      "prompt": [{"ref":"2:16:-6","dots":"before"}],
+      "answer": [{"ref":"2:17"}]
+    },
+    {
+      "id": "baqarah-1/pages/03",
+      "type": "pages",
+      "page": {"from":4,"to":5,"dir":"forward"},
+      "prompt": [{"ref":"2:24:-6","dots":"before"}],
+      "answer": [{"ref":"2:25"}]
+    },
+    {
+      "id": "baqarah-1/pages/04",
+      "type": "pages",
+      "page": {"from":5,"to":6,"dir":"forward"},
+      "prompt": [{"ref":"2:29:-11","dots":"before"}],
+      "answer": [{"ref":"2:30"}]
+    },
+    {
+      "id": "baqarah-1/pages/05",
+      "type": "pages",
+      "page": {"from":6,"to":7,"dir":"forward"},
+      "prompt": [{"ref":"2:37","dots":"before"}],
+      "answer": [{"ref":"2:38"}]
+    },
+    {
+      "id": "baqarah-1/pages/06",
+      "type": "pages",
+      "page": {"from":4,"to":3,"dir":"back"},
+      "prompt": [{"ref":"2:17:1-5","dots":"after"}],
+      "answer": [{"ref":"2:16"}]
+    },
+    {
+      "id": "baqarah-1/pages/07",
+      "type": "pages",
+      "page": {"from":6,"to":5,"dir":"back"},
+      "prompt": [{"ref":"2:30:1-4","dots":"after"}],
+      "answer": [{"ref":"2:29"}]
+    },
+    {
+      "id": "baqarah-1/pages/08",
+      "type": "pages",
+      "page": {"from":7,"to":6,"dir":"back"},
+      "prompt": [{"ref":"2:38:1-4","dots":"after"}],
+      "answer": [{"ref":"2:37"}]
+    },
+    {
+      "id": "baqarah-1/next/01",
+      "type": "next",
+      "prompt": [{"ref":"2:3:-3","dots":"before"}],
+      "answer": [{"ref":"2:4"}]
+    },
+    {
+      "id": "baqarah-1/next/02",
+      "type": "next",
+      "prompt": [{"ref":"2:8:-5","dots":"before"}],
+      "answer": [{"ref":"2:9"}]
+    },
+    {
+      "id": "baqarah-1/next/03",
+      "type": "next",
+      "prompt": [{"ref":"2:10:-6","dots":"before"}],
+      "answer": [{"ref":"2:11"}]
+    },
+    {
+      "id": "baqarah-1/next/04",
+      "type": "next",
+      "prompt": [{"ref":"2:15:-4","dots":"before"}],
+      "answer": [{"ref":"2:16"}]
+    },
+    {
+      "id": "baqarah-1/next/05",
+      "type": "next",
+      "prompt": [{"ref":"2:18","dots":"before"}],
+      "answer": [{"ref":"2:19"}],
+      "tip": "في السورة نفسها (آية ١٧١): «[[q:2:171:-6]]»، وهنا «[[q:2:18:-2]]»."
+    },
+    {
+      "id": "baqarah-1/next/06",
+      "type": "next",
+      "prompt": [{"ref":"2:21:-5","dots":"before"}],
+      "answer": [{"ref":"2:22"}]
+    },
+    {
+      "id": "baqarah-1/next/07",
+      "type": "next",
+      "prompt": [{"ref":"2:26:-11","dots":"before"}],
+      "answer": [{"ref":"2:27"}]
+    },
+    {
+      "id": "baqarah-1/next/08",
+      "type": "next",
+      "prompt": [{"ref":"2:28:-7","dots":"before"}],
+      "answer": [{"ref":"2:29"}]
+    },
+    {
+      "id": "baqarah-1/next/09",
+      "type": "next",
+      "prompt": [{"ref":"2:34:-5","dots":"before"}],
+      "answer": [{"ref":"2:35"}]
+    },
+    {
+      "id": "baqarah-1/next/10",
+      "type": "next",
+      "prompt": [{"ref":"2:35:-7","dots":"before"}],
+      "answer": [{"ref":"2:36"}]
+    },
+    {
+      "id": "baqarah-1/next/11",
+      "type": "next",
+      "prompt": [{"ref":"2:38:-6","dots":"before"}],
+      "answer": [{"ref":"2:39"}]
+    },
+    {
+      "id": "baqarah-1/next/12",
+      "type": "next",
+      "prompt": [{"ref":"2:40:-6","dots":"before"}],
+      "answer": [{"ref":"2:41"}]
+    },
+    {
+      "id": "baqarah-1/next/13",
+      "type": "next",
+      "prompt": [{"ref":"2:41:-7","dots":"before"}],
+      "answer": [{"ref":"2:42"}]
+    },
+    {
+      "id": "baqarah-1/topic-end/01",
+      "type": "topic-end",
+      "ask": "من صفات المؤمنين إلى …؟",
+      "prompt": [{"ref":"2:5:-3","dots":"before"}],
+      "answer": [{"ref":"2:6"}],
+      "tip": "الموضوع الجديد: الكافرون، في آيتين (٦–٧)"
+    },
+    {
+      "id": "baqarah-1/topic-end/02",
+      "type": "topic-end",
+      "ask": "من الكافرين إلى …؟",
+      "prompt": [{"ref":"2:7:-6","dots":"before"}],
+      "answer": [{"ref":"2:8"}],
+      "tip": "الموضوع الجديد: المنافقون، من ٨ إلى ٢٠"
+    },
+    {
+      "id": "baqarah-1/topic-end/03",
+      "type": "topic-end",
+      "ask": "من صفات المنافقين إلى …؟",
+      "prompt": [{"ref":"2:16:-6","dots":"before"}],
+      "answer": [{"ref":"2:17"}],
+      "tip": "الموضوع الجديد: مثلان للمنافقين، المثل الناري (١٧–١٨) والمثل المائي (١٩–٢٠)"
+    },
+    {
+      "id": "baqarah-1/topic-end/04",
+      "type": "topic-end",
+      "ask": "من مثل المنافقين إلى …؟",
+      "prompt": [{"ref":"2:20:-12","dots":"before"}],
+      "answer": [{"ref":"2:21"}],
+      "tip": "الموضوع الجديد: دعوة الناس إلى عبادة الله، وهو أول نداء في ترتيب المصحف"
+    },
+    {
+      "id": "baqarah-1/topic-end/05",
+      "type": "topic-end",
+      "ask": "من وصف الجنة إلى …؟",
+      "prompt": [{"ref":"2:25:-7","dots":"before"}],
+      "answer": [{"ref":"2:26"}],
+      "tip": "الموضوع الجديد: ضرب المثل، وهو بداية الربع الثاني"
+    },
+    {
+      "id": "baqarah-1/topic-end/06",
+      "type": "topic-end",
+      "ask": "من خلق الأرض والسماء إلى …؟",
+      "prompt": [{"ref":"2:29:-7","dots":"before"}],
+      "answer": [{"ref":"2:30"}],
+      "tip": "الموضوع الجديد: قصة آدم"
+    },
+    {
+      "id": "baqarah-1/topic-end/07",
+      "type": "topic-end",
+      "ask": "من قصة آدم إلى …؟",
+      "prompt": [{"ref":"2:39:-6","dots":"before"}],
+      "answer": [{"ref":"2:40"}],
+      "tip": "الموضوع الجديد: نداء بني إسرائيل"
+    },
+    {
+      "id": "baqarah-1/repeated-word/01",
+      "type": "repeated-word",
+      "ask": "أكمل في جميع المواضع",
+      "prompt": [{"ref":"2:5:1-1","dots":"after"}],
+      "answer": [
+        {"ref":"2:5"},
+        {"ref":"2:16:1-5"},
+        {"ref":"2:27:-6","dots":"before"},
+        {"ref":"2:39:3-7","dots":"before"}
+      ],
+      "tip": "وردت في الآية ٥ مرتين."
+    },
+    {
+      "id": "baqarah-1/repeated-word/02",
+      "type": "repeated-word",
+      "ask": "أكمل في جميع المواضع",
+      "prompt": [{"ref":"2:11:6-7","dots":"after"}],
+      "answer": [{"ref":"2:11:-8"},{"ref":"2:27:-6"},{"ref":"2:29:3-8"},{"ref":"2:30:5-9"},{"ref":"2:36:-7"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/03",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:20:5-5","dots":"after"}],
+      "answer": [{"ref":"2:20:5-9"},{"ref":"2:25:13-18"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/04",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:17:15-15","dots":"after"}],
+      "answer": [{"ref":"2:17:-5"},{"ref":"2:19:5-8"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/05",
+      "type": "repeated-word",
+      "ask": "وردت الكلمة ٣ مرات، فأكمل في كل مرة",
+      "prompt": [{"ref":"2:34:-1"}],
+      "answer": [{"ref":"2:19:-3"},{"ref":"2:24:-2"},{"ref":"2:34:-5"}],
+      "tip": "وبعد كل موضع: ما الآية التالية؟"
+    },
+    {
+      "id": "baqarah-1/repeated-word/06",
+      "type": "repeated-word",
+      "ask": "أكمل في الموضعين",
+      "prompt": [{"ref":"2:23:-3"}],
+      "answer": [{"ref":"2:23:-8"},{"ref":"2:31:-7"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/07",
+      "type": "repeated-word",
+      "ask": "أكمل في جميع المواضع",
+      "prompt": [{"ref":"2:22:-1","dots":"before"}],
+      "answer": [{"ref":"2:22:-6"},{"ref":"2:30:-6"},{"ref":"2:42:-4"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/08",
+      "type": "repeated-word",
+      "ask": "أكمل في جميع المواضع",
+      "prompt": [{"ref":"2:7:8-8"}],
+      "answer": [{"ref":"2:7:7-9"},{"ref":"2:20:1-4"},{"ref":"2:20:17-19"}]
+    },
+    {
+      "id": "baqarah-1/repeated-word/09",
+      "type": "repeated-word",
+      "ask": "النداءات: أكمل بعد كل نداء",
+      "prompt": [{"ref":"2:21:1-1","dots":"after"}],
+      "answer": [{"ref":"2:21:1-4"},{"ref":"2:33:1-4"},{"ref":"2:35:1-6"},{"ref":"2:40:1-4"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/01",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:36:9-9","dots":"after","note":"مرتين"}],
+      "answer": [{"ref":"2:36:-12"},{"ref":"2:38:1-8"}],
+      "tip": "الأولى «[[q:2:36:8-8]]» بالواو، والثانية «[[q:2:38:1-1]]» بلا واو."
+    },
+    {
+      "id": "baqarah-1/lookalikes/02",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:25:-2","dots":"before","note":"مرتين"}],
+      "answer": [{"ref":"2:25:-7"},{"ref":"2:39:-6"}],
+      "tip": "الجنة «[[q:2:25:32-32]]»، والنار «[[q:2:39:8-8]]»."
+    },
+    {
+      "id": "baqarah-1/lookalikes/03",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:7:10-11","dots":"after"}],
+      "answer": [{"ref":"2:7:-3","note":"الكافرين"},{"ref":"2:10:-6","note":"المنافقين"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/04",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:12:5-6","dots":"after"}],
+      "answer": [{"ref":"2:12"},{"ref":"2:13:-7"}],
+      "tip": "الفساد يُدرَك بالحس فناسبه «[[q:2:12:-1]]»، والسفه يُدرَك بالعلم فناسبه «[[q:2:13:-1]]»."
+    },
+    {
+      "id": "baqarah-1/lookalikes/05",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:11:1-3","dots":"after"}],
+      "answer": [{"ref":"2:11"},{"ref":"2:13:1-12"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/06",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:40:12-12","dots":"after"}],
+      "answer": [{"ref":"2:40:-2"},{"ref":"2:41:-2"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/07",
+      "type": "lookalikes",
+      "prompt": [{"refs":["2:30:1-1","2:30:4-4"],"join":"dots"}],
+      "answer": [{"ref":"2:30:1-9"},{"ref":"2:34:1-5"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/08",
+      "type": "lookalikes",
+      "prompt": [
+        {"ref":"2:37:8-8"},
+        {"text":"/"},
+        {"ref":"2:32:9-9","dots":"after","note":"الأسماء الحسنى في الختام"}
+      ],
+      "answer": [{"ref":"2:32:-4"},{"ref":"2:37:-4"}]
+    },
+    {
+      "id": "baqarah-1/lookalikes/09",
+      "type": "lookalikes",
+      "prompt": [{"ref":"2:8:5-5","note":"قول المنافقين مرتين"}],
+      "answer": [{"ref":"2:8:1-8"},{"ref":"2:14:1-6"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/01",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:23:9-12","dots":"both"}],
+      "answer": [{"ref":"2:23"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/02",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:19:9-12","dots":"both"}],
+      "answer": [{"ref":"2:19"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/03",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:26:5-11","dots":"both"}],
+      "answer": [{"ref":"2:26"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/04",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:30:18-22","dots":"both"}],
+      "answer": [{"ref":"2:30"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/05",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:33:-6","dots":"before"}],
+      "answer": [{"ref":"2:33"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/06",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:25:25-27","dots":"both"}],
+      "answer": [{"ref":"2:25"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/07",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:14:7-10","dots":"both"}],
+      "answer": [{"ref":"2:14"}]
+    },
+    {
+      "id": "baqarah-1/mid-verse/08",
+      "type": "mid-verse",
+      "prompt": [{"ref":"2:41:7-11","dots":"both"}],
+      "answer": [{"ref":"2:41"}]
+    },
+    {
+      "id": "baqarah-1/chain/01",
+      "type": "chain",
+      "ask": "من ١ إلى ١٠",
+      "prompt": [{"ref":"2:1"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:1"},
+            {"ref":"2:2:1-2"},
+            {"ref":"2:3:1-3"},
+            {"ref":"2:4:1-4"},
+            {"ref":"2:5:1-3"},
+            {"ref":"2:6:1-3"},
+            {"ref":"2:7:1-2"},
+            {"ref":"2:8:1-2"},
+            {"ref":"2:9:1-2"},
+            {"ref":"2:10:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-1/chain/02",
+      "type": "chain",
+      "ask": "من ١١ إلى ٢٠",
+      "prompt": [{"ref":"2:11:1-3"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:11:1-5"},
+            {"ref":"2:12:1-4"},
+            {"ref":"2:13:1-4"},
+            {"ref":"2:14:1-2"},
+            {"ref":"2:15:1-2"},
+            {"ref":"2:16:1-3"},
+            {"ref":"2:17:1-1"},
+            {"ref":"2:18:1-2"},
+            {"ref":"2:19:1-2"},
+            {"ref":"2:20:1-2"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-1/chain/03",
+      "type": "chain",
+      "ask": "من ٢١ إلى ٢٩",
+      "prompt": [{"ref":"2:21:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:21:1-2"},
+            {"ref":"2:22:1-3"},
+            {"ref":"2:23:1-4"},
+            {"ref":"2:24:1-3"},
+            {"ref":"2:25:1-1"},
+            {"ref":"2:26:1-4"},
+            {"ref":"2:27:1-2"},
+            {"ref":"2:28:1-2"},
+            {"ref":"2:29:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-1/chain/04",
+      "type": "chain",
+      "ask": "من ٣٠ إلى ٤٣",
+      "prompt": [{"ref":"2:30:1-3"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:30:1-3"},
+            {"ref":"2:31:1-2"},
+            {"ref":"2:32:1-2"},
+            {"ref":"2:33:1-2"},
+            {"ref":"2:34:1-2"},
+            {"ref":"2:35:1-2"},
+            {"ref":"2:36:1-1"},
+            {"ref":"2:37:1-1"},
+            {"ref":"2:38:1-2"},
+            {"ref":"2:39:1-2"},
+            {"ref":"2:40:1-2"},
+            {"ref":"2:41:1-1"},
+            {"ref":"2:42:1-2"},
+            {"ref":"2:43:1-2"}
+          ],
+          "sep": " · "
+        }
+      ]
+    },
+    {
+      "id": "baqarah-1/chain/05",
+      "type": "chain",
+      "ask": "التحدي الأكبر: بالعكس من ٤٣ إلى ٣٠",
+      "prompt": [{"ref":"2:43:1-2"},{"text":"←","dots":"after"}],
+      "answer": [
+        {
+          "chain": [
+            {"ref":"2:43:1-2"},
+            {"ref":"2:42:1-2"},
+            {"ref":"2:41:1-1"},
+            {"ref":"2:40:1-2"},
+            {"ref":"2:39:1-2"},
+            {"ref":"2:38:1-2"},
+            {"ref":"2:37:1-1"},
+            {"ref":"2:36:1-1"},
+            {"ref":"2:35:1-2"},
+            {"ref":"2:34:1-2"},
+            {"ref":"2:33:1-2"},
+            {"ref":"2:32:1-2"},
+            {"ref":"2:31:1-2"},
+            {"ref":"2:30:1-3"}
+          ],
+          "sep": " · "
+        }
+      ]
+    }
+  ],
+  "retired": []
+}

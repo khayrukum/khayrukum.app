@@ -1,0 +1,14 @@
+# Audio is NOT committed until the reciter's written permission is recorded (AUD-41, LIC-20).
+*.mp3
+*.mp4
+*.m4a
+site/audio/
+local-audio/
+# build output and tooling
+dist/
+dist-*/
+node_modules/
+test-results/
+playwright-report/
+site/config.local.json
+.DS_Store
