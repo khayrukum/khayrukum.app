@@ -44,9 +44,9 @@ items to *Done* with the commit hash.
 | 2026-11-26 | Reading view: largest type that fits, floating controls (STG-23/24) | a55386d |
 | 2026-11-26 | Checked, no change needed on the site: title during a basmala (already the sura it opens); «التالي» while paused (the site seeks 0.1 s before the verse and shows it); the player follows the element's own play / pause events (`core/audio.js`) | — |
 | 2026-11-26 | Claude pages only (nothing to port): Uthmani text in the exams, Tuhfa exam inside the hub | — |
-| 2026-11-28 | Reading view: a tap hides the controls at once, also when paused (STG-25); the smaller floating controls were already STG-24 | f43c4b2 |
-| 2026-11-28 | Reading view: sideways swipe to the next / previous verse or bayt (STG-26) | f43c4b2 |
-| 2026-11-28 | Reading view: long verses scroll and follow the recited phrase instead of paging (STG-27, replaces STG-05) | f43c4b2 |
-| 2026-11-28 | Reading view: «تسميع» blur (STG-28) | f43c4b2 |
-| 2026-11-28 | Reading view: a pause mark stays with its word (STG-29; reported on Al-Anbiya 24) | f43c4b2 |
-| 2026-11-28 | The player comes into view after «إلى» or a recent range (RNG-20) | f43c4b2 |
+| 2026-11-28 | Reading view: a tap hides the controls at once, also when paused (STG-25); the smaller floating controls were already STG-24 | aa387a2 |
+| 2026-11-28 | Reading view: sideways swipe to the next / previous verse or bayt (STG-26) | aa387a2 |
+| 2026-11-28 | Reading view: long verses scroll and follow the recited phrase instead of paging (STG-27, replaces STG-05) | aa387a2 |
+| 2026-11-28 | Reading view: «تسميع» blur (STG-28) | aa387a2 |
+| 2026-11-28 | Reading view: a pause mark stays with its word (STG-29; reported on Al-Anbiya 24) | aa387a2 |
+| 2026-11-28 | The player comes into view after «إلى» or a recent range (RNG-20) | aa387a2 |
